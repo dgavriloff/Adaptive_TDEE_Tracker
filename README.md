@@ -1,6 +1,8 @@
 # Abbreviations
 BMR - Basal metabolic rate
+
 TDEE - Total daily energy expenditure
+
 BFP - Body fat percentage
 
 # adaptive-tdee-tracker
