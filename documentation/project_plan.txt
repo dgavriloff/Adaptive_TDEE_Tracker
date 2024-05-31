@@ -1,0 +1,71 @@
+In-Scope:
+
+1. Core Features:
+  - User registration and login:
+    - User can create an account using their existing social
+    media accounts (facebook, google, apple)
+    - User authentication with secure password management
+
+  - User basic info input:
+    - User will input starting data, such as: 
+      -height, weight, age, gender and activity level
+      -Weight loss/ weight gain goals
+
+
+  - Base TDEE:
+    - A TDEE will be calculated from provided information for the user 
+    to begin their weight loss/gain journey.
+
+  - Daily calorie and weight input:
+    - The user is able to input their weight in lbs and calories in kCal for
+    the day and then submit the data.
+
+    - User will be able to view and edit past days weight and calorie data.
+
+  - TDEE calculation:
+    - As the user adds more data the application will calculate their actual TDEE 
+    based on their weight loss or gain.
+
+  - Analytics:
+    - A graph will be generated from the users caloric intake and their weight, in 
+    order to represent the data visually.
+
+  - Reminders:
+    - Users will be reminded about inputting their weight and calories each day through
+    notifications.
+
+  -Tooltips: 
+    - Users will have an option to get tool tips about weighing themselves
+    and tracking calories. 
+
+2. Design
+  - User friendly inputs for weight and calories
+  - Easily readable instructions
+
+3. Technical
+  - Developed using React Native
+  - API integration with apple, google, facebook
+  - Firebase for developemental database, mongodb for prod
+
+
+Out of Scope:
+
+1. Crossplatform development:
+  - No development for Android or web platforms at this time
+
+2. AI:
+  - LLM possibility for questions but not in this phase.
+
+3. Social media:
+  - No social media functionality at this phase.
+
+4. Monetization:
+  - No subscriptions, ads or in app purchases at this time.
+
+Assumptions:
+  - User will stay consistent with their data inputs
+  
+  - User is already tracking weight and calories in another
+  application such as MyFitnessPal or Macro Factor.
+
+  
