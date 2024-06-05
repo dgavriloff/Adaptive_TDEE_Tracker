@@ -12,9 +12,11 @@ In-Scope:
       -Weight loss/ weight gain goals
 
 
-  - Base TDEE:
+  - Base TDEE and kcal:
     - A TDEE will be calculated from provided information for the user 
-    to begin their weight loss/gain journey.
+    to begin their weight loss/gain journey. 
+    -A deficit and calorie goal will
+    be shown
 
   - Daily calorie and weight input:
     - The user is able to input their weight in lbs and calories in kCal for
@@ -25,14 +27,15 @@ In-Scope:
   - TDEE calculation:
     - As the user adds more data the application will calculate their actual TDEE 
     based on their weight loss or gain.
+    - This will also update users daily calorie goal
+  
+  - Goal progress
+    - User can see timeframe for their chosen weekly weight loss
 
   - Analytics:
     - A graph will be generated from the users caloric intake and their weight, in 
     order to represent the data visually.
 
-  - Reminders:
-    - Users will be reminded about inputting their weight and calories each day through
-    notifications.
 
   -Tooltips: 
     - Users will have an option to get tool tips about weighing themselves
@@ -45,7 +48,7 @@ In-Scope:
 3. Technical
   - Developed using React Native
   - API integration with apple, google, facebook
-  - Firebase for developemental database, mongodb for prod
+  - Firebase for authentication, mongodb for database
 
 
 Out of Scope:
@@ -61,6 +64,15 @@ Out of Scope:
 
 4. Monetization:
   - No subscriptions, ads or in app purchases at this time.
+
+5. Notes
+  - Users will not be able to add notes to their daily logs in this phase
+
+6. Use of units other than lbs or kcal at this stage.
+
+7. - Reminders and push notifications:
+    - Users will not be reminded about inputting their weight and calories each day through
+    notifications in this phase.
 
 Assumptions:
   - User will stay consistent with their data inputs
