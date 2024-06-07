@@ -26,18 +26,8 @@ const UnitSelection = ({ navigation }) => {
         selectedValue={weightUnit}
         onValueChange={(itemValue) => setWeightUnit(itemValue)}>
         <Picker.Item label="Pounds" value="lbs" />
-        <Picker.Item label="Kilograms" value="kg" />
+        <Picker.Item label="Kilograms" value="kgs" />
       </Picker>
-
-      <Text>Energy unit:</Text>
-      <View>
-      <Picker
-        selectedValue={energyUnit}
-        onValueChange={(itemValue) => setEnergyUnit(itemValue)}>
-        <Picker.Item label="Calories" value="kCal" />
-        <Picker.Item label="KiloJoules" value="kJ" />
-      </Picker>
-      </View>
 
       <Text>Height unit:</Text>
       <View>

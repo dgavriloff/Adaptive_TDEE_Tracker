@@ -11,8 +11,8 @@ const BasicInformation = ({ navigation }) => {
   const [age, setAge] = useState(userData.age);
   const [startWeight, setStartWeight] = useState(userData.startWeight);
   const [height, setHeight] = useState(userData.height);
-  const [gender, setGender] = useState(userData.gender === "" ? 'male' : userData.gender);
-  const [activityLevel, setActivityLevel] = useState(userData.weightUnits === "" ? 'sedentary' : userData.activityLevel);
+  const [gender, setGender] = useState(userData.gender ? 'male' : userData.gender);
+  const [activityLevel, setActivityLevel] = useState(userData.weightUnits ? 1.2 : userData.activityLevel);
 
 
   const handleNext = () => {
@@ -22,7 +22,13 @@ const BasicInformation = ({ navigation }) => {
     // Navigate to the next screen
     if(age && startWeight && height )
     {
-        updateUserData({ age, startWeight, gender, activityLevel });
+        updateUserData({ 
+          age: parseFloat(age), 
+          startWeight: parseFloat(startWeight), 
+          gender: gender, 
+          activityLevel: parseFloat(activityLevel), 
+          height: parseFloat(height)
+        });
         navigation.navigate('Initial Goals');
     }
     else
@@ -40,7 +46,7 @@ const BasicInformation = ({ navigation }) => {
       <Text>Age:</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
-          value={age}
+          value={age ? age.toString() : ''}
           onChangeText={setAge}
           keyboardType="numeric"
           style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
@@ -52,7 +58,7 @@ const BasicInformation = ({ navigation }) => {
       <Text>Starting weight:</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
-          value={startWeight}
+          value={startWeight ? startWeight.toString() : ''}
           onChangeText={setStartWeight}
           keyboardType="numeric"
           style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
@@ -63,7 +69,7 @@ const BasicInformation = ({ navigation }) => {
       <Text>Height:</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
-          value={height}
+          value={height ? height.toString() : ''}
           onChangeText={setHeight}
           keyboardType="numeric"
           style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
@@ -73,7 +79,8 @@ const BasicInformation = ({ navigation }) => {
 
       <Text>Gender:</Text>
       <Picker
-        selectedValue={gender}
+        selectedValue={gender ? gender : 'male'}
+        
         onValueChange={(value) => setGender(value)}>
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
@@ -81,13 +88,13 @@ const BasicInformation = ({ navigation }) => {
 
       <Text>Activity level:</Text>
       <Picker
-        selectedValue={activityLevel}
+        selectedValue={activityLevel ? activityLevel.toString() : 1.2}
         onValueChange={(value) => setActivityLevel(value)}>
-        <Picker.Item label="Sedentary" value="sedentary" />
-        <Picker.Item label="Lightly active" value="lightly_active" />
-        <Picker.Item label="Moderately active" value="moderately_active" />
-        <Picker.Item label="Very active" value="very_active" />
-        <Picker.Item label="Extra active" value="extra_active" />
+        <Picker.Item label="Sedentary" value={1.2} />
+        <Picker.Item label="Lightly active" value={1.375} />
+        <Picker.Item label="Moderately active" value={1.55} />
+        <Picker.Item label="Active" value={1.725} />
+        <Picker.Item label="Extra active" value={1.9} />
       </Picker>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

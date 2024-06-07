@@ -20,12 +20,6 @@ const Navigation = () => {
   const { user, isLoading: authLoading } = useContext(AuthContext);
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
 
-  if(authLoading || dataLoading ){
-    return (
-      <Loading />
-    )
-  } else
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

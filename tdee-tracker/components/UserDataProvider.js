@@ -10,12 +10,13 @@ const schema  = {
   registrationComplete: null,
   createdAt: null,
   weightUnits: null,
-  energyUnits: null,
   heightUnits: null,
   gender: null,
   startWeight: null,
   currentWeight: null,
-  weeklyLoss: null,
+  weeklyWeightDelta: null,
+  dailyCalorieDelta: null,
+  loseOrGain: null, //false = goal to lose weight, true = goal to gain weight
   goalWeight: null,
   age: null,
   activityLevel: null,
@@ -67,24 +68,6 @@ const UserDataProvider = ({ children }) => {
       console.log('doc creation error', err)
       throw err;
     });
-  };
-
-  const getUserData = (user) => {
-    const { uid } = user;
-    const docRef = doc(collection(db, "users"), uid);
-    return getDoc(docRef)
-      .then((docSnap) => {
-        if (docSnap.exists()){
-          console.log(`successfully retrieved and loaded user data for ${uid}`, docSnap.data());
-          return docSnap;
-        } else {
-          console.log(`no such document for ${uid}`);
-          return null;
-        }
-      })
-      .catch(err => {
-        console.log(`error getting user doc for ${uid}`, err);
-      });
   };
 
   const updateUserData = (changes) => {
