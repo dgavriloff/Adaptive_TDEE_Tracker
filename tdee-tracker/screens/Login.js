@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import { View, Text, Button, ActivityIndicator } from 'react-native';
 import { AuthContext } from '../components/AuthProvider';
 import { TextInput } from 'react-native-gesture-handler';
+import DissmissKeyboard from '../components/DismissKeyboard';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 
 
@@ -17,18 +19,18 @@ const Login = () => {
       login(email, password)
     } catch (err){
       if (err.code === 'auth/invalid-email')
-        setError('Invalid Email')
-      console.log('handle login error', err.code)
+        setError('Invalid Email');
+      console.log('handle login error', err.code);
     }
   }
 
   const handleRegister = () => {
     setError(null);
     try {
-      register(email, password)
+      register(email, password);
     } catch (err){
-        console.log('handle register error', err.code)
-        setError(err.code)
+        console.log('handle register error', err.code);
+        setError(err.code);
     }
   }
 
@@ -36,6 +38,7 @@ const Login = () => {
 
 
   return(
+    <DismissKeyboard>
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Login Screen</Text>
     {error && <Text style={{ color: 'red', marginTop: 20 }}>{error}</Text>}
@@ -60,6 +63,7 @@ const Login = () => {
     {isLoading && <ActivityIndicator style={{ marginTop: 20 }} />}
 
   </View>
+  </DismissKeyboard>
   );
 }
 

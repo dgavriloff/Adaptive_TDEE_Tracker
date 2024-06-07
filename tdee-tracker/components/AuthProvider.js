@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
-import { auth } from '../config/firebaseConfig'
+import { auth} from '../config/firebaseConfig';
 
 const AuthContext = createContext();
 
@@ -19,7 +19,9 @@ const AuthProvider = ({ children }) => {
 
   const login = (email, password) => { 
       signInWithEmailAndPassword(auth, email, password)
-      .then(() => console.log(`${email} has signed in`))
+      .then(() => {
+        console.log(`${email} has signed in`);
+      })
       .catch(err => {
         console.error('login error', err);
         throw err;
@@ -36,12 +38,14 @@ const AuthProvider = ({ children }) => {
   }
 
   const register = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => console.log(`account created with ${email}`))
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(`account created and signed in as ${userCredential.user.email}`);
+    })
       .catch(err => {
-        console.log('register error', err);
-        throw err;
-      })
+      console.log('register error', err);
+      throw err;
+    });
   };
 
   return (
