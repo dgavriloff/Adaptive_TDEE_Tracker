@@ -41,7 +41,6 @@ const BasicInformation = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
     <View>
       <Text>Age:</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -106,7 +105,6 @@ const BasicInformation = ({ navigation }) => {
         </Button>
       </View>
     </View>
-    </DismissKeyboard>
   );
 };
 

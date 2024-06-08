@@ -2,6 +2,7 @@ import {react, useContext} from "react";
 import { View, Text } from "react-native";
 import { Button } from "react-native";
 import { AuthContext } from "../components/AuthProvider";
+import NavigationBar from "../components/NavigationBar";
 
 
 const Dashboard = () => {
@@ -18,7 +19,7 @@ const Dashboard = () => {
       
       <Button title="Logout" onPress={handleLogout}/>
     
-
+    <NavigationBar />
   </View>
 
   );

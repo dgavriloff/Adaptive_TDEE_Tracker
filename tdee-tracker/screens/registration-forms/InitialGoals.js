@@ -32,7 +32,6 @@ const InitialGoals = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
       <View style={{ padding: 20 }}>
       <Text>Goal Weight:</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -66,7 +65,6 @@ const InitialGoals = ({ navigation }) => {
         </Button>
       </View>
       </View>
-    </DismissKeyboard>
   );
 };
 
