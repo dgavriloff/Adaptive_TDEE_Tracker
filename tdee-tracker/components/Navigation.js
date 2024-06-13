@@ -11,7 +11,8 @@ import Dashboard from '../screens/Dashboard.js'
 import UserLog from '../screens/UserLog';
 import Graph from '../screens/Graph';
 import Account from '../screens/Account';
-import NavigationBar from './NavigationBar.js';
+import UploadData from "../screens/UploadData.js";
+import WeeklyProgress from "../screens/WeeklyProgress.js";
 
 //registration screens
 import UnitSelection from "../screens/registration-forms/UnitSelection.js"
@@ -26,6 +27,7 @@ import { AuthContext } from "./AuthProvider.js";
 import { UserDataContext } from "./UserDataProvider.js";
 import { NavigationContext } from "@react-navigation/native";
 import { NavigationProvider } from "./NavigationContext.js";
+import { UserLogContext } from "./UserLogProvider.js";
 
 
 
@@ -34,26 +36,28 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   const { user, isLoading: authLoading } = useContext(AuthContext);
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
+  const { userLogs } = useContext(UserLogContext);
 
 
 
   return (
-<DismissKeyboard>
     <NavigationContainer>
       <NavigationProvider>
       <Stack.Navigator>
         {user ? (
           <>
-            {!userData ? (
+            {!userData || !userLogs ? (
               <Stack.Screen name= "Loading" component={Loading} />
             ) : (
               <>
               {userData.registrationComplete ? (
                 <>
                   <Stack.Screen name="Dashboard" component={Dashboard} />
-                  <Stack.Screen name="UserLog" component={UserLog} />
+                  <Stack.Screen name="User Log" component={UserLog} />
                   <Stack.Screen name="Graph" component={Graph} />
                   <Stack.Screen name="Account" component={Account} />
+                  <Stack.Screen name="Upload Data" component={UploadData} />
+                  <Stack.Screen name="Weekly Progress" component={WeeklyProgress} />
                 </>
               ) : (
                 <>
@@ -72,7 +76,6 @@ const Navigation = () => {
       </Stack.Navigator>
       </NavigationProvider>
     </NavigationContainer>
-    </DismissKeyboard>
   );
 }
 

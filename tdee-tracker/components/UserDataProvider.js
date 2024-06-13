@@ -21,7 +21,8 @@ const schema  = {
   age: null,
   activityLevel: null,
   height: null,
-  currentTDEE: null
+  currentTDEE: null,
+  weightDelta: null
 }
 
 
@@ -38,6 +39,7 @@ const UserDataProvider = ({ children }) => {
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if(docSnap.exists()){
         setUserData(docSnap.data());
+        console.log(`user data loaded in for ${user.uid}`);
       } else {
         console.log('no doc for user, creating new doc');
         createUserDoc(user);
@@ -75,7 +77,7 @@ const UserDataProvider = ({ children }) => {
 
     updateDoc(docRef, changes)
     .then(() => {
-      console.log(`doc updated with ${JSON.stringify(changes)     } for ${user.uid}`)
+      console.log(`doc updated with ${JSON.stringify(changes)} for ${user.uid}`)
     })
     .catch(err => {
       console.log('error updating doc', err)
