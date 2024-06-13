@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionPresets, ModalSlideFromBottomIOS  } from "@react-navigation/stack";
 import { ActivityIndicator, View } from 'react-native';
 import DismissKeyboard from "./DismissKeyboard.js";
 
@@ -36,17 +36,21 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   const { user, isLoading: authLoading } = useContext(AuthContext);
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
-  const { userLogs } = useContext(UserLogContext);
+  const { userLogs, weeklyLogs } = useContext(UserLogContext);
 
 
 
   return (
     <NavigationContainer>
       <NavigationProvider>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          ...ModalSlideFromBottomIOS
+        }}
+      >
         {user ? (
           <>
-            {!userData || !userLogs ? (
+            {!userData || !userLogs || !weeklyLogs ? (
               <Stack.Screen name= "Loading" component={Loading} />
             ) : (
               <>

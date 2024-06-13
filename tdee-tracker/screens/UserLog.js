@@ -87,7 +87,7 @@ const UserLog = () => {
       <View style={styles.header}>
         <Button title="< Prev" onPress={gotoPreviousLog} />
 
-        <Text style={styles.date}>{date.toLocaleDateString()}</Text>
+        <Text style={styles.date}>{date.toDateString()}</Text>
 
         {today != dateId ? <Button title="Next >" onPress={gotoNextLog} /> : <Button title='            '/>}
       </View>

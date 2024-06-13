@@ -19,8 +19,7 @@ const BaselineResults = ({ navigation }) => {
     const calculatedTdee = Math.floor(calculatedBmr * userData.activityLevel);
 
     const weightDelta = Math.abs(userData.startWeight - userData.goalWeight);
-    const daysUntilGoal = userData.weightUnits === 'lbs' ? weightDelta * 3500 / userData.dailyCalorieDelta : weightDelta * 2.20
-    462 * 3500 / userData.dailyCalorieDelta;
+    const daysUntilGoal = userData.weightUnits === 'lbs' ? weightDelta * 3500 / userData.dailyCalorieDelta : weightDelta * 2.20462 * 3500 / userData.dailyCalorieDelta;
     const goalDate = new Date(new Date().getTime() + (86400000 * daysUntilGoal))
 
     setGoalDate(goalDate.toDateString().slice(3));

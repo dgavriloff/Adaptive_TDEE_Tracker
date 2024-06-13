@@ -7,9 +7,6 @@ const WeeklyProgress = () => {
   const { userData } = useContext(UserDataContext);
   const { weeklyLogs, updateUserTdeeAndWeightDelta } = useContext(UserLogContext);
 
-  useEffect(() => {
-    updateUserTdeeAndWeightDelta(weeklyLogs);
-  },[]);
 
   const renderSectionHeader = ({ section }) => (
     <View style={styles.header}>
@@ -45,7 +42,7 @@ const WeeklyProgress = () => {
       <View style={styles.inlineContainer}>
         <Text style={styles.inlineText}>{userData.weightDelta < 0 ? userData.weightDelta : '+' + userData.weightDelta} {userData.weightUnits}</Text>
         <Text style={styles.inlineText}>{Math.floor(weeklyLogs.reduce((sum, log) => { return (sum + log.data[0].avgCalories) }, 0) / weeklyLogs.length)}</Text>
-        <Text style={styles.inlineText}>{userData.currentTDEE}</Text>
+        <Text style={styles.inlineText}>~{userData.currentTDEE}</Text>
       </View>
 
     </View>

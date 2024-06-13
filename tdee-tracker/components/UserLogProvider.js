@@ -103,7 +103,7 @@ const UserLogProvider = ({children}) => {
   const updateUserTdeeAndWeightDelta = (logs) => {
     const tdee = Math.floor(logs.slice(0,logs.length-2).reduce((sum, log) => { return (sum + log.data[0].tdee) }, 0)/(logs.length-2));
     const weightDelta = logs.reduce((sum, log) => { return (sum + log.data[0].weightDelta) }, 0);
-    updateUserData({currentTDEE: tdee, weightDelta: weightDelta});
+    updateUserData({currentTDEE: Math.round(tdee/50)*50, weightDelta: weightDelta});
   }
 
   
