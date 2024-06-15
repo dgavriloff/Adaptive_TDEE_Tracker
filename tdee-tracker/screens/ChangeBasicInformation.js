@@ -2,9 +2,8 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Picker } from'@react-native-picker/picker';
-import { UserDataContext } from '../../components/UserDataProvider.js'
-import DismissKeyboard from '../../components/DismissKeyboard.js';
-import {TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { UserDataContext } from '../components/UserDataProvider.js'
+import DismissKeyboard from '../components/DismissKeyboard.js';
 
 const BasicInformation = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -12,14 +11,10 @@ const BasicInformation = ({ navigation }) => {
   const [startWeight, setStartWeight] = useState(userData.startWeight);
   const [height, setHeight] = useState(userData.height);
   const [gender, setGender] = useState(userData.gender ? userData.gender : 'male');
-  const [activityLevel, setActivityLevel] = useState(userData.weightUnits ? 1.2 : userData.activityLevel);
+  const [activityLevel, setActivityLevel] = useState(!userData.weightUnits ? 1.2 : userData.activityLevel);
 
 
   const handleNext = () => {
-    // Call updateUserData function with entered information
-
-
-    // Navigate to the next screen
     if(age && startWeight && height )
     {
         updateUserData({ 
@@ -29,14 +24,13 @@ const BasicInformation = ({ navigation }) => {
           activityLevel: parseFloat(activityLevel), 
           height: parseFloat(height)
         });
-        navigation.navigate('Initial Goals');
+        navigation.navigate('Account');
     }
     else
       console.log('missing fields')
   };
 
   const handleBack = () => {
-    // Navigate to the previous screen
     navigation.goBack();
   };
 
@@ -98,11 +92,8 @@ const BasicInformation = ({ navigation }) => {
       </Picker>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button mode="contained" onPress={handleBack}>
-          Back
-        </Button>
         <Button mode="contained" onPress={handleNext}>
-          Next
+          Save
         </Button>
       </View>
     </View>

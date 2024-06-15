@@ -27,8 +27,7 @@ const UserLog = () => {
   useEffect(() => {
     setWeight(currentLog ? currentLog.weight : '');
     setCalories(currentLog ? currentLog.calories : '');
-
-  },[date, currentLog]);
+  },[date]);
 
 
 
@@ -54,6 +53,9 @@ const UserLog = () => {
         dateId: dateId,
         weekId: weekId,
       })
+      setWeight(weight);
+      setCalories(calories);
+
     }else{
       currentLog.weight === weight && currentLog.calories === calories ? ( 
         console.log('saved with no changes')
@@ -65,8 +67,9 @@ const UserLog = () => {
         .then(() => {
           setCurrentLog(userLogs.find(log => log.dateId === getDateIdFormat(date)));
         })
-    );
-
+      );
+      setWeight(weight);
+      setCalories(calories);
     }
     Keyboard.dismiss();
   }

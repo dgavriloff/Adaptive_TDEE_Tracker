@@ -13,6 +13,8 @@ import Graph from '../screens/Graph';
 import Account from '../screens/Account';
 import UploadData from "../screens/UploadData.js";
 import WeeklyProgress from "../screens/WeeklyProgress.js";
+import ChangeBasicInformation from '../screens/ChangeBasicInformation.js';
+import ChangeGoals from '../screens/ChangeGoals.js';
 
 //registration screens
 import UnitSelection from "../screens/registration-forms/UnitSelection.js"
@@ -62,6 +64,8 @@ const Navigation = () => {
                   <Stack.Screen name="Account" component={Account} />
                   <Stack.Screen name="Upload Data" component={UploadData} />
                   <Stack.Screen name="Weekly Progress" component={WeeklyProgress} />
+                  <Stack.Screen name='Change Personal Details' component={ChangeBasicInformation} />
+                  <Stack.Screen name='Change Goals' component={ChangeGoals} />
                 </>
               ) : (
                 <>

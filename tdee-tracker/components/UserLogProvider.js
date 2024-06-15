@@ -20,11 +20,13 @@ const UserLogProvider = ({children}) => {
       const logsQuery = query(collection(db, 'user-logs'), where('userId', '==', user.uid), orderBy('dateId', 'desc'));
       const unsubscribe = onSnapshot(logsQuery, (querySnapshot) => {
         const logs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        const weeklyLogs = generateWeeklyLogs(logs);
         console.log('user logs loaded for', user.uid);
-        setUserLogs(logs);
-        setWeeklyLogs(weeklyLogs);
-        setIsLoading(false);
+        if(logs[0]){
+          const weeklyLogs = generateWeeklyLogs(logs)
+          setUserLogs(logs);
+          setWeeklyLogs(weeklyLogs);
+          setIsLoading(false);
+        }
       });
       return unsubscribe;
     } else {
@@ -57,6 +59,7 @@ const UserLogProvider = ({children}) => {
       .catch(err => {
         console.log(`error updating log ${dateId} for ${user.uid}`, err);
       });
+      
   };
   
   const generateWeeklyLogs = (logs) => {
@@ -83,6 +86,8 @@ const UserLogProvider = ({children}) => {
                   data[0].weightDelta * 2.20462 * 500 + data[0].avgCalories)
        }]
     }));
+    updateUserTdeeAndWeightDelta(data);
+    console.log('weekly logs generated ', data[data.length-1]);
     return data;
   };
 
@@ -103,7 +108,8 @@ const UserLogProvider = ({children}) => {
   const updateUserTdeeAndWeightDelta = (logs) => {
     const tdee = Math.floor(logs.slice(0,logs.length-2).reduce((sum, log) => { return (sum + log.data[0].tdee) }, 0)/(logs.length-2));
     const weightDelta = logs.reduce((sum, log) => { return (sum + log.data[0].weightDelta) }, 0);
-    updateUserData({currentTDEE: Math.round(tdee/50)*50, weightDelta: weightDelta});
+    const shownTdee = weeklyLogs.length > 2 ? Math.round(tdee/50)*50 : Math.round(userData.calculatedTDEE/50)*50
+    updateUserData({currentTDEE: shownTdee, weightDelta: weightDelta});
   }
 
   

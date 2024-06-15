@@ -28,7 +28,7 @@ const BaselineResults = ({ navigation }) => {
   }, [userData]);
 
   const handleNext = () => {
-    updateUserData({ registrationComplete: true });
+    updateUserData({ registrationComplete: true, calculatedTDEE: tdee });
   };
 
   return (

@@ -19,7 +19,26 @@ const Graph = () => {
   const { userData } = useContext(UserDataContext);
   const { userLogs } = useContext(UserLogContext);
 
-  const dataSets = {
+  
+  const graphData = !userLogs[0] ? {
+
+    week: {
+      labels: [0],
+      weight: [0],
+    },
+    oneMonth: {
+      labels: [0],
+      weight: [0],
+    },
+    twoMonths: {
+      labels: [0],
+      weight: [0],
+    },
+    all: {
+      labels: [0],
+      weight: [0],
+    },
+  } : {
     week: {
       labels: userLogs.slice(0,7).toReversed().map(log => {return `${log.dateId.slice(4,6)}/${log.dateId.slice(6,8)}`}),
       weight: userLogs.slice(0,7).toReversed().map(log => { return !isNaN(log.weight) ? log.weight : 0}),
@@ -57,7 +76,7 @@ const Graph = () => {
     },
   };
 
-  const data = dataSets[selectedRange];
+  const data = graphData[selectedRange];
 
   const weightChange = data.weight[data.weight.length - 1] - data.weight[0];
 

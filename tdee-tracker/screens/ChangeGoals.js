@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Picker } from'@react-native-picker/picker';
-import { UserDataContext } from '../../components/UserDataProvider';
-import DismissKeyboard from '../../components/DismissKeyboard';
+import { UserDataContext } from '../components/UserDataProvider';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 const InitialGoals = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -21,7 +21,7 @@ const InitialGoals = ({ navigation }) => {
         dailyCalorieDelta: Math.floor(userData.weightUnits === 'lbs' ? weeklyWeightDelta * 500 : weeklyWeightDelta * 2.20462 * 500),
         loseOrGain: goalWeight > userData.startWeight ? true : false
        });
-      navigation.navigate('Baseline Results');
+      navigation.navigate('Account');
     } else
       console.log('missing fields')
 
@@ -58,11 +58,8 @@ const InitialGoals = ({ navigation }) => {
         </Picker>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button mode="contained" onPress={handleBack}>
-          Back
-        </Button>
         <Button mode="contained" onPress={handleNext}>
-          Next
+          Save and Go Back To Account
         </Button>
       </View>
       </View>
