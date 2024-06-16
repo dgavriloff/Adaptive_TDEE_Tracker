@@ -28,7 +28,6 @@ import Loading from "../screens/Loading.js";
 import { AuthContext } from "./AuthProvider.js";
 import { UserDataContext } from "./UserDataProvider.js";
 import { NavigationContext } from "@react-navigation/native";
-import { NavigationProvider } from "./NavigationContext.js";
 import { UserLogContext } from "./UserLogProvider.js";
 
 
@@ -44,7 +43,6 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <NavigationProvider>
       <Stack.Navigator
         screenOptions={{
           ...ModalSlideFromBottomIOS
@@ -82,7 +80,6 @@ const Navigation = () => {
           <Stack.Screen name="Login" component={Login} />
         )}
       </Stack.Navigator>
-      </NavigationProvider>
     </NavigationContainer>
   );
 }

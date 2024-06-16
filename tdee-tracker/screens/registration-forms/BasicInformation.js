@@ -12,14 +12,12 @@ const BasicInformation = ({ navigation }) => {
   const [startWeight, setStartWeight] = useState(userData.startWeight);
   const [height, setHeight] = useState(userData.height);
   const [gender, setGender] = useState(userData.gender ? userData.gender : 'male');
-  const [activityLevel, setActivityLevel] = useState(userData.weightUnits ? 1.2 : userData.activityLevel);
+  const [activityLevel, setActivityLevel] = useState(userData.activityLevel ? userData.activityLevel : 1.2);
 
 
   const handleNext = () => {
-    // Call updateUserData function with entered information
 
 
-    // Navigate to the next screen
     if(age && startWeight && height )
     {
         updateUserData({ 

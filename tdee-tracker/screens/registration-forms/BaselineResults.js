@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { UserDataContext } from '../../components/UserDataProvider';
+import { UserLogContext } from '../../components/UserLogProvider';
 
 const BaselineResults = ({ navigation }) => {
   const { userData, updateUserData } = useContext(UserDataContext);
+  const { getWeekIdFromDateId, getDateIdFormat, addUserLog } = useContext(UserLogContext);
+
   const [bmr, setBmr] = useState(null);
   const [tdee, setTdee] = useState(null);
   const [goalDate, setGoalDate] = useState(null);
@@ -24,11 +27,21 @@ const BaselineResults = ({ navigation }) => {
 
     setGoalDate(goalDate.toDateString().slice(3));
     setBmr(calculatedBmr);
-    setTdee(calculatedTdee);
+    setTdee(Math.round(calculatedTdee / 50) * 50);
   }, [userData]);
 
   const handleNext = () => {
-    updateUserData({ registrationComplete: true, calculatedTDEE: tdee });
+    const date = new Date();
+    const dateId = getDateIdFormat(date);
+    
+    updateUserData({ registrationComplete: true, calculatedTDEE: tdee});
+    addUserLog({
+      weight: userData.startWeight,
+      calories: '',
+      weekId: getWeekIdFromDateId(dateId),
+      dateId: dateId
+    });
+
   };
 
   return (

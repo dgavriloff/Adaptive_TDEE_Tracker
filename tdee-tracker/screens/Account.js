@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     width: '85%',
-    marginTop: 75,
+    marginTop: '20%',
   }
 });
 

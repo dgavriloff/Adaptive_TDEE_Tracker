@@ -14,7 +14,6 @@ const InitialGoals = ({ navigation }) => {
   const handleNext = () => {
 
     if(goalWeight){
-      console.log(typeof(goalWeight), 5);
       updateUserData({ 
         goalWeight: parseFloat(goalWeight),
         weeklyWeightDelta: parseFloat(weeklyWeightDelta),

@@ -21,12 +21,9 @@ const UserLogProvider = ({children}) => {
       const unsubscribe = onSnapshot(logsQuery, (querySnapshot) => {
         const logs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         console.log('user logs loaded for', user.uid);
-        if(logs[0]){
-          const weeklyLogs = generateWeeklyLogs(logs)
-          setUserLogs(logs);
-          setWeeklyLogs(weeklyLogs);
-          setIsLoading(false);
-        }
+        setUserLogs(logs);
+        setIsLoading(false);
+      
       });
       return unsubscribe;
     } else {
@@ -34,7 +31,13 @@ const UserLogProvider = ({children}) => {
       setUserLogs([]);
       setIsLoading(false);
     }
-  }, [user, userData]);
+  }, [user]);
+
+  useEffect(() => {
+    if(userLogs[0]){
+      setWeeklyLogs(generateWeeklyLogs(userLogs));
+    }
+  }, [userLogs, user]);
 
   const addUserLog = (log) => {
     if(user) {
@@ -51,13 +54,16 @@ const UserLogProvider = ({children}) => {
 
   const updateUserLog = (changes, dateId) => {
     const docRef = doc(collection(db, 'user-logs'), userLogs.find(log => log.dateId === dateId).id);
+    setIsLoading(true);
 
     return updateDoc(docRef, changes)
       .then(() => {
         console.log(`log ${dateId} updated for ${user.uid} with ${JSON.stringify(changes)}`);
+        setIsLoading(false);
       })
       .catch(err => {
         console.log(`error updating log ${dateId} for ${user.uid}`, err);
+        setIsLoading(false);
       });
       
   };
@@ -67,6 +73,7 @@ const UserLogProvider = ({children}) => {
     
     for(let i = logs[logs.length-1].weekId, weekIndex = 0; i <= logs[0].weekId ; i++, weekIndex++){
       week = logs.filter(log => log.weekId === i && isValidNumber(log.calories) && isValidNumber(log.weight));
+      if(week[0])
       data.push({
       title: `${getWeekFromWeekId(week[week.length-1].weekId+1)}`, 
       data: [{ 
@@ -87,7 +94,6 @@ const UserLogProvider = ({children}) => {
        }]
     }));
     updateUserTdeeAndWeightDelta(data);
-    console.log('weekly logs generated ', data[data.length-1]);
     return data;
   };
 
@@ -112,10 +118,29 @@ const UserLogProvider = ({children}) => {
     updateUserData({currentTDEE: shownTdee, weightDelta: weightDelta});
   }
 
+  const getWeekIdFromDateId = (dateId) => {
+    return Math.floor(
+      (getDateFromDateId(dateId)
+      .getTime() + 259200000) / 604800000);
+  };
+
+  const getDateFromDateId = (dateId) => {
+    return new Date(dateId.slice(0,4), parseInt(dateId.slice(4,6))-1, parseInt(dateId.slice(6,8)), 0, 0, 0, 0);
+  }
+
+  const getDateIdFormat = (date) => {
+    return `${date.getFullYear()}${String(date.getMonth()+1).padStart(2, 0)}${String(date.getDate()).padStart(2, 0)}`;
+  }
+
   
   
   return (
-    <UserLogContext.Provider value={{ userLogs, isLoading, weeklyLogs, addUserLog, updateUserLog, updateUserTdeeAndWeightDelta }}>
+    <UserLogContext.Provider value={{ 
+      userLogs, isLoading, weeklyLogs, 
+      addUserLog, updateUserLog, updateUserTdeeAndWeightDelta, 
+      getWeekIdFromDateId, getDateIdFormat 
+      }}
+    >
       {children}
     </UserLogContext.Provider>
   );

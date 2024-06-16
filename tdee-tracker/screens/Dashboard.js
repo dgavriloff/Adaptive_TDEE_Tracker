@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { userData } = useContext(UserDataContext);
   const { weeklyLogs, userLogs } = useContext(UserLogContext);
 
-  const shownTdee = userData.currentTDEE === 0 ? userData.calculatedTDEE : userData.currentTDEE;
+  const shownTdee = !userData.currentTDEE ? userData.calculatedTDEE : userData.currentTDEE;
 
   const calculateGoalDate = (userData) => {
     const weightDelta = (userData.startWeight + userData.weightDelta) - userData.goalWeight;
@@ -26,7 +26,7 @@ const Dashboard = () => {
   // Get dimensions of the screen
   const screenWidth = Dimensions.get('window').width * 0.75; // Considering the width of the segment
   const chartHeight = 200;
-
+  const today = new Date();
   const graphData = !userLogs[0] ? {
     labels: [0],
     weight: [0]
