@@ -1,111 +1,139 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput } from 'react-native';
-import { Button } from 'react-native-paper';
-import { Picker } from'@react-native-picker/picker';
-import { UserDataContext } from '../../components/UserDataProvider.js'
-import DismissKeyboard from '../../components/DismissKeyboard.js';
-import {TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import BubbleButton from '../../components/BubbleButton';
+import { Picker } from '@react-native-picker/picker';
+import { UserDataContext } from '../../components/UserDataProvider';
+import DismissKeyboard from '../../components/DismissKeyboard';
+import LabeledInput from '../../components/LabeledInput';
+import RegistrationFooter from '../../components/RegistrationFooter';
 
 const BasicInformation = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
-  const [age, setAge] = useState(userData.age);
-  const [startWeight, setStartWeight] = useState(userData.startWeight);
-  const [height, setHeight] = useState(userData.height);
+  const [age, setAge] = useState(userData.age ? userData.age.toString() : '');
+  const [startWeight, setStartWeight] = useState(userData.startWeight ? userData.startWeight.toString() : '');
+  const [height, setHeight] = useState(userData.height ? userData.height.toString() : '');
   const [gender, setGender] = useState(userData.gender ? userData.gender : 'male');
+  const [missingFields, setMissingFields] = useState(false);
   const [activityLevel, setActivityLevel] = useState(userData.activityLevel ? userData.activityLevel : 1.2);
 
-
   const handleNext = () => {
-
-
-    if(age && startWeight && height )
-    {
-        updateUserData({ 
-          age: parseFloat(age), 
-          startWeight: parseFloat(startWeight), 
-          gender: gender, 
-          activityLevel: parseFloat(activityLevel), 
-          height: parseFloat(height)
-        });
-        navigation.navigate('Initial Goals');
+    if (age && startWeight && height) {
+      updateUserData({
+        age: parseFloat(age),
+        startWeight: parseFloat(startWeight),
+        gender: gender,
+        height: parseFloat(height)
+      });
+      setMissingFields(false);
+      navigation.navigate('Activity Level');
+    } else {
+      setMissingFields(true);
     }
-    else
-      console.log('missing fields')
   };
 
   const handleBack = () => {
-    // Navigate to the previous screen
+    updateUserData({
+      age: parseFloat(age),
+      startWeight: parseFloat(startWeight),
+      gender: gender,
+      height: parseFloat(height)
+    });
+    setMissingFields(false);
     navigation.goBack();
   };
 
   return (
     <DismissKeyboard>
-    <View>
-      <Text>Age:</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TextInput
-          value={age ? age.toString() : ''}
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Age, Height and Start Weight:</Text>
+        <LabeledInput 
+          units={'years'} 
+          placeholder={'Enter age'}
+          value={age}
           onChangeText={setAge}
-          keyboardType="numeric"
-          style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
-        />
-        <Text>years</Text>
-      </View>
+          borderColor={missingFields && !age ? 'red' : 'black'}
+          />
 
-
-      <Text>Starting weight:</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TextInput
-          value={startWeight ? startWeight.toString() : ''}
-          onChangeText={setStartWeight}
-          keyboardType="numeric"
-          style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
-        />
-        <Text>{userData.weightUnits}</Text>
-      </View>
-
-      <Text>Height:</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TextInput
-          value={height ? height.toString() : ''}
+        <LabeledInput 
+          units={userData.heightUnits} 
+          placeholder={'Enter height'}
+          value={height}
           onChangeText={setHeight}
-          keyboardType="numeric"
-          style={{ borderWidth: 1, borderColor: 'black', padding: 5, flex: 1 }}
-        />
-        <Text>{userData.heightUnits}</Text>
-      </View>
+          borderColor={missingFields && !height ? 'red' : 'black'}
+          />
 
-      <Text>Gender:</Text>
-      <Picker
+        <LabeledInput 
+          units={userData.weightUnits} 
+          placeholder={'Enter starting weight'}
+          value={startWeight}
+          onChangeText={setStartWeight}
+          borderColor={missingFields && !startWeight ? 'red' : 'black'}
+          />
+        </View>
+        <View style={styles.picker}>
+        <Text style={styles.label}>Gender:</Text>
+        <Picker
+        style={{
+          width:'100%'
+        }}
+
         selectedValue={gender ? gender : 'male'}
-        
         onValueChange={(value) => setGender(value)}>
-        <Picker.Item label="Male" value="male" />
-        <Picker.Item label="Female" value="female" />
-      </Picker>
-
-      <Text>Activity level:</Text>
-      <Picker
-        selectedValue={activityLevel ? activityLevel.toString() : 1.2}
-        onValueChange={(value) => setActivityLevel(value)}>
-        <Picker.Item label="Sedentary" value={1.2} />
-        <Picker.Item label="Lightly active" value={1.375} />
-        <Picker.Item label="Moderately active" value={1.55} />
-        <Picker.Item label="Active" value={1.725} />
-        <Picker.Item label="Extra active" value={1.9} />
-      </Picker>
-
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button mode="contained" onPress={handleBack}>
-          Back
-        </Button>
-        <Button mode="contained" onPress={handleNext}>
-          Next
-        </Button>
+          <Picker.Item label="Male" value="male" />
+          <Picker.Item label="Female" value="female" />
+        </Picker>
       </View>
-    </View>
+      
+      <View style={styles.buttonContainer}>
+        <BubbleButton text={'Back'} onPress={handleBack} style={{width:'45%'}}/>
+        <BubbleButton text={'Next'} onPress={handleNext} style={{width:'45%'}}/>
+
+      </View>
+      <RegistrationFooter />
+      </View>
     </DismissKeyboard>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: '#f0f0f0',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    justifyContent:'center',
+    width: '85%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  picker: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 20,
+    alignItems:'center',
+    padding: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign:'center',
+    marginBottom: 5
+  },
+  buttonContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '85%',
+    marginTop: 20,
+    marginBottom: 120,
+    bottom: 0,
+  },
+});
 
 export default BasicInformation;

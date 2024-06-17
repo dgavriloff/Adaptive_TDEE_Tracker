@@ -21,6 +21,7 @@ import UnitSelection from "../screens/registration-forms/UnitSelection.js"
 import BasicInformation from "../screens/registration-forms/BasicInformation.js";
 import InitialGoals from "../screens/registration-forms/InitialGoals.js";
 import BaselineResults from "../screens/registration-forms/BaselineResults.js";
+import ActivityLevelSelector from "../screens/registration-forms/ActivityLevel.js";
 
 import Loading from "../screens/Loading.js";
 
@@ -69,8 +70,10 @@ const Navigation = () => {
                 <>
                   <Stack.Screen name ="Unit Selection" component={UnitSelection} />
                   <Stack.Screen name ="Basic Information" component={BasicInformation} />
+                  <Stack.Screen name ="Activity Level" component={ActivityLevelSelector} />
                   <Stack.Screen name ="Initial Goals" component={InitialGoals} />
-                  <Stack.Screen name="Baseline Results" component={BaselineResults} />
+                  <Stack.Screen name ="Baseline Results" component={BaselineResults} />
+
                 </>
               )}
               </>
