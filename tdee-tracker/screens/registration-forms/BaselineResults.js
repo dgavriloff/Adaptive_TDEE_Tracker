@@ -5,6 +5,7 @@ import { UserLogContext } from "../../components/UserLogProvider";
 import Bold from "../../components/Bold";
 import BubbleButton from "../../components/BubbleButton";
 import RegistrationFooter from "../../components/RegistrationFooter";
+import Segment from "../../components/Segment";
 
 const BaselineResults = ({ navigation }) => {
   const { userData, updateUserData } = useContext(UserDataContext);
@@ -70,15 +71,15 @@ const BaselineResults = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.segment}>
+      <Segment>
         <Text style={styles.result}>
           Calculated Total Daily Energy Expenditure (TDEE) :{" "}
         </Text>
         <Text style={styles.result}>
           <Bold>{tdee} kCal</Bold>
         </Text>
-      </View>
-      <View style={styles.segment}>
+      </Segment>
+      <Segment>
         <Text style={styles.result}>
           Daily Calorie Target to {userData.loseOrGain ? "Gain" : "Lose"}{" "}
           {userData.weeklyWeightDelta} {userData.weightUnits} per week:{" "}
@@ -92,13 +93,13 @@ const BaselineResults = ({ navigation }) => {
             kCal
           </Bold>
         </Text>
-      </View>
-      <View style={styles.segment}>
+      </Segment>
+      <Segment>
         <Text style={styles.result}>Goal weight will be reached by:</Text>
         <Text style={styles.result}>
           <Bold>{goalDate}</Bold>
         </Text>
-      </View>
+      </Segment>
 
       <View style={styles.buttonContainer}>
         <BubbleButton

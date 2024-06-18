@@ -33,7 +33,7 @@ const UserDataProvider = ({ children }) => {
 
   useEffect(() => {
     if(user){
-      const docRef = doc(db, 'users', user.uid);
+      const docRef = doc(db, 'users', user.uid ? user.uid : null);
     
 
     const unsubscribe = onSnapshot(docRef, (docSnap) => {

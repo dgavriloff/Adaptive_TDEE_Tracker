@@ -6,6 +6,7 @@ import { UserDataContext } from "../components/UserDataProvider";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import RegistrationFooter from "../components/RegistrationFooter";
+import Segment from "../components/Segment";
 
 const BasicInformation = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -24,7 +25,7 @@ const BasicInformation = ({ navigation }) => {
     userData.activityLevel ? userData.activityLevel : 1.2
   );
 
-  const handleSave = () => {
+  const handleSaveAndBack = () => {
     if (age && startWeight && height) {
       updateUserData({
         age: parseFloat(age),
@@ -35,16 +36,25 @@ const BasicInformation = ({ navigation }) => {
       setMissingFields(false);
       navigation.goBack();
     } else {
-      console.log("missing fields");
       setMissingFields(true);
     }
+  };
+
+  const handleBack = () => {
+    updateUserData({
+      age: parseFloat(age),
+      startWeight: parseFloat(startWeight),
+      gender: gender,
+      height: parseFloat(height),
+    });
+    setMissingFields(false);
+    navigation.goBack();
   };
 
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Age, Height and Start Weight:</Text>
+        <Segment label={"Age, Height and Start Weight"}>
           <LabeledInput
             units={"years"}
             placeholder={"Enter age"}
@@ -68,9 +78,8 @@ const BasicInformation = ({ navigation }) => {
             onChangeText={setStartWeight}
             borderColor={missingFields && !startWeight ? "red" : "black"}
           />
-        </View>
-        <View style={styles.picker}>
-          <Text style={styles.label}>Gender:</Text>
+        </Segment>
+        <Segment label={"Gender"}>
           <Picker
             style={{
               width: "100%",
@@ -81,15 +90,9 @@ const BasicInformation = ({ navigation }) => {
             <Picker.Item label="Male" value="male" />
             <Picker.Item label="Female" value="female" />
           </Picker>
-        </View>
+        </Segment>
 
-        <View style={styles.buttonContainer}>
-          <BubbleButton
-            text={"Save and Go Back"}
-            onPress={handleSave}
-            style={{ width: "100%" }}
-          />
-        </View>
+        <BubbleButton text={"Save and Go Back"} onPress={handleSaveAndBack} style={{ position: "absolute", bottom: 0, marginBottom: 120 }}/>
       </View>
     </DismissKeyboard>
   );
@@ -98,40 +101,8 @@ const BasicInformation = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "#f0f0f0",
     alignItems: "center",
-  },
-  inputContainer: {
-    justifyContent: "center",
-    width: "85%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  picker: {
-    width: "85%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginBottom: 20,
-    alignItems: "center",
-    padding: 20,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
-    bottom: 0,
   },
 });
 

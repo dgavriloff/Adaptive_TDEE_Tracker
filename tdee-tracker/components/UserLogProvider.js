@@ -3,6 +3,7 @@ import { db } from '../config/firebaseConfig';
 import { collection, addDoc, query, where, onSnapshot, updateDoc, doc, orderBy} from 'firebase/firestore';
 import { AuthContext } from './AuthProvider';
 import { UserDataContext } from './UserDataProvider';
+import { NavigationContext } from '@react-navigation/native';
 
 const UserLogContext = createContext();
 
@@ -10,13 +11,14 @@ const UserLogContext = createContext();
 
 const UserLogProvider = ({children}) => {
   const { user } = useContext(AuthContext);
-  const { userData, updateUserData } = useContext(UserDataContext);
+  const { userData, updateUserData, isLoading:dataLoading } = useContext(UserDataContext);
   const [userLogs, setUserLogs] = useState([]);
   const [weeklyLogs, setWeeklyLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+
   useEffect(() => {
-    if (user && userData) {
+    if (user) {
       const logsQuery = query(collection(db, 'user-logs'), where('userId', '==', user.uid), orderBy('dateId', 'desc'));
       const unsubscribe = onSnapshot(logsQuery, (querySnapshot) => {
         const logs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -34,9 +36,14 @@ const UserLogProvider = ({children}) => {
   }, [user]);
 
   useEffect(() => {
-    if(userLogs[0]){
+    if(weeklyLogs.length === 0 && userLogs[0] && userData)
       setWeeklyLogs(generateWeeklyLogs(userLogs));
-    }
+  }, [userData]);
+  
+  useEffect(() => {
+      if(userLogs[0] && userData){
+        setWeeklyLogs(generateWeeklyLogs(userLogs));
+      }
   }, [userLogs, user]);
 
   const addUserLog = (log) => {
@@ -90,10 +97,11 @@ const UserLogProvider = ({children}) => {
                   tdee: userData.weightUnits === 'lbs' ? 
                   (data[0].weightDelta * -1 * 500 + data[0].avgCalories
                   ):(
-                  data[0].weightDelta * 2.20462 * 500 + data[0].avgCalories)
+                  data[0].weightDelta * -2.20462 * 500 + data[0].avgCalories)
        }]
     }));
     updateUserTdeeAndWeightDelta(data);
+    console.log('weekly logs generated');
     return data;
   };
 

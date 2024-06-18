@@ -13,6 +13,7 @@ import { UserDataContext } from "../components/UserDataProvider";
 import NavigationBar from "../components/NavigationBar";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
+import Segment from "../components/Segment";
 
 const UserLog = () => {
   const {
@@ -89,7 +90,7 @@ const UserLog = () => {
           )}
         </View>
 
-        <View style={styles.body}>
+        <Segment>
           <LabeledInput
             placeholder={`Enter weight`}
             keyboardType="numeric"
@@ -105,9 +106,7 @@ const UserLog = () => {
             onChangeText={setCalories}
             units={"kCal"}
           />
-
-          
-        </View>
+        </Segment>
         {(currentLog ? currentLog.weight != weight : true) ||
         (currentLog ? currentLog.calories != calories : true) ? (
           <TouchableOpacity
@@ -143,32 +142,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    marginBottom: 20,
   },
   date: {
     fontSize: 18,
     fontWeight: "bold",
-  },
-  body: {
-    width: "85%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 10,
-    fontSize: 20,
-    borderRadius: 5,
   },
   button: {
     position: "absolute",

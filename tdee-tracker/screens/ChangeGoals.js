@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { Divider } from "react-native-paper";
 import { UserDataContext } from "../components/UserDataProvider";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import BubbleButton from "../components/BubbleButton";
 import RegistrationFooter from "../components/RegistrationFooter";
+import Segment from "../components/Segment";
 
 const InitialGoals = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -15,7 +17,7 @@ const InitialGoals = ({ navigation }) => {
   );
   const [missingFields, setMissingFields] = useState(false);
 
-  const handleSave = () => {
+  const handleSaveAndBack = () => {
     if (goalWeight) {
       updateUserData({
         goalWeight: parseFloat(goalWeight),
@@ -37,8 +39,7 @@ const InitialGoals = ({ navigation }) => {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <View style={styles.segment}>
-          <Text style={styles.label}>Goal weight:</Text>
+        <Segment label={"Goal Weight"}>
           <LabeledInput
             value={goalWeight ? goalWeight.toString() : ""}
             onChangeText={setGoalWeight}
@@ -46,13 +47,12 @@ const InitialGoals = ({ navigation }) => {
             units={userData.weightUnits}
             borderColor={missingFields && !goalWeight ? "red" : "black"}
           />
-        </View>
-        <View style={styles.picker}>
-          <Text style={styles.label}>
-            Desired Weekly Weight{" "}
-            {goalWeight > userData.startWeight ? "Gain" : "Loss"} in{" "}
-            {userData.weightUnits}:
-          </Text>
+        </Segment>
+        <Segment
+          label={`Desired Weekly Weight ${
+            goalWeight > userData.startWeight ? "Gain" : "Loss"
+          } in ${userData.weightUnits}`}
+        >
           <Picker
             selectedValue={
               weeklyWeightDelta ? weeklyWeightDelta.toString() : ""
@@ -67,14 +67,12 @@ const InitialGoals = ({ navigation }) => {
               />
             ))}
           </Picker>
-        </View>
-        <View style={styles.buttonContainer}>
-          <BubbleButton
-            text={"Save and Go Back"}
-            onPress={handleSave}
-            style={{ width: "100%" }}
-          />
-        </View>
+        </Segment>
+        <BubbleButton
+          text={"Save and Go Back"}
+          onPress={handleSaveAndBack}
+          style={{ position: "absolute", bottom: 0, marginBottom: 120 }}
+        />
       </View>
     </DismissKeyboard>
   );
@@ -87,20 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
     alignItems: "center",
   },
-  segment: {
-    justifyContent: "center",
-    width: "85%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 5,
-  },
   buttonContainer: {
     position: "absolute",
     flexDirection: "row",
@@ -109,13 +93,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 120,
     bottom: 0,
-  },
-  picker: {
-    width: "85%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginBottom: 20,
-    padding: 20,
   },
 });
 

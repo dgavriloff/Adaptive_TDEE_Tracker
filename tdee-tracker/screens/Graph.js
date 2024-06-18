@@ -7,6 +7,7 @@ import DismissKeyboard from '../components/DismissKeyboard';
 
 import { UserDataContext } from '../components/UserDataProvider';
 import { UserLogContext } from '../components/UserLogProvider';
+import Segment from '../components/Segment';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -78,13 +79,13 @@ const Graph = () => {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <View style={styles.header}>
+        <Segment>
           <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.pickerButton}>
             <Text style={styles.pickerText}>{selectedRange.replace(/([A-Z])/g, ' $1')}</Text>
           </TouchableOpacity>
-        </View>
+        </Segment>
 
-        <View style={styles.body}>
+        <Segment>
           <View>
           <LineChart
             data={{
@@ -130,11 +131,11 @@ const Graph = () => {
             }}
           />
           </View>
-        </View>
+        </Segment>
 
-        <View style={styles.footer}>
+        <Segment>
           <Text style={styles.text}>Weight changed: {weightChange.toFixed(2)} {userData.weightUnits}</Text>
-        </View>
+        </Segment>
 
         <Modal
           transparent={true}
@@ -169,33 +170,7 @@ const Graph = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: '#f0f0f0',
-    alignItems: 'center',
-  },
-  header: {
-    width: '85%',
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  body: {
-    width: '85%',
-    backgroundColor: '#fff',
-    padding: 0,
-    paddingTop: 25,
-    paddingBottom: 0,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  footer: {
-    justifyContent: 'center',
-    width: '85%',
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
     alignItems: 'center',
   },
   pickerButton: {

@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { Button } from "react-native-paper";
+import { Divider } from "react-native-paper";
 import BubbleButton from "../../components/BubbleButton";
 import { UserDataContext } from "../../components/UserDataProvider";
 import { AuthContext } from "../../components/AuthProvider";
 import RegistrationFooter from "../../components/RegistrationFooter";
+import Segment from "../../components/Segment";
 
 const UnitSelection = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -19,8 +20,6 @@ const UnitSelection = ({ navigation }) => {
     !userData.heightUnits ? "in" : userData.heightUnits
   );
 
-  const { logout } = useContext(AuthContext);
-
   const handleNext = () => {
     updateUserData({
       weightUnits: weightUnit,
@@ -32,8 +31,7 @@ const UnitSelection = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.picker}>
-        <Text style={styles.label}>Weight in:</Text>
+      <Segment label={"Weight in:"}>
         <Picker
           style={{
             width: "100%",
@@ -44,10 +42,9 @@ const UnitSelection = ({ navigation }) => {
           <Picker.Item label="Pounds" value="lbs" />
           <Picker.Item label="Kilograms" value="kgs" />
         </Picker>
-      </View>
+      </Segment>
 
-      <View style={styles.picker}>
-        <Text style={styles.label}>Height in:</Text>
+      <Segment label={"Height in:"}>
         <Picker
           style={{
             width: "100%",
@@ -58,7 +55,7 @@ const UnitSelection = ({ navigation }) => {
           <Picker.Item label="Inches" value="in" />
           <Picker.Item label="Centimeters" value="cm" />
         </Picker>
-      </View>
+      </Segment>
       <View
         style={{
           width: "85%",
@@ -79,18 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     backgroundColor: "#f0f0f0",
-    alignItems: "center",
-  },
-  label: {
-    marginTop: 15,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  picker: {
-    width: "85%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginBottom: 20,
     alignItems: "center",
   },
 });

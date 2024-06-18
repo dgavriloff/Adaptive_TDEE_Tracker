@@ -6,6 +6,7 @@ import { UserDataContext } from "../../components/UserDataProvider";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import RegistrationFooter from "../../components/RegistrationFooter";
 import Bold from "../../components/Bold";
+import Segment from "../../components/Segment";
 
 const ActivityLevelSelector = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
@@ -32,8 +33,7 @@ const ActivityLevelSelector = ({ navigation }) => {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <View style={styles.segment}>
-          <Text style={styles.label}>Activity level:</Text>
+        <Segment label={"Activity Level:"}>
           <Picker
             selectedValue={activityLevel ? activityLevel.toString() : "1.2"}
             style={{ width: "100%" }}
@@ -45,8 +45,8 @@ const ActivityLevelSelector = ({ navigation }) => {
             <Picker.Item label="Active" value="1.725" />
             <Picker.Item label="Extra active" value="1.9" />
           </Picker>
-        </View>
-        <View style={styles.segment}>
+        </Segment>
+        <Segment>
           <Text style={styles.descriptions}>
             <Bold>Sedentary:</Bold> little to no exercise
           </Text>
@@ -62,7 +62,7 @@ const ActivityLevelSelector = ({ navigation }) => {
           <Text style={styles.descriptions}>
             <Bold>Extra active:</Bold> daily exercise and physical job
           </Text>
-        </View>
+        </Segment>
 
         <View style={styles.buttonContainer}>
           <BubbleButton
