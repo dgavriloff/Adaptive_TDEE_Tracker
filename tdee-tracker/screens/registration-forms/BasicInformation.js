@@ -104,7 +104,6 @@ const BasicInformation = ({ navigation }) => {
             style={{ width: "45%" }}
           />
         </View>
-        <RegistrationFooter />
       </View>
     </DismissKeyboard>
   );
@@ -113,7 +112,6 @@ const BasicInformation = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "#f0f0f0",
     alignItems: "center",
   },

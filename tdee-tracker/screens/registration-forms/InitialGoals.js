@@ -85,7 +85,6 @@ const InitialGoals = ({ navigation }) => {
             style={{ width: "45%" }}
           />
         </View>
-        <RegistrationFooter />
       </View>
     </DismissKeyboard>
   );
@@ -94,7 +93,6 @@ const InitialGoals = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "#f0f0f0",
     alignItems: "center",
   },

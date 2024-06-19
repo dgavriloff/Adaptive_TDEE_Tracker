@@ -113,7 +113,6 @@ const BaselineResults = ({ navigation }) => {
           style={{ width: "45%" }}
         />
       </View>
-      <RegistrationFooter />
     </View>
   );
 };
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: 20,
   },
   title: {
     fontSize: 24,

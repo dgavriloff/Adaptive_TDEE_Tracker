@@ -22,7 +22,6 @@ const UserLog = () => {
     updateUserLog,
     getWeekIdFromDateId,
     getDateIdFormat,
-    isLoading,
   } = useContext(UserLogContext);
   const { userData } = useContext(UserDataContext);
 

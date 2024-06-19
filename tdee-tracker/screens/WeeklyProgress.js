@@ -5,7 +5,7 @@ import { UserLogContext } from '../components/UserLogProvider';
 
 const WeeklyProgress = () => {
   const { userData } = useContext(UserDataContext);
-  const { weeklyLogs, updateUserTdeeAndWeightDelta } = useContext(UserLogContext);
+  const { weeklyLogs} = useContext(UserLogContext);
 
 
   const renderSectionHeader = ({ section }) => (

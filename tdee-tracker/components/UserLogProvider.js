@@ -41,7 +41,7 @@ const UserLogProvider = ({children}) => {
   }, [userData]);
   
   useEffect(() => {
-      if(userLogs[0] && userData){
+      if(user && userLogs[0] && userData){
         setWeeklyLogs(generateWeeklyLogs(userLogs));
       }
   }, [userLogs, user]);
@@ -123,7 +123,7 @@ const UserLogProvider = ({children}) => {
     const tdee = Math.floor(logs.slice(0,logs.length-2).reduce((sum, log) => { return (sum + log.data[0].tdee) }, 0)/(logs.length-2));
     const weightDelta = logs.reduce((sum, log) => { return (sum + log.data[0].weightDelta) }, 0);
     const shownTdee = weeklyLogs.length > 2 ? Math.round(tdee/50)*50 : Math.round(userData.calculatedTDEE/50)*50
-    updateUserData({currentTDEE: shownTdee, weightDelta: weightDelta});
+    updateUserData({currentTDEE: shownTdee, weightDelta: parseFloat(weightDelta.toFixed(2))});
   }
 
   const getWeekIdFromDateId = (dateId) => {

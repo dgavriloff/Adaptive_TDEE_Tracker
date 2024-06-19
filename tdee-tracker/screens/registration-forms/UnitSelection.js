@@ -31,7 +31,7 @@ const UnitSelection = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Segment label={"Weight in:"}>
+      <Segment label={"Weight in"}>
         <Picker
           style={{
             width: "100%",
@@ -44,7 +44,7 @@ const UnitSelection = ({ navigation }) => {
         </Picker>
       </Segment>
 
-      <Segment label={"Height in:"}>
+      <Segment label={"Height in"}>
         <Picker
           style={{
             width: "100%",
@@ -56,17 +56,7 @@ const UnitSelection = ({ navigation }) => {
           <Picker.Item label="Centimeters" value="cm" />
         </Picker>
       </Segment>
-      <View
-        style={{
-          width: "85%",
-          marginBottom: 120,
-          position: "absolute",
-          bottom: 0,
-        }}
-      >
-        <BubbleButton text={"Next"} onPress={handleNext} />
-      </View>
-      <RegistrationFooter />
+        <BubbleButton  style= {{ position: "absolute", bottom: 0, marginBottom: 120 }}text={"Next"} onPress={handleNext} />
     </View>
   );
 };
@@ -74,7 +64,6 @@ const UnitSelection = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "#f0f0f0",
     alignItems: "center",
   },

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import NavigationBar from '../components/NavigationBar';
@@ -8,6 +8,8 @@ import DismissKeyboard from '../components/DismissKeyboard';
 import { UserDataContext } from '../components/UserDataProvider';
 import { UserLogContext } from '../components/UserLogProvider';
 import Segment from '../components/Segment';
+import BubbleButton from '../components/BubbleButton'
+import Bold from '../components/Bold';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -37,38 +39,41 @@ const Graph = () => {
     },
   } : {
     week: {
+      name: 'Week',
       labels: userLogs.slice(0, 7).toReversed().map(log => `${log.dateId.slice(4, 6)}/${log.dateId.slice(6, 8)}`),
       weight: userLogs.slice(0, 7).toReversed().map(log => !isNaN(log.weight) ? log.weight : 0),
     },
     oneMonth: {
+      name: 'One Month',
       labels: userLogs.slice(0, 28)
-        .filter((_, index) => index % 7 === 0)
+        .filter((_, index) => index % 5 === 0)
         .toReversed()
         .map(log => `${log.dateId.slice(4, 6)}/${log.dateId.slice(6, 8)}`),
       weight: userLogs.slice(0, 28)
-        .filter((_, index) => index % 7 === 0)
+        .filter((_, index) => index % 1 === 0)
         .toReversed()
-        .map(log => !isNaN(log.weight) || null ? log.weight : 0),
+        .map(log => !isNaN(log.weight) ? log.weight : null),
     },
     twoMonths: {
+      name: 'Two Months',
       labels: userLogs.slice(0, 56)
         .filter((_, index) => index % 14 === 0)
         .toReversed()
         .map(log => `${log.dateId.slice(4, 6)}/${log.dateId.slice(6, 8)}`),
       weight: userLogs.slice(0, 56)
-        .filter((_, index) => index % 14 === 0 || index === 59)
+        .filter((_, index) => index % 1 === 0 || index === 59)
         .toReversed()
-        .map(log => !isNaN(log.weight) || null ? log.weight : 0),
+        .map(log => !isNaN(log.weight) ? log.weight : null),
     },
     all: {
+      name: 'All Time',
       labels: userLogs
-        .filter((_, index) => index % 14 === 0 || index === userLogs.length - 1)
         .toReversed()
-        .map(log => `${log.dateId.slice(4, 6)}/${log.dateId.slice(6, 8)}`),
+        .map((log, index) => (index % 28 === 0|| index === userLogs.length-2 )? `${log.dateId.slice(4, 6)}/${log.dateId.slice(6, 8)}` : ''),
       weight: userLogs
-        .filter((_, index) => index % 14 === 0 || index === userLogs.length - 1)
+        .filter(log => !isNaN(log.weight) && log.weight)
         .toReversed()
-        .map(log => !isNaN(log.weight) || null ? log.weight : 167),
+        .map(log => !isNaN(log.weight) ? log.weight : null),
     },
   };
 
@@ -79,14 +84,18 @@ const Graph = () => {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <Segment>
-          <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.pickerButton}>
-            <Text style={styles.pickerText}>{selectedRange.replace(/([A-Z])/g, ' $1')}</Text>
-          </TouchableOpacity>
+        <Segment label={'Graph Range'} style={{justifyContent:'center'}}>
+          <View style={{alignItems:'center'}}>
+          <BubbleButton 
+          style={styles.pickerButton}
+          onPress={() => setModalVisible(true)}
+          text={graphData[selectedRange].name}
+          />
+          </View>
         </Segment>
 
-        <Segment>
-          <View>
+        <Segment style={{}}>
+
           <LineChart
             data={{
               labels: data.labels,
@@ -98,14 +107,14 @@ const Graph = () => {
                 },
               ],
             }}
-            width={screenWidth - 100}
+            width={screenWidth - 125}
             height={350}
             yAxisSuffix={userData.weightUnits}
             yAxisInterval={1}
+            withVerticalLines={false}
+            withHorizontalLines={true}
+            
             chartConfig={{
-              withVerticalLines: false,
-              withHorizontalLines: false,
-              withInnerLines: false,
               backgroundColor: '#000000',
               backgroundGradientFrom: '#ffffff',
               backgroundGradientTo: '#ffffff',
@@ -116,7 +125,7 @@ const Graph = () => {
                 borderRadius: 16,
               },
               propsForDots: {
-                r: '2',
+                r: '0',
               },
               propsForBackgroundLines: {
                 stroke: '#000000',
@@ -124,17 +133,12 @@ const Graph = () => {
                 strokeDasharray: ""
               },
             }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 5,
-            }}
+            style={styles.chart}
           />
-          </View>
         </Segment>
 
-        <Segment>
-          <Text style={styles.text}>Weight changed: {weightChange.toFixed(2)} {userData.weightUnits}</Text>
+        <Segment label={'Weight changed'}>
+          <Text style={styles.text}> {weightChange.toFixed(2)} {userData.weightUnits}</Text>
         </Segment>
 
         <Modal
@@ -142,15 +146,19 @@ const Graph = () => {
           visible={isModalVisible}
           animationType="slide"
           onRequestClose={() => setModalVisible(false)}
+
         >
+
           <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)} >
+            <View style={{ width: '100%', height: '100%', position: 'absolute'}}></View>
+          </TouchableWithoutFeedback>
             <View style={styles.modalContent}>
               <Picker
                 selectedValue={selectedRange}
                 style={styles.picker}
                 onValueChange={(itemValue) => {
                   setSelectedRange(itemValue);
-                  setModalVisible(false);
                 }}
               >
                 <Picker.Item label="Week" value="week" />
@@ -174,17 +182,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pickerButton: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#f0f0f0',
     padding: 10,
     borderRadius: 5,
-    marginBottom: 20,
+    width: '75%',
+    marginTop: 5,
+
   },
   pickerText: {
     fontSize: 18,
+    textAlign: 'center'
   },
   text: {
     fontSize: 18,
     marginVertical: 10,
+    textAlign:'center'
   },
   modalContainer: {
     flex: 1,
@@ -202,6 +214,9 @@ const styles = StyleSheet.create({
   picker: {
     width: '100%',
   },
+  chart: {
+    
+  }
 });
 
 export default Graph;

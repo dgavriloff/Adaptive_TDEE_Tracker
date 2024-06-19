@@ -118,9 +118,8 @@ const Dashboard = () => {
               height={chartHeight}
               yAxisSuffix={userData.weightUnits}
               yAxisInterval={1}
+              withVerticalLines= {false}
               chartConfig={{
-                withVerticalLines: false,
-                withHorizontalLines: false,
                 withInnerLines: false,
                 backgroundColor: "#000000",
                 backgroundGradientFrom: "#ffffff",
@@ -132,7 +131,7 @@ const Dashboard = () => {
                   borderRadius: 16,
                 },
                 propsForDots: {
-                  r: "2",
+                  r: "0",
                 },
                 propsForBackgroundLines: {
                   stroke: "#000000",
