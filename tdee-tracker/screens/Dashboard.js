@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
@@ -20,7 +21,7 @@ import Bold from "../components/Bold";
 const Dashboard = () => {
   const navigation = useNavigation();
   const { userData } = useContext(UserDataContext);
-  const { weeklyLogs, userLogs } = useContext(UserLogContext);
+  const { userLogs } = useContext(UserLogContext);
 
   const shownTdee = !userData.currentTDEE
     ? userData.calculatedTDEE
@@ -64,6 +65,7 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Segment label={"Summary"}>
         <Text style={styles.text}>Your TDEE is currently:</Text>
         <Text style={styles.text}>
@@ -147,8 +149,9 @@ const Dashboard = () => {
           </View>
         </TouchableOpacity>
       </Segment>
-
+      </ScrollView>
       <NavigationBar />
+
     </View>
   );
 };
@@ -156,9 +159,14 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     padding: 0,
     backgroundColor: "#f0f0f0", // Light gray background
+  },
+  scrollContainer: {
+    width: '100%',
+    alignItems: "center",
+    padding: 0,
+    paddingBottom: 125
   },
   text: {
     fontSize: 16,

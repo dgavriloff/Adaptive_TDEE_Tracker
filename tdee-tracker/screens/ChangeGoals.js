@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Divider } from "react-native-paper";
 import { UserDataContext } from "../components/UserDataProvider";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import BubbleButton from "../components/BubbleButton";
-import RegistrationFooter from "../components/RegistrationFooter";
 import Segment from "../components/Segment";
 
 const InitialGoals = ({ navigation }) => {
@@ -37,17 +36,19 @@ const InitialGoals = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
-        <Segment label={"Goal Weight"}>
-          <LabeledInput
-            value={goalWeight ? goalWeight.toString() : ""}
-            onChangeText={setGoalWeight}
-            placeholder={"Enter goal weight"}
-            units={userData.weightUnits}
-            borderColor={missingFields && !goalWeight ? "red" : "black"}
-          />
-        </Segment>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
+          <Segment label={"Goal Weight"}>
+            <LabeledInput
+              value={goalWeight ? goalWeight.toString() : ""}
+              onChangeText={setGoalWeight}
+              placeholder={"Enter goal weight"}
+              units={userData.weightUnits}
+              borderColor={missingFields && !goalWeight ? "red" : "black"}
+            />
+          </Segment>
+        </DismissKeyboard>
         <Segment
           label={`Desired Weekly Weight ${
             goalWeight > userData.startWeight ? "Gain" : "Loss"
@@ -68,31 +69,21 @@ const InitialGoals = ({ navigation }) => {
             ))}
           </Picker>
         </Segment>
-        <BubbleButton
-          text={"Save and Go Back"}
-          onPress={handleSaveAndBack}
-          style={{ position: "absolute", bottom: 0, marginBottom: 120 }}
-        />
-      </View>
-    </DismissKeyboard>
+        <BubbleButton text={"Save and Go Back"} onPress={handleSaveAndBack} />
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "#f0f0f0",
-    alignItems: "center",
   },
-  buttonContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
-    bottom: 0,
+  scrollContainer: {
+    width: "100%",
+    paddingBottom: 25,
+    alignItems: "center",
   },
 });
 

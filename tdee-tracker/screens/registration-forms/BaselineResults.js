@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
 import { UserDataContext } from "../../components/UserDataProvider";
 import { UserLogContext } from "../../components/UserLogProvider";
 import Bold from "../../components/Bold";
 import BubbleButton from "../../components/BubbleButton";
-import RegistrationFooter from "../../components/RegistrationFooter";
 import Segment from "../../components/Segment";
 
 const BaselineResults = ({ navigation }) => {
@@ -71,6 +70,7 @@ const BaselineResults = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Segment>
         <Text style={styles.result}>
           Calculated Total Daily Energy Expenditure (TDEE) :{" "}
@@ -113,6 +113,7 @@ const BaselineResults = ({ navigation }) => {
           style={{ width: "45%" }}
         />
       </View>
+      </ScrollView>
     </View>
   );
 };
@@ -120,7 +121,12 @@ const BaselineResults = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
+  },
+  scrollContainer: {
     alignItems: "center",
+    width: '100%',
+    paddingBottom: 25
   },
   title: {
     fontSize: 24,
@@ -140,13 +146,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    position: "absolute",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
-    bottom: 0,
   },
 });
 

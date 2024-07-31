@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Divider } from "react-native-paper";
 import { UserDataContext } from "../../components/UserDataProvider";
@@ -42,17 +42,19 @@ const InitialGoals = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
-        <Segment label={"Goal Weight"}>
-          <LabeledInput
-            value={goalWeight ? goalWeight.toString() : ""}
-            onChangeText={setGoalWeight}
-            placeholder={"Enter goal weight"}
-            units={userData.weightUnits}
-            borderColor={missingFields && !goalWeight ? "red" : "black"}
-          />
-        </Segment>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
+          <Segment label={"Goal Weight"}>
+            <LabeledInput
+              value={goalWeight ? goalWeight.toString() : ""}
+              onChangeText={setGoalWeight}
+              placeholder={"Enter goal weight"}
+              units={userData.weightUnits}
+              borderColor={missingFields && !goalWeight ? "red" : "black"}
+            />
+          </Segment>
+        </DismissKeyboard>
         <Segment
           label={`Desired Weekly Weight ${
             goalWeight > userData.startWeight ? "Gain" : "Loss"
@@ -85,8 +87,8 @@ const InitialGoals = ({ navigation }) => {
             style={{ width: "45%" }}
           />
         </View>
-      </View>
-    </DismissKeyboard>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -94,16 +96,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+  },
+  scrollContainer: {
     alignItems: "center",
+    width: "100%",
+    paddingBottom: 25,
   },
   buttonContainer: {
-    position: "absolute",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
-    bottom: 0,
   },
 });
 

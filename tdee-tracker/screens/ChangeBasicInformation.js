@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
 import BubbleButton from "../components/BubbleButton";
 import { Picker } from "@react-native-picker/picker";
 import { UserDataContext } from "../components/UserDataProvider";
@@ -21,9 +21,6 @@ const BasicInformation = ({ navigation }) => {
     userData.gender ? userData.gender : "male"
   );
   const [missingFields, setMissingFields] = useState(false);
-  const [activityLevel, setActivityLevel] = useState(
-    userData.activityLevel ? userData.activityLevel : 1.2
-  );
 
   const handleSaveAndBack = () => {
     if (age && startWeight && height) {
@@ -40,45 +37,36 @@ const BasicInformation = ({ navigation }) => {
     }
   };
 
-  const handleBack = () => {
-    updateUserData({
-      age: parseFloat(age),
-      startWeight: parseFloat(startWeight),
-      gender: gender,
-      height: parseFloat(height),
-    });
-    setMissingFields(false);
-    navigation.goBack();
-  };
-
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
-        <Segment label={"Age, Height and Start Weight"}>
-          <LabeledInput
-            units={"years"}
-            placeholder={"Enter age"}
-            value={age}
-            onChangeText={setAge}
-            borderColor={missingFields && !age ? "red" : "black"}
-          />
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
+          <Segment label={"Age, Height and Start Weight"}>
+            <LabeledInput
+              units={"years"}
+              placeholder={"Enter age"}
+              value={age}
+              onChangeText={setAge}
+              borderColor={missingFields && !age ? "red" : "black"}
+            />
 
-          <LabeledInput
-            units={userData.heightUnits}
-            placeholder={"Enter height"}
-            value={height}
-            onChangeText={setHeight}
-            borderColor={missingFields && !height ? "red" : "black"}
-          />
+            <LabeledInput
+              units={userData.heightUnits}
+              placeholder={"Enter height"}
+              value={height}
+              onChangeText={setHeight}
+              borderColor={missingFields && !height ? "red" : "black"}
+            />
 
-          <LabeledInput
-            units={userData.weightUnits}
-            placeholder={"Enter starting weight"}
-            value={startWeight}
-            onChangeText={setStartWeight}
-            borderColor={missingFields && !startWeight ? "red" : "black"}
-          />
-        </Segment>
+            <LabeledInput
+              units={userData.weightUnits}
+              placeholder={"Enter starting weight"}
+              value={startWeight}
+              onChangeText={setStartWeight}
+              borderColor={missingFields && !startWeight ? "red" : "black"}
+            />
+          </Segment>
+        </DismissKeyboard>
         <Segment label={"Gender"}>
           <Picker
             style={{
@@ -92,9 +80,13 @@ const BasicInformation = ({ navigation }) => {
           </Picker>
         </Segment>
 
-        <BubbleButton text={"Save and Go Back"} onPress={handleSaveAndBack} style={{ position: "absolute", bottom: 0, marginBottom: 120 }}/>
-      </View>
-    </DismissKeyboard>
+        <BubbleButton
+          text={"Save and Go Back"}
+          onPress={handleSaveAndBack}
+          style={{}}
+        />
+      </ScrollView>
+    </View>
   );
 };
 
@@ -102,7 +94,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+  },
+  scrollContainer: {
     alignItems: "center",
+    paddingBottom: 25,
   },
 });
 

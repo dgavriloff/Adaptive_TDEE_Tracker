@@ -3,7 +3,6 @@ import { db } from '../config/firebaseConfig';
 import { collection, addDoc, query, where, onSnapshot, updateDoc, doc, orderBy} from 'firebase/firestore';
 import { AuthContext } from './AuthProvider';
 import { UserDataContext } from './UserDataProvider';
-import { NavigationContext } from '@react-navigation/native';
 
 const UserLogContext = createContext();
 
@@ -51,7 +50,7 @@ const UserLogProvider = ({children}) => {
       const logWithUserId = {...log, userId: user.uid, timestamp: new Date() };
       return addDoc(collection(db, 'user-logs'), logWithUserId)
         .then(() => {
-          console.log(`log added by ${user.uid} containing ${log}`)
+          console.log(`log added by ${user.uid} containing ${JSON.stringify(log)}`)
         })
         .catch((err) => {
           console.log(`error adding log for ${user.uid}`, err);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({ children, style }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <View style={{ flex: 1 }}>{children}</View>
+    <View style={{ flex: 1, ...style }}>{children}</View>
   </TouchableWithoutFeedback>
 );
 

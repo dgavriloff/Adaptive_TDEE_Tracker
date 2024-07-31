@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import BubbleButton from "../../components/BubbleButton";
 import { Picker } from "@react-native-picker/picker";
 import { UserDataContext } from "../../components/UserDataProvider";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import LabeledInput from "../../components/LabeledInput";
-import RegistrationFooter from "../../components/RegistrationFooter";
 import Segment from "../../components/Segment";
 
 const BasicInformation = ({ navigation }) => {
@@ -52,34 +51,36 @@ const BasicInformation = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
-        <Segment label={"Age, Height and Start Weight"}>
-          <LabeledInput
-            units={"years"}
-            placeholder={"Enter age"}
-            value={age}
-            onChangeText={setAge}
-            borderColor={missingFields && !age ? "red" : "black"}
-          />
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
+          <Segment label={"Age, Height and Start Weight"}>
+            <LabeledInput
+              units={"years"}
+              placeholder={"Enter age"}
+              value={age}
+              onChangeText={setAge}
+              borderColor={missingFields && !age ? "red" : "black"}
+            />
 
-          <LabeledInput
-            units={userData.heightUnits}
-            placeholder={"Enter height"}
-            value={height}
-            onChangeText={setHeight}
-            borderColor={missingFields && !height ? "red" : "black"}
-          />
+            <LabeledInput
+              units={userData.heightUnits}
+              placeholder={"Enter height"}
+              value={height}
+              onChangeText={setHeight}
+              borderColor={missingFields && !height ? "red" : "black"}
+            />
 
-          <LabeledInput
-            units={userData.weightUnits}
-            placeholder={"Enter starting weight"}
-            value={startWeight}
-            onChangeText={setStartWeight}
-            borderColor={missingFields && !startWeight ? "red" : "black"}
-          />
-        </Segment>
-        <Segment label={'Gender'}>
+            <LabeledInput
+              units={userData.weightUnits}
+              placeholder={"Enter starting weight"}
+              value={startWeight}
+              onChangeText={setStartWeight}
+              borderColor={missingFields && !startWeight ? "red" : "black"}
+            />
+          </Segment>
+        </DismissKeyboard>
+        <Segment label={"Gender"}>
           <Picker
             style={{
               width: "100%",
@@ -104,8 +105,8 @@ const BasicInformation = ({ navigation }) => {
             style={{ width: "45%" }}
           />
         </View>
-      </View>
-    </DismissKeyboard>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -113,15 +114,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+  },
+  scrollContainer: {
+    width: "100%",
+    paddingBottom: 25,
     alignItems: "center",
   },
   buttonContainer: {
-    position: "absolute",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
     bottom: 0,
   },
 });

@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import BubbleButton from "../../components/BubbleButton"; // Assuming you have a custom Button component
 import { UserDataContext } from "../../components/UserDataProvider";
 import DismissKeyboard from "../../components/DismissKeyboard";
-import RegistrationFooter from "../../components/RegistrationFooter";
 import Bold from "../../components/Bold";
 import Segment from "../../components/Segment";
 
@@ -31,8 +30,8 @@ const ActivityLevelSelector = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Segment label={"Activity Level:"}>
           <Picker
             selectedValue={activityLevel ? activityLevel.toString() : "1.2"}
@@ -76,10 +75,8 @@ const ActivityLevelSelector = ({ navigation }) => {
             style={{ width: "45%" }}
           />
         </View>
-
-
-      </View>
-    </DismissKeyboard>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -87,6 +84,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+  },
+  scrollContainer: {
+    width: "100%",
+    paddingBottom: 25,
     alignItems: "center",
   },
   segment: {
@@ -103,13 +104,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    position: "absolute",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "85%",
-    marginTop: 20,
-    marginBottom: 120,
-    bottom: 0,
   },
   descriptions: {
     fontSize: 20,
