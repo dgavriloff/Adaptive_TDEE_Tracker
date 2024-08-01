@@ -10,24 +10,40 @@ import BubbleButton from "../components/BubbleButton";
 import { UserLogContext } from "../components/UserLogProvider";
 
 const UploadData = () => {
-  const { userLogs } = useContext(UserLogContext);
+  const { userLogs, addUserLog, updateUserLog, getWeekIdFromDateId, setMultipleUserLogs } =
+    useContext(UserLogContext);
 
   const [csvData, setCsvData] = useState(null);
 
-  const [weightData, setWeightData] = useState({});
-  const [weightRes, setWeightRes] = useState(null);
+  const [wgtData, setWgtData] = useState({});
+  const [wgtRes, setWgtRes] = useState(null);
   const [calData, setCalData] = useState({});
   const [calRes, setCalRes] = useState(null);
+  const [resultCache, setResultCache] = useState([]);
 
-  const handleFilePicker = (weightOrCal) => {
-
+  const handleCalFilePicker = () => {
     DocumentPicker.getDocumentAsync({
       type: ["text/csv"],
     })
       .then((res) => {
         if (res.assets) {
-          // weight = true / cal = false
-          weightOrCal ? setWeightRes(res.assets[0]) : setCalRes(res.assets[0]);
+          setCalRes(res.assets[0]);
+          readCsvFile(res.assets[0].uri, setCalData);
+        } else if (res.canceled) throw new Error("picker cancelled");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleWgtFilePicker = () => {
+    DocumentPicker.getDocumentAsync({
+      type: ["text/csv"],
+    })
+      .then((res) => {
+        if (res.assets) {
+          setWgtRes(res.assets[0]);
+          readCsvFile(res.assets[0].uri, setWgtData);
         } else if (res.canceled) throw new Error("picker cancelled");
       })
       .catch((err) => {
@@ -38,12 +54,10 @@ const UploadData = () => {
   const readCsvFile = (uri, setterFunction) => {
     FileSystem.readAsStringAsync(uri)
       .then((fileContents) => {
-        console.log("File contents:", fileContents);
         Papa.parse(fileContents, {
           header: true,
           complete: (results) => {
             setterFunction(results.data);
-            //console.log("Parsed CSV data:", results.data);
           },
           error: (error) => {
             console.error("Error parsing CSV:", error);
@@ -58,40 +72,57 @@ const UploadData = () => {
   };
 
   const submitData = () => {
-    if(!calRes || !weightRes)
-      Alert.alert('Please upload both files before submitting.');
-    readCsvFile(calRes.uri, setCalData)
-    readCsvFile(weightRes.uri, setWeightData)
-    parseData(calData, weightData)
-  };
+    if (!calData || !wgtData) {
+      Alert.alert("Please upload both files before submitting.");
+      return;
+    }
+    const parsedData = wgtData.slice(0, wgtData.length-1).map((wLog) => ({
+      dateId: wLog.Date.replace(/-/g, ""),
+      weight: parseFloat(wLog.Weight),
+      calories: calData
+        .filter((cLog) => cLog.Date == wLog.Date)
+        .reduce((sum, cLog) => sum + parseInt(cLog.Calories), 0),
+      weekId: getWeekIdFromDateId(wLog.Date.replace(/-/g, ""))
+    })).filter(log => !userLogs.find(uLog => uLog.dateId === log.dateId));
 
-  const parseData = (cal, wgt) => {
-    setCalData(calData.map((log) => ({
-      ...log,
-      dateId: log.date.replace(/-/g, '')
-    })))
-  }
+    setMultipleUserLogs(parsedData).then(() => {
+      Alert.alert('Data successfully uploaded');
+      setCalData(null);
+      setCalRes(null);
+      setWgtData(null);
+      setWgtData(null);
+    }
+    )
+    
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upload CSV Data</Text>
+      <Segment label={'Upload MyFitnessPal Data'}>
+        <Text style={styles.text}>1. Download your data from MyFitnessPal</Text>
+        <Text></Text>
+        <Text style={styles.text}>2. Upload your Nutrition and Measurement file with their respective buttons</Text>
+        <Text></Text>
+        <Text style={styles.text}>3. Press submit</Text>
+      </Segment>
+
       <BubbleButton
         text={calRes ? calRes.name : "Upload MFP Nutrition Summary"}
-        onPress={() => handleFilePicker(false)}
+        onPress={() => handleCalFilePicker(false)}
         unTouchable={calRes}
-        xOnPress={() => setCalRes(null)}
+        xOnPress={() => {
+          setCalRes(null), setCalData(null);
+        }}
       />
       <BubbleButton
-        text={weightRes ? weightRes.name : "Upload MFP Measurement Summary"}
-        onPress={() => handleFilePicker(true)}
-        unTouchable={weightRes}
-        xOnPress={() => {setWeightRes(null)}}
+        text={wgtRes ? wgtRes.name : "Upload MFP Measurement Summary"}
+        onPress={() => handleWgtFilePicker(true)}
+        unTouchable={wgtRes}
+        xOnPress={() => {
+          setWgtRes(null), setWgtData(null);
+        }}
       />
-      <BubbleButton
-        text="Submit"
-        onPress={() => submitData()}
-      />
-      {console.log(weightData)}
+      <BubbleButton text="Submit" onPress={() => submitData()} />
     </View>
   );
 };
@@ -99,13 +130,11 @@ const UploadData = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  text: {
+    fontSize: 20,
+    marginBottom: 10,
   },
   result: {
     marginTop: 20,

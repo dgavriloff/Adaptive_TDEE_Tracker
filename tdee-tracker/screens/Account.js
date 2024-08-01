@@ -39,7 +39,7 @@ const Account = () => {
         />
         <BubbleButton
           onPress={() => navigation.navigate("Upload Data")}
-          text={"Upload Data"}
+          text={"Upload MyFitnessPal Data"}
         />
         <BubbleButton onPress={() => logout()} text={"Logout"} style={{}} />
       </ScrollView>
