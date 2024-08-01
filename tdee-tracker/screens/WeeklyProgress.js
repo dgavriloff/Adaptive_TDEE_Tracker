@@ -18,7 +18,7 @@ const WeeklyProgress = () => {
     <View style={styles.section}>
       <View style={styles.inlineContainer}>
         <Text style={styles.inlineText}>Avg Weight:</Text>
-        <Text style={styles.inlineText}>Weight changed:</Text>
+        <Text style={styles.inlineText}>Weight &#916;:</Text>
         <Text style={styles.inlineText}>Avg Calories:</Text>
         <Text style={styles.inlineText}>TDEE:</Text>
       </View>
@@ -35,7 +35,7 @@ const WeeklyProgress = () => {
     <View style={styles.container}>
           <View style={styles.section}>
       <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>Weight change:</Text>
+        <Text style={styles.inlineText}>Weight &#916;:</Text>
         <Text style={styles.inlineText}>Avg Calories:</Text>
         <Text style={styles.inlineText}>Avg TDEE:</Text>
       </View>
