@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TextInput, View } from "react-native";
 
-export default ({ units, placeholder, value, onChangeText, borderColor }) => {
+export default ({ units, placeholder, value, onChangeText, borderColor, keyboardType, style }) => {
   return (
     <View>
       <Text
@@ -10,6 +10,7 @@ export default ({ units, placeholder, value, onChangeText, borderColor }) => {
           left: "80%",
           fontSize: 18,
           paddingTop: 20,
+
         }}
       >
         {units}
@@ -24,9 +25,10 @@ export default ({ units, placeholder, value, onChangeText, borderColor }) => {
           marginTop: 10,
           marginBottom: 10,
           width: "100%",
+          ...style
         }}
         placeholder={placeholder}
-        keyboardType="numeric"
+        keyboardType= {keyboardType ? keyboardType : 'numeric'}
         value={value}
         onChangeText={onChangeText}
       />

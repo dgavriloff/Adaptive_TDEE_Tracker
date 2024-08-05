@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 
-const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress }) => {
+const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, fontColor }) => {
   return (
     <>
       {!unTouchable ? (
@@ -20,9 +20,9 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress }) => {
         >
           <Text
             style={{
-              fontSize: 18,
+              fontSize: fontSize ? fontSize : 18,
               fontWeight: "bold",
-              color: "#007bff", // Blue color for buttons
+              color: fontColor ? fontColor : "#007bff", // Blue color for buttons
               textAlign: "center",
             }}
           >

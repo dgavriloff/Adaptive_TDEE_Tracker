@@ -1,7 +1,10 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
-import { auth} from '../config/firebaseConfig';
+import React, { createContext, useState, useEffect, useContext } from "react";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebaseConfig";
 
 const AuthContext = createContext();
 
@@ -17,13 +20,13 @@ const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const login = (email, password) => { 
-      signInWithEmailAndPassword(auth, email, password)
+  const login = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         console.log(`${email} has signed in`);
       })
-      .catch(err => {
-        console.error('login error', err);
+      .catch((err) => {
+        console.error("login error", err.code);
         throw err;
       });
   };
@@ -31,28 +34,34 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     signOut(auth)
       .then(() => console.log(`${user.email} has signed out`))
-      .catch(err => {
-        console.log('logout error', err);
+      .catch((err) => {
+        console.log("logout error", err);
         throw err;
-      })
-  }
+      });
+  };
 
   const register = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(`account created and signed in as ${userCredential.user.email}`);
-    })
-      .catch(err => {
-      console.log('register error', err);
-      throw err;
-    });
+        console.log(
+          `account created and signed in as ${userCredential.user.email}`
+        );
+      })
+      .catch((err) => {
+        console.log("register error", err);
+        throw err;
+      });
   };
 
+  const signInWithGoogle = () => signInWithRedirect(auth, googleProvider);
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, login, register, logout, signInWithGoogle }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export { AuthContext, AuthProvider};
+export { AuthContext, AuthProvider };

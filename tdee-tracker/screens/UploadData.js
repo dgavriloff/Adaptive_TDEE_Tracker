@@ -101,7 +101,7 @@ const UploadData = () => {
       <Segment label={'Upload MyFitnessPal Data'}>
         <Text style={styles.text}>1. Download your data from MyFitnessPal</Text>
         <Text></Text>
-        <Text style={styles.text}>2. Upload your Nutrition and Measurement file with their respective buttons</Text>
+        <Text style={styles.text}>2. Upload your Nutrition and Measurement files with their respective buttons</Text>
         <Text></Text>
         <Text style={styles.text}>3. Press submit</Text>
       </Segment>
