@@ -1,11 +1,11 @@
-import React, {createContext, useState, useEffect, useContext} from 'react';
-import { db, auth } from '../config/firebaseConfig'
-import { collection, doc, setDoc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { AuthContext } from './AuthProvider';
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { AuthContext } from "./AuthProvider";
+
+import firestore from "@react-native-firebase/firestore";
 
 const UserDataContext = createContext();
 
-const schema  = {
+const schema = {
   email: null,
   registrationComplete: null,
   createdAt: null,
@@ -22,9 +22,8 @@ const schema  = {
   activityLevel: null,
   height: null,
   currentTDEE: null,
-  weightDelta: null
-}
-
+  weightDelta: null,
+};
 
 const UserDataProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -32,63 +31,64 @@ const UserDataProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(user){
-      const docRef = doc(db, 'users', user.uid ? user.uid : null);
-    
-
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if(docSnap.exists()){
-        setUserData(docSnap.data());
-        console.log(`user data loaded in for ${user.uid}`);
-      } else {
-        console.log('no doc for user, creating new doc');
-        createUserDoc(user);
-      }
-      setIsLoading(false);
-    }, err => {
-      console.error('error fetching data', err)
-      setIsLoading(false);
-    });
-      return unsubscribe;
+    if (user) {
+      const subscriber = firestore()
+        .collection("users")
+        .doc(user.uid ? user.uid : null)
+        .onSnapshot((docSnap) => {
+          if (docSnap.exists) {
+            setUserData(docSnap.data());
+            console.log(`user data loaded in for ${user.uid}`);
+          } else {
+            console.log("no doc for user, creating new doc");
+            createUserDoc(user);
+          }
+          setIsLoading(false);
+        });
+      return subscriber;
     } else {
       setUserData(null);
       setIsLoading(false);
     }
   }, [user]);
-  
+
   const createUserDoc = (user) => {
     const { uid } = user;
-    const userDocRef = doc(collection(db, "users"), uid);
-    return setDoc(userDocRef, {...schema,   
+    const userDocRef = firestore().collection('users').doc(uid);
+    return userDocRef.set({
+      ...schema,
       email: user.email,
       registrationComplete: false,
-      createdAt: new Date()
+      createdAt: new Date(),
     })
       .then(() => {
-      console.log(`doc created with ${user.email} and uid ${uid}`);
-    }).catch(err => {
-      console.log('doc creation error', err)
-      throw err;
-    });
+        console.log(`doc created with ${user.email} and uid ${uid}`);
+      })
+      .catch((err) => {
+        console.log("doc creation error", err);
+        throw err;
+      });
   };
 
   const updateUserData = (changes) => {
-    const docRef = doc(collection(db, "users"), user.uid);
+    const userDocRef = firestore().collection('users').doc(user.uid);
 
-    updateDoc(docRef, changes)
-    .then(() => {
-      console.log(`doc updated with ${JSON.stringify(changes)} for ${user.uid}`)
-    })
-    .catch(err => {
-      console.log('error updating doc', err)
-    })
+    return userDocRef.update(changes)
+      .then(() => {
+        console.log(
+          `doc updated with ${JSON.stringify(changes)} for ${user.uid}`
+        );
+      })
+      .catch((err) => {
+        console.log("error updating doc", err);
+      });
   };
 
   return (
     <UserDataContext.Provider value={{ userData, isLoading, updateUserData }}>
       {children}
     </UserDataContext.Provider>
-  )
+  );
 };
 
-export {UserDataContext, UserDataProvider}
+export { UserDataContext, UserDataProvider };

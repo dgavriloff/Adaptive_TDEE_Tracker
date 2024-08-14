@@ -1,10 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-import { signOut } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import React, { createContext, useState, useEffect} from "react";
+
+import auth from '@react-native-firebase/auth'
 
 const AuthContext = createContext();
 
@@ -13,15 +9,15 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
       setIsLoading(false);
     });
-    return unsubscribe;
-  }, []);
+    return subscriber;
+  }, [])
 
   const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
+    return auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log(`${email} has signed in`);
       })
@@ -32,7 +28,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    signOut(auth)
+    return auth().signOut()
       .then(() => console.log(`${user.email} has signed out`))
       .catch((err) => {
         console.log("logout error", err);
@@ -41,7 +37,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
+    return auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log(
           `account created and signed in as ${userCredential.user.email}`
@@ -53,11 +49,9 @@ const AuthProvider = ({ children }) => {
       });
   };
 
-  const signInWithGoogle = () => signInWithRedirect(auth, googleProvider);
-
   return (
     <AuthContext.Provider
-      value={{ user, isLoading, login, register, logout, signInWithGoogle }}
+      value={{ user, isLoading, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>

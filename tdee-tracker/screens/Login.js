@@ -25,7 +25,7 @@ const Login = () => {
   const handleLogin = () => {
     setError(null);
     login(email, password).catch((err) => {
-      if (err.code == "auth/invalid-email")
+      if (err.code == "auth/invalid-email" || err.code == "auth/invalid-credential")
         setError("Incorrect email or password");
 
       console.log("handle login error", err.code);

@@ -1904,20 +1904,25 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-firebase/app@^20.1.0":
-  version "20.1.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-20.1.0.tgz"
-  integrity sha512-FCcTtmfz/Bk2laOEKOiUrQUkAnzerkRml7d3kZzJSxaBWLFxpWJQnnXqGZmD8hNWio2QEauB8llUD71KiDk+sw==
+"@react-native-firebase/app@^20.4.0":
+  version "20.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-20.4.0.tgz#a9c5c12505432d42f7d4a0c4265b8684dc8353fc"
+  integrity sha512-I3YswH5tq0kSezyFwyV0d3J+lnH+N/SdznFZ70Lr671X0YlrbEBb6BK7FzEiwq8rKeIPh+pbgnbYwzj/k9uEnQ==
   dependencies:
-    opencollective-postinstall "^2.0.3"
+    firebase "10.12.2"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^20.1.0":
-  version "20.1.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-20.1.0.tgz"
-  integrity sha512-HTv7x5dDhLwHZkwJOsuhMUPIxXcda/40w03OQzhpuTghAzI30iMa5f4UW0aDTiEnaa4IuXpGIRCytdUEuuo1QA==
+"@react-native-firebase/auth@^20.4.0":
+  version "20.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-20.4.0.tgz#2619179226077e6c34d8f6cf13de0df0cde1310d"
+  integrity sha512-LUmlS9m62QdDoqJKxPyZIBLne1O7ZznY3QjGh5tfU1QVk4DM/b1iG4wR06nyEK9PqzFY5BdqWwWAKbquXl78HQ==
   dependencies:
     plist "^3.1.0"
+
+"@react-native-firebase/firestore@^20.4.0":
+  version "20.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-20.4.0.tgz#de10b44ea238c39c5eb080ee938543b85332c5d7"
+  integrity sha512-///YWJmZxCbDKM9QxaWnnEqvclIUbjsX+57hiwnzXzlNOd8dzOP1ub7EgBrzgZOT1VfybG9Fz16xTMjhxv21iQ==
 
 "@react-native-picker/picker@2.7.5":
   version "2.7.5"
@@ -3896,7 +3901,7 @@ find-yarn-workspace-root@~2.0.0:
   dependencies:
     micromatch "^4.0.2"
 
-firebase@^10.12.2:
+firebase@10.12.2, firebase@^10.12.2:
   version "10.12.2"
   resolved "https://registry.npmjs.org/firebase/-/firebase-10.12.2.tgz"
   integrity sha512-ZxEdtSvP1I9su1yf32D8TIdgxtPgxwr6z3jYAR1TXS/t+fVfpoPc/N1/N2bxOco9mNjUoc+od34v5Fn4GeKs6Q==
@@ -5721,11 +5726,6 @@ open@^8.0.4, open@^8.3.0:
     define-lazy-prop "^2.0.0"
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
-
-opencollective-postinstall@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz"
-  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
 ora@3.4.0, ora@^3.4.0:
   version "3.4.0"

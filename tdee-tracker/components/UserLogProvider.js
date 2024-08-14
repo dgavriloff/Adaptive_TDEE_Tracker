@@ -1,18 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { db } from "../config/firebaseConfig";
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-  updateDoc,
-  doc,
-  orderBy,
-  writeBatch,
-} from "firebase/firestore";
 import { AuthContext } from "./AuthProvider";
 import { UserDataContext } from "./UserDataProvider";
+
+import firestore from "@react-native-firebase/firestore";
 
 const UserLogContext = createContext();
 
@@ -21,7 +11,6 @@ const UserLogProvider = ({ children }) => {
   const {
     userData,
     updateUserData,
-    isLoading: dataLoading,
   } = useContext(UserDataContext);
   const [userLogs, setUserLogs] = useState([]);
   const [weeklyLogs, setWeeklyLogs] = useState([]);
@@ -29,12 +18,12 @@ const UserLogProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      const logsQuery = query(
-        collection(db, "user-logs"),
-        where("userId", "==", user.uid),
-        orderBy("dateId", "desc")
-      );
-      const unsubscribe = onSnapshot(logsQuery, (querySnapshot) => {
+      const logsQuery = firestore()
+        .collection("user-logs")
+        .where("userId", "==", user.uid)
+        .orderBy("dateId", "desc");
+
+      const unsubscribe = logsQuery.onSnapshot((querySnapshot) => {
         const logs = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -74,7 +63,9 @@ const UserLogProvider = ({ children }) => {
     */
     if (user) {
       const logWithUserId = { ...log, userId: user.uid, timestamp: new Date() };
-      return addDoc(collection(db, "user-logs"), logWithUserId)
+      return firestore()
+        .collection("user-logs")
+        .add(logWithUserId)
         .then(() => {
           console.log(
             `log added by ${user.uid} containing ${JSON.stringify(log)}`
@@ -87,9 +78,11 @@ const UserLogProvider = ({ children }) => {
   };
 
   const setMultipleUserLogs = (newLogs) => {
-    const batch = writeBatch(db);
+    const batch = firestore().batch();
     newLogs.forEach((newLog, index) => {
-      const docRef = doc(collection(db, "user-logs"), `log-${user.uid}-${index}`);
+      const docRef = firestore()
+        .collection("user-logs")
+        .doc(`log-${user.uid}-${index}`);
       batch.set(docRef, {
         ...newLog,
         userId: user.uid,
@@ -108,13 +101,13 @@ const UserLogProvider = ({ children }) => {
   };
 
   const updateUserLog = (changes, dateId) => {
-    const docRef = doc(
-      collection(db, "user-logs"),
-      userLogs.find((log) => log.dateId === dateId).id
-    );
+    const docRef = firestore()
+      .collection("user-logs")
+      .doc(userLogs.find((log) => log.dateId === dateId).id);
+
     setIsLoading(true);
 
-    return updateDoc(docRef, changes)
+    return docRef.update(changes)
       .then(() => {
         console.log(
           `log ${dateId} updated for ${user.uid} with ${JSON.stringify(
@@ -266,7 +259,7 @@ const UserLogProvider = ({ children }) => {
         updateUserTdeeAndWeightDelta,
         getWeekIdFromDateId,
         getDateIdFormat,
-        setMultipleUserLogs
+        setMultipleUserLogs,
       }}
     >
       {children}
