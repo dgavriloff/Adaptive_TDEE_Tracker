@@ -14,10 +14,10 @@ import Segment from "../components/Segment";
 import BubbleButton from "../components/BubbleButton";
 import { Divider } from "@rneui/base";
 
+import { AppleButton } from "@invertase/react-native-apple-authentication";
 
 const Login = () => {
-  const { login, register, isLoading} =
-    useContext(AuthContext);
+  const { login, register, isLoading, onAppleButtonPress, onGoogleButtonPress } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -25,7 +25,10 @@ const Login = () => {
   const handleLogin = () => {
     setError(null);
     login(email, password).catch((err) => {
-      if (err.code == "auth/invalid-email" || err.code == "auth/invalid-credential")
+      if (
+        err.code == "auth/invalid-email" ||
+        err.code == "auth/invalid-credential"
+      )
         setError("Incorrect email or password");
 
       console.log("handle login error", err.code);
@@ -90,12 +93,24 @@ const Login = () => {
           />
 
           <Divider style={styles.divider}></Divider>
+
+          <AppleButton
+            buttonStyle={AppleButton.Style.BLACK}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              padding: 10,
+              width: "100%",
+              height: 50,
+              marginTop: 18,
+            }}
+            onPress={() => onAppleButtonPress()}
+          />
           <BubbleButton
             style={styles.authButton}
             text={"Sign in with Google"}
-            //onPress={}
+            onPress={() => onGoogleButtonPress()}
           />
-          <BubbleButton style={styles.authButton} text={"Sign in with Apple"} />
+
           <BubbleButton
             style={styles.authButton}
             text={"Sign in with Facebook"}

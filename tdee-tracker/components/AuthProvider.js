@@ -1,6 +1,14 @@
-import React, { createContext, useState, useEffect} from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-import auth from '@react-native-firebase/auth'
+import auth from "@react-native-firebase/auth";
+
+import { appleAuth } from "@invertase/react-native-apple-authentication";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
+GoogleSignin.configure({
+  webClientId:
+    "1004983932814-f501dmnb0ji68i16fre1qmvckjav9n1c.apps.googleusercontent.com",
+});
 
 const AuthContext = createContext();
 
@@ -14,10 +22,11 @@ const AuthProvider = ({ children }) => {
       setIsLoading(false);
     });
     return subscriber;
-  }, [])
+  }, []);
 
   const login = (email, password) => {
-    return auth().signInWithEmailAndPassword(email, password)
+    return auth()
+      .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log(`${email} has signed in`);
       })
@@ -28,7 +37,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    return auth().signOut()
+    return auth()
+      .signOut()
       .then(() => console.log(`${user.email} has signed out`))
       .catch((err) => {
         console.log("logout error", err);
@@ -37,7 +47,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = (email, password) => {
-    return auth().createUserWithEmailAndPassword(email, password)
+    return auth()
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log(
           `account created and signed in as ${userCredential.user.email}`
@@ -49,9 +60,51 @@ const AuthProvider = ({ children }) => {
       });
   };
 
+  const onAppleButtonPress = () => {
+    appleAuth
+      .performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      })
+      .then((response) => {
+        if (!response.identityToken)
+          throw new Error("Apple Sign-In failed - no identify token returned");
+        const { identityToken, nonce } = response;
+        const appleCredential = auth.AppleAuthProvider.credential(
+          identityToken,
+          nonce
+        );
+
+        auth().signInWithCredential(appleCredential);
+      })
+      .catch((err) => {
+        console.log("error signing in with apple", err);
+      });
+  };
+
+  const onGoogleButtonPress = () => {
+    GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true }).then(
+      () => {
+        GoogleSignin.signIn().then(({ idToken }) => {
+          const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+          auth().signInWithCredential(googleCredential);
+        });
+      }
+    );
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, isLoading, login, register, logout }}
+      value={{
+        user,
+        isLoading,
+        login,
+        register,
+        logout,
+        onAppleButtonPress,
+        onGoogleButtonPress,
+      }}
     >
       {children}
     </AuthContext.Provider>
