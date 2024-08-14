@@ -1,12 +1,10 @@
 import React, { useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { Divider } from "react-native-paper";
 import { UserDataContext } from "../../components/UserDataProvider";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import LabeledInput from "../../components/LabeledInput";
 import BubbleButton from "../../components/BubbleButton";
-import RegistrationFooter from "../../components/RegistrationFooter";
 import Segment from "../../components/Segment";
 
 const InitialGoals = ({ navigation }) => {
