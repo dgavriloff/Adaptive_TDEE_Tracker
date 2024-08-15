@@ -15,9 +15,17 @@ import BubbleButton from "../components/BubbleButton";
 import { Divider } from "@rneui/base";
 
 import { AppleButton } from "@invertase/react-native-apple-authentication";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 const Login = () => {
-  const { login, register, isLoading, onAppleButtonPress, onGoogleButtonPress } = useContext(AuthContext);
+  const {
+    login,
+    register,
+    isLoading,
+    onAppleButtonPress,
+    onGoogleButtonPress,
+    onFacebookButtonPress,
+  } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -105,15 +113,18 @@ const Login = () => {
             }}
             onPress={() => onAppleButtonPress()}
           />
-          <BubbleButton
-            style={styles.authButton}
-            text={"Sign in with Google"}
-            onPress={() => onGoogleButtonPress()}
-          />
 
-          <BubbleButton
-            style={styles.authButton}
-            text={"Sign in with Facebook"}
+          <GoogleSigninButton
+            color={GoogleSigninButton.Color.Light}
+            size={GoogleSigninButton.Size.Wide}
+            style={{
+              padding: 10,
+              width: "100%",
+              height: 50,
+              marginTop: 18,
+              borderRadius: 5
+            }}
+            onPress={() => onGoogleButtonPress()}
           />
         </Segment>
       </DismissKeyboard>

@@ -4,6 +4,7 @@ import auth from "@react-native-firebase/auth";
 
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 GoogleSignin.configure({
   webClientId:
@@ -94,6 +95,21 @@ const AuthProvider = ({ children }) => {
     );
   };
 
+  const onFacebookButtonPress = () => {
+    LoginManager.logInWithPermissions(['public_profile', 'email']).then(res => {
+      if (res.isCancelled)
+        throw new Error('user cancelled facebook login');
+      AccessToken.getCurrentAccessToken().then(data => {
+        if (!data)
+          throw new Error('error obtaining access token');
+        const facebookCred = auth.FacebookAuthProvider.credential(data.accessToken);
+        auth().signInWithCredential(facebookCred);
+      });
+    });
+  };
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -104,6 +120,7 @@ const AuthProvider = ({ children }) => {
         logout,
         onAppleButtonPress,
         onGoogleButtonPress,
+        onFacebookButtonPress,
       }}
     >
       {children}
