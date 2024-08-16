@@ -54,13 +54,14 @@ const UserDataProvider = ({ children }) => {
 
   const createUserDoc = (user) => {
     const { uid } = user;
-    const userDocRef = firestore().collection('users').doc(uid);
-    return userDocRef.set({
-      ...schema,
-      email: user.email,
-      registrationComplete: false,
-      createdAt: new Date(),
-    })
+    const userDocRef = firestore().collection("users").doc(uid);
+    return userDocRef
+      .set({
+        ...schema,
+        email: user.email,
+        registrationComplete: false,
+        createdAt: new Date(),
+      })
       .then(() => {
         console.log(`doc created with ${user.email} and uid ${uid}`);
       })
@@ -71,9 +72,10 @@ const UserDataProvider = ({ children }) => {
   };
 
   const updateUserData = (changes) => {
-    const userDocRef = firestore().collection('users').doc(user.uid);
+    const userDocRef = firestore().collection("users").doc(user.uid);
 
-    return userDocRef.update(changes)
+    return userDocRef
+      .update(changes)
       .then(() => {
         console.log(
           `doc updated with ${JSON.stringify(changes)} for ${user.uid}`

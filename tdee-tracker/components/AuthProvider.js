@@ -15,12 +15,11 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
-      setIsLoading(false);
     });
     return subscriber;
   }, []);
