@@ -8,8 +8,11 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { UserLogContext } from "../components/UserLogProvider";
 import { UserDataContext } from "../components/UserDataProvider";
+
 import NavigationBar from "../components/NavigationBar";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
@@ -22,6 +25,7 @@ const UserLog = () => {
     updateUserLog,
     getWeekIdFromDateId,
     getDateIdFormat,
+    getDateFromDateId,
   } = useContext(UserLogContext);
   const { userData } = useContext(UserDataContext);
 
@@ -81,7 +85,13 @@ const UserLog = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Button title="< Prev" onPress={gotoPreviousLog} />
-          <Text style={styles.date}>{date.toDateString()}</Text>
+          <DateTimePicker
+            mode="date"
+            value={date}
+            onChange={(res) => setDate(new Date(res.nativeEvent.timestamp))}
+            maximumDate={getDateFromDateId(today)}
+            dateFormat="dayofweek day month"
+          />
           {today !== dateId ? (
             <Button title="Next >" onPress={gotoNextLog} />
           ) : (

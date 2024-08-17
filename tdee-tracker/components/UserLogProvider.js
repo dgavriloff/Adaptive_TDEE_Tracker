@@ -260,6 +260,7 @@ const UserLogProvider = ({ children }) => {
         getWeekIdFromDateId,
         getDateIdFormat,
         setMultipleUserLogs,
+        getDateFromDateId
       }}
     >
       {children}

@@ -90,7 +90,7 @@ const UploadData = () => {
       setCalData(null);
       setCalRes(null);
       setWgtData(null);
-      setWgtData(null);
+      setWgtRes(null);
     }
     )
     

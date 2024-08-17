@@ -42,6 +42,8 @@ const Navigation = () => {
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
   const { userLogs, weeklyLogs } = useContext(UserLogContext);
 
+  
+
   return (
     <NavigationContainer>
       <Stack.Navigator
