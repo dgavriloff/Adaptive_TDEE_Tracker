@@ -16,6 +16,7 @@ import { Divider } from "@rneui/base";
 
 import { AppleButton } from "@invertase/react-native-apple-authentication";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import GoogleButton from "../components/GoogleButton";
 
 const Login = () => {
   const {
@@ -100,7 +101,11 @@ const Login = () => {
             onPress={handleForgot}
           />
 
-          <Divider style={styles.divider}></Divider>
+          <View style={styles.dividerParent}>
+            <Divider style={styles.divider}></Divider>
+            <Text style={styles.dividerText}>or</Text>
+            <Divider style={styles.divider}></Divider>
+          </View>
 
           <AppleButton
             buttonStyle={AppleButton.Style.BLACK}
@@ -108,24 +113,12 @@ const Login = () => {
             style={{
               padding: 10,
               width: "100%",
-              height: 50,
+              height: 45,
               marginTop: 18,
             }}
             onPress={() => onAppleButtonPress()}
           />
-
-          <GoogleSigninButton
-            color={GoogleSigninButton.Color.Light}
-            size={GoogleSigninButton.Size.Wide}
-            style={{
-              padding: 10,
-              width: "100%",
-              height: 50,
-              marginTop: 18,
-              borderRadius: 5
-            }}
-            onPress={() => onGoogleButtonPress()}
-          />
+          <GoogleButton buttonStyle={{ marginTop: 18 }} onPress={() => onGoogleButtonPress()}/>
         </Segment>
       </DismissKeyboard>
       {isLoading && <ActivityIndicator style={{ marginTop: 20 }} />}
@@ -150,12 +143,23 @@ const styles = StyleSheet.create({
   divider: {
     marginTop: 20,
     marginBottom: 5,
+    width: '45%'
   },
   authButton: {
     backgroundColor: "#f0f0f0",
     padding: 10,
     width: "100%",
     marginTop: 18,
+  },
+  dividerParent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10
+  },
+  dividerText: {
+    top: 5
   },
 });
 
