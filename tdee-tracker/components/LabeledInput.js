@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { Text, TextInput, View, } from "react-native";
 
-export default ({ units, placeholder, value, onChangeText, borderColor, keyboardType, style }) => {
+export default ({ units, placeholder, value, onChangeText, borderColor, keyboardType, style, secureTextEntry }) => {
 
   
   return (
@@ -34,6 +34,7 @@ export default ({ units, placeholder, value, onChangeText, borderColor, keyboard
         keyboardType= {keyboardType ? keyboardType : 'numeric'}
         value={value}
         onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );

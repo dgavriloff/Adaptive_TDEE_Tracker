@@ -4,7 +4,9 @@ import auth from "@react-native-firebase/auth";
 
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import { LoginManager, AccessToken } from "react-native-fbsdk-next";
+
+import { showMessage } from "react-native-flash-message";
 
 GoogleSignin.configure({
   webClientId:
@@ -95,19 +97,33 @@ const AuthProvider = ({ children }) => {
   };
 
   const onFacebookButtonPress = () => {
-    LoginManager.logInWithPermissions(['public_profile', 'email']).then(res => {
-      if (res.isCancelled)
-        throw new Error('user cancelled facebook login');
-      AccessToken.getCurrentAccessToken().then(data => {
-        if (!data)
-          throw new Error('error obtaining access token');
-        const facebookCred = auth.FacebookAuthProvider.credential(data.accessToken);
-        auth().signInWithCredential(facebookCred);
-      });
-    });
+    LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+      (res) => {
+        if (res.isCancelled) throw new Error("user cancelled facebook login");
+        AccessToken.getCurrentAccessToken().then((data) => {
+          if (!data) throw new Error("error obtaining access token");
+          const facebookCred = auth.FacebookAuthProvider.credential(
+            data.accessToken
+          );
+          auth().signInWithCredential(facebookCred);
+        });
+      }
+    );
   };
 
-
+  const forgotPassword = (email) => {
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        showMessage({
+          message: `If ${email} has already been registered, an email with a password reset link has been sent to the inbox`,
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.log("error sending password reset email to ", email, err);
+      });
+  };
 
   return (
     <AuthContext.Provider
@@ -120,6 +136,7 @@ const AuthProvider = ({ children }) => {
         onAppleButtonPress,
         onGoogleButtonPress,
         onFacebookButtonPress,
+        forgotPassword,
       }}
     >
       {children}

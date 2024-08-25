@@ -26,6 +26,7 @@ const Login = () => {
     onAppleButtonPress,
     onGoogleButtonPress,
     onFacebookButtonPress,
+    forgotPassword
   } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,8 +56,6 @@ const Login = () => {
     });
   };
 
-  const handleForgot = () => {};
-
   return (
     <View style={styles.container}>
       <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
@@ -80,6 +79,8 @@ const Login = () => {
             placeholder={"Password"}
             value={password}
             onChangeText={setPassword}
+            secureTextEntry={true}
+            type={'password'}
             keyboardType={"text"}
           />
           <BubbleButton
@@ -98,7 +99,7 @@ const Login = () => {
             style={{ width: "50%", marginTop: 5, padding: 0 }}
             fontSize={15}
             text={"Forgot password?"}
-            onPress={handleForgot}
+            onPress={() => email && forgotPassword(email)}
           />
 
           <View style={styles.dividerParent}>
