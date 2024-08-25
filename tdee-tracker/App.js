@@ -7,6 +7,8 @@ import Navigation from "./components/Navigation";
 
 import { AuthContext } from "./components/AuthProvider";
 
+import FlashMessage from "react-native-flash-message";
+
 export default function App() {
   return (
     <AuthProvider>
@@ -14,6 +16,7 @@ export default function App() {
         <UserLogProvider>
           <StorageProvider>
             <Navigation />
+            <FlashMessage position={'top'}/>
           </StorageProvider>
         </UserLogProvider>
       </UserDataProvider>

@@ -7,8 +7,10 @@ import DismissKeyboard from "../../components/DismissKeyboard";
 import LabeledInput from "../../components/LabeledInput";
 import Segment from "../../components/Segment";
 
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 const BasicInformation = ({ navigation }) => {
-  const { updateUserData, userData } = useContext(UserDataContext);
+  const { updateUserData, userData, isInputValid } = useContext(UserDataContext);
   const [age, setAge] = useState(userData.age ? userData.age.toString() : "");
   const [startWeight, setStartWeight] = useState(
     userData.startWeight ? userData.startWeight.toString() : ""
@@ -20,12 +22,9 @@ const BasicInformation = ({ navigation }) => {
     userData.gender ? userData.gender : "male"
   );
   const [missingFields, setMissingFields] = useState(false);
-  const [activityLevel, setActivityLevel] = useState(
-    userData.activityLevel ? userData.activityLevel : 1.2
-  );
 
   const handleNext = () => {
-    if (age && startWeight && height) {
+    if (isInputValid(age, 10, 150, 'Age') && isInputValid(startWeight, 20, 1000, 'Start weight') && isInputValid(height, 20, 250, 'Height') ) {
       updateUserData({
         age: parseFloat(age),
         startWeight: parseFloat(startWeight),
@@ -33,11 +32,12 @@ const BasicInformation = ({ navigation }) => {
         height: parseFloat(height),
       });
       setMissingFields(false);
-      navigation.navigate("Activity Level");
+      navigation.navigate("Activity Level")
     } else {
       setMissingFields(true);
     }
   };
+
 
   const handleBack = () => {
     updateUserData({

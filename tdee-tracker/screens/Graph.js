@@ -39,15 +39,20 @@ const Graph = () => {
     week: { name: "Week", value: 7, ticks: 7 },
     oneMonth: { name: "One Month", value: 28, ticks: 4 },
     twoMonths: { name: "Two Months", value: 56, ticks: 8 },
-    all: { name: "All Time", value: rawGraphData.length, ticks: Math.min(rawGraphData.length, 6) },
+    all: {
+      name: "All Time",
+      value: rawGraphData.length,
+      ticks: Math.min(rawGraphData.length, 6),
+    },
   };
 
-  const [graphData, setGraphData] = useState(getRangedData(ranges[selectedRange]));
+  const [graphData, setGraphData] = useState(
+    getRangedData(ranges[selectedRange])
+  );
   const minValue =
-    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10 - 5;
+    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10;
   const maxValue =
     Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10;
-
 
   const range = (size, start, interval) => {
     return [...Array(size).keys()].map((i) => i * interval + start);
@@ -68,51 +73,84 @@ const Graph = () => {
             </View>
           </Segment>
           <Segment>
-            <Chart
-              style={{ height: 200, width: screenWidth - 100 }}
-              data={graphData}
-              padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
-              xDomain={{ min: 0, max: ranges[selectedRange].value - 1 }}
-              yDomain={{
-                min: minValue,
-                max: maxValue,
-              }}
-              disableGestures={true}
-            >
-              <VerticalAxis
-                theme={{
-                  labels: {
-                    label: {
-                      dx: -5,
-                    },
-                  },
+            {graphData && (
+              <Chart
+                style={{ height: 200, width: screenWidth - 100 }}
+                data={graphData}
+                padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
+                xDomain={{
+                  min: 0,
+                  max:
+                    ranges[selectedRange].value > 1
+                      ? ranges[selectedRange].value - 1
+                      : 1,
                 }}
-                tickValues={range(maxValue - minValue, minValue, 5)}
-                includeOriginTick={true}
-              />
-              <HorizontalAxis
-                theme={{
-                  grid: { visible: false },
-                  labels: {
-                    visible: true,
-                    label: {
-                      dy: -16,
-                    },
-                    formatter: (v) => {
-                      const dateId = graphData.filter(
-                        (log) => log.x === Math.floor(v)
-                      )[0]?.meta;
-                      return (
-                        dateId && `${dateId.slice(4, 6)}/${dateId.slice(6, 8)}`
-                      );
-                    },
-                  },
+                yDomain={{
+                  min: minValue,
+                  max: maxValue,
                 }}
-                tickCount={ranges[selectedRange].ticks}
-                includeOriginTick={true}
-              />
-              <Line />
-            </Chart>
+                disableGestures={true}
+              >
+                <VerticalAxis
+                  theme={{
+                    labels: {
+                      label: {
+                        dx: -5,
+                      },
+                    },
+                  }}
+                  tickValues={range(
+                    maxValue - minValue > 0 ? (maxValue - minValue) / 5 + 1 : 1,
+                    minValue,
+                    5
+                  )}
+                  includeOriginTick={true} //
+                />
+                <HorizontalAxis
+                  theme={{
+                    grid: { visible: false },
+                    labels: {
+                      visible: true,
+                      label: {
+                        dy: -16,
+                      },
+                      formatter: (v) => {
+                        const dateId =
+                          graphData.length === 1
+                            ? graphData[0].meta
+                            : graphData.filter((log) => {
+                                return log.x === Math.floor(v);
+                              })[0]?.meta;
+                        return (
+                          dateId &&
+                          `${dateId.slice(4, 6)}/${dateId.slice(6, 8)}` //
+                        );
+                      },
+                    },
+                  }}
+                  tickCount={
+                    ranges[selectedRange].ticks < graphData.length
+                      ? ranges[selectedRange].ticks
+                      : graphData.length
+                  }
+                  includeOriginTick={true}
+                />
+                {graphData.length === 1 ? (
+                  <Line
+                    theme={{
+                      scatter: {
+                        default: {
+                          width: 5,
+                          height: 5,
+                        },
+                      },
+                    }}
+                  />
+                ) : (
+                  <Line />
+                )}
+              </Chart>
+            )}
           </Segment>
 
           <Segment label={"Weight changed"}>
@@ -147,7 +185,7 @@ const Graph = () => {
                   onValueChange={(itemValue) => {
                     if (ranges[itemValue].value > ranges["all"].value) {
                       setGraphData(getRangedData(ranges["all"].value));
-                      setSelectedRange('all');
+                      setSelectedRange("all");
                     } else {
                       setGraphData(getRangedData(ranges[itemValue].value));
                       setSelectedRange(itemValue);

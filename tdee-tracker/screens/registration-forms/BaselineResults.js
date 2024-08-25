@@ -45,9 +45,19 @@ const BaselineResults = ({ navigation }) => {
       userData.weightUnits === "lbs"
         ? (weightDelta * 3500) / userData.dailyCalorieDelta
         : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
-    const goalDate = new Date(new Date().getTime() + 86400000 * daysUntilGoal);
+    const calculateGoalDate = (userData) => {
+      const weightDelta =
+        userData.startWeight + userData.weightDelta - userData.goalWeight;
+      const daysUntilGoal =
+        userData.weightUnits === "lbs"
+          ? (weightDelta * 3500) / userData.dailyCalorieDelta
+          : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
+      return new Date(new Date().getTime() + 86400000 * daysUntilGoal)
+        .toDateString()
+        .slice(3);
+    };
 
-    setGoalDate(goalDate.toDateString().slice(3));
+    setGoalDate(calculateGoalDate(userData));
     setBmr(calculatedBmr);
     setTdee(Math.round(calculatedTdee / 50) * 50);
   }, [userData]);
@@ -71,48 +81,48 @@ const BaselineResults = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Segment>
-        <Text style={styles.result}>
-          Calculated Total Daily Energy Expenditure (TDEE) :{" "}
-        </Text>
-        <Text style={styles.result}>
-          <Bold>{tdee} kCal</Bold>
-        </Text>
-      </Segment>
-      <Segment>
-        <Text style={styles.result}>
-          Daily Calorie Target to {userData.loseOrGain ? "Gain" : "Lose"}{" "}
-          {userData.weeklyWeightDelta} {userData.weightUnits} per week:{" "}
-        </Text>
-        <Text style={styles.result}>
-          <Bold>
-            {" "}
-            {userData.loseOrGain
-              ? tdee + userData.dailyCalorieDelta
-              : tdee - userData.dailyCalorieDelta}{" "}
-            kCal
-          </Bold>
-        </Text>
-      </Segment>
-      <Segment>
-        <Text style={styles.result}>Goal weight will be reached by:</Text>
-        <Text style={styles.result}>
-          <Bold>{goalDate}</Bold>
-        </Text>
-      </Segment>
+        <Segment>
+          <Text style={styles.result}>
+            Calculated Total Daily Energy Expenditure (TDEE) :{" "}
+          </Text>
+          <Text style={styles.result}>
+            <Bold>{tdee} kCal</Bold>
+          </Text>
+        </Segment>
+        <Segment>
+          <Text style={styles.result}>
+            Daily Calorie Target to {userData.loseOrGain ? "Gain" : "Lose"}{" "}
+            {userData.weeklyWeightDelta} {userData.weightUnits} per week:{" "}
+          </Text>
+          <Text style={styles.result}>
+            <Bold>
+              {" "}
+              {userData.loseOrGain
+                ? tdee + userData.dailyCalorieDelta
+                : tdee - userData.dailyCalorieDelta}{" "}
+              kCal
+            </Bold>
+          </Text>
+        </Segment>
+        <Segment>
+          <Text style={styles.result}>Goal weight will be reached by:</Text>
+          <Text style={styles.result}>
+            <Bold>{goalDate}</Bold>
+          </Text>
+        </Segment>
 
-      <View style={styles.buttonContainer}>
-        <BubbleButton
-          text={"Back"}
-          onPress={handleBack}
-          style={{ width: "45%" }}
-        />
-        <BubbleButton
-          text={"Next"}
-          onPress={handleNext}
-          style={{ width: "45%" }}
-        />
-      </View>
+        <View style={styles.buttonContainer}>
+          <BubbleButton
+            text={"Back"}
+            onPress={handleBack}
+            style={{ width: "45%" }}
+          />
+          <BubbleButton
+            text={"Next"}
+            onPress={handleNext}
+            style={{ width: "45%" }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -121,12 +131,11 @@ const BaselineResults = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
   scrollContainer: {
     alignItems: "center",
-    width: '100%',
-    paddingBottom: 25
+    width: "100%",
+    paddingBottom: 25,
   },
   title: {
     fontSize: 24,

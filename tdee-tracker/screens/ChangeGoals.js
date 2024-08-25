@@ -8,7 +8,7 @@ import BubbleButton from "../components/BubbleButton";
 import Segment from "../components/Segment";
 
 const InitialGoals = ({ navigation }) => {
-  const { updateUserData, userData } = useContext(UserDataContext);
+  const { updateUserData, userData, isInputValid } = useContext(UserDataContext);
   const [goalWeight, setGoalWeight] = useState(userData.goalWeight);
   const [weeklyWeightDelta, setWeeklyWeightDelta] = useState(
     !userData.weeklyWeightDelta ? "0.5" : userData.weeklyWeightDelta
@@ -16,7 +16,7 @@ const InitialGoals = ({ navigation }) => {
   const [missingFields, setMissingFields] = useState(false);
 
   const handleSaveAndBack = () => {
-    if (goalWeight) {
+    if (isInputValid(goalWeight, 20, 1000, 'Goal weight')) {
       updateUserData({
         goalWeight: parseFloat(goalWeight),
         weeklyWeightDelta: parseFloat(weeklyWeightDelta),

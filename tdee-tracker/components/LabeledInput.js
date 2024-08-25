@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, } from "react-native";
 
 export default ({ units, placeholder, value, onChangeText, borderColor, keyboardType, style }) => {
+
+  
   return (
     <View>
       <Text

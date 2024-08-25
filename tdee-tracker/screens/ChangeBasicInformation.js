@@ -9,7 +9,8 @@ import RegistrationFooter from "../components/RegistrationFooter";
 import Segment from "../components/Segment";
 
 const BasicInformation = ({ navigation }) => {
-  const { updateUserData, userData } = useContext(UserDataContext);
+  const { updateUserData, userData, isInputValid } =
+    useContext(UserDataContext);
   const [age, setAge] = useState(userData.age ? userData.age.toString() : "");
   const [startWeight, setStartWeight] = useState(
     userData.startWeight ? userData.startWeight.toString() : ""
@@ -23,7 +24,11 @@ const BasicInformation = ({ navigation }) => {
   const [missingFields, setMissingFields] = useState(false);
 
   const handleSaveAndBack = () => {
-    if (age && startWeight && height) {
+    if (
+      isInputValid(age, 10, 150, "Age") &&
+      isInputValid(startWeight, 20, 1000, "Start weight") &&
+      isInputValid(height, 20, 250, "Height")
+    ) {
       updateUserData({
         age: parseFloat(age),
         startWeight: parseFloat(startWeight),

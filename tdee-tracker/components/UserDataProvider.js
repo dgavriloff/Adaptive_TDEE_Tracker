@@ -3,6 +3,8 @@ import { AuthContext } from "./AuthProvider";
 
 import firestore from "@react-native-firebase/firestore";
 
+import { showMessage } from "react-native-flash-message";
+
 const UserDataContext = createContext();
 
 const schema = {
@@ -86,8 +88,24 @@ const UserDataProvider = ({ children }) => {
       });
   };
 
+  const isNumberWithinRange = (num, min, max, name) => {
+    if (num < max && num > min)
+      return true
+    else{
+      showMessage({
+        message: `${name} has to be a number between ${min} and ${max}.`,
+        type: 'danger',
+      })
+    }
+  }
+
+  const isInputValid = (value, min, max, name) => {
+    return isNumberWithinRange(parseFloat(value), min, max, name) && value
+  }
+
+
   return (
-    <UserDataContext.Provider value={{ userData, isLoading, updateUserData }}>
+    <UserDataContext.Provider value={{ userData, isLoading, updateUserData, isInputValid }}>
       {children}
     </UserDataContext.Provider>
   );
