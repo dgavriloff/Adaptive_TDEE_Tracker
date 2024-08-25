@@ -46,7 +46,7 @@ const Dashboard = () => {
 
   const calculateGoalDate = (userData) => {
     const weightDelta =
-      userData.startWeight + userData.weightDelta - userData.goalWeight;
+      userData.currentWeight - userData.goalWeight;
     const daysUntilGoal =
       userData.weightUnits === "lbs"
         ? (weightDelta * 3500) / userData.dailyCalorieDelta

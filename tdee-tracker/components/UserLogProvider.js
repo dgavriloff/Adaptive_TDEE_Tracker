@@ -30,6 +30,7 @@ const UserLogProvider = ({ children }) => {
         setUserLogs(logs);
         setGraphData(fillMissingData(cleanGraphData(logs)));
         setIsLoading(false);
+        updateUserData({ currentWeight: userLogs[0].weight? userLogs[0].weight : null });
       });
       return unsubscribe;
     } else {
