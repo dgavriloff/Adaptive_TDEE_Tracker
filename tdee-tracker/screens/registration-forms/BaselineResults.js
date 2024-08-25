@@ -66,7 +66,10 @@ const BaselineResults = ({ navigation }) => {
     const date = new Date();
     const dateId = getDateIdFormat(date);
 
-    updateUserData({ registrationComplete: true, calculatedTDEE: tdee });
+    updateUserData({
+      registrationComplete: true,
+      calculatedTDEE: tdee,
+    });
     addUserLog({
       weight: userData.startWeight,
       calories: "",

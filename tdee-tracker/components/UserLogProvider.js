@@ -29,8 +29,8 @@ const UserLogProvider = ({ children }) => {
         console.log("user logs loaded for", user.uid);
         setUserLogs(logs);
         setGraphData(fillMissingData(cleanGraphData(logs)));
+        logs[0] && updateUserData({ currentWeight: userLogs[0]? userLogs[0].weight : logs[0].weight });
         setIsLoading(false);
-        updateUserData({ currentWeight: userLogs[0].weight? userLogs[0].weight : null });
       });
       return unsubscribe;
     } else {
@@ -114,7 +114,9 @@ const UserLogProvider = ({ children }) => {
           `log ${dateId} updated for ${user.uid} with ${JSON.stringify(
             changes
           )}`
+          
         );
+
         setIsLoading(false);
       })
       .catch((err) => {

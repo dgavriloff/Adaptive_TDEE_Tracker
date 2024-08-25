@@ -24,7 +24,7 @@ const WeeklyProgress = () => {
       </View>
       <View style={styles.inlineContainer}>
         <Text style={styles.inlineText}>{item.avgWeight} {userData.weightUnits}</Text>
-        <Text style={styles.inlineText}>{item.weightDelta < 0 ? item.weightDelta : "+" + item.weightDelta} {userData.weightUnits}</Text>
+        <Text style={styles.inlineText}>{item.weightDelta < 1 ? item.weightDelta : "+" + item.weightDelta} {userData.weightUnits}</Text>
         <Text style={styles.inlineText}>{item.avgCalories}</Text>
         <Text style={styles.inlineText}>{item.tdee}</Text>
       </View>
@@ -40,7 +40,7 @@ const WeeklyProgress = () => {
         <Text style={styles.inlineText}>Avg TDEE:</Text>
       </View>
       <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>{userData.weightDelta < 0 ? userData.weightDelta : '+' + userData.weightDelta} {userData.weightUnits}</Text>
+        <Text style={styles.inlineText}>{userData.weightDelta < 1 ? userData.weightDelta : '+' + userData.weightDelta} {userData.weightUnits}</Text>
         <Text style={styles.inlineText}>{Math.floor(weeklyLogs.reduce((sum, log) => { return (sum + log.data[0].avgCalories) }, 0) / weeklyLogs.length)}</Text>
         <Text style={styles.inlineText}>~{userData.currentTDEE}</Text>
       </View>
