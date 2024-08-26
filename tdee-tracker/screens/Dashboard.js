@@ -45,8 +45,7 @@ const Dashboard = () => {
     : userData.currentTDEE;
 
   const calculateGoalDate = (userData) => {
-    const weightDelta =
-      userData.currentWeight - userData.goalWeight;
+    const weightDelta = Math.abs(userData.currentWeight - userData.goalWeight);
     const daysUntilGoal =
       userData.weightUnits === "lbs"
         ? (weightDelta * 3500) / userData.dailyCalorieDelta
@@ -56,9 +55,9 @@ const Dashboard = () => {
       .slice(3);
   };
   const minValue =
-    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10;
+    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10 - 5;
   const maxValue =
-    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10;
+    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10 + 5;
   const range = (size, start, interval) => {
     return [...Array(size).keys()].map((i) => i * interval + start);
   };
@@ -80,7 +79,13 @@ const Dashboard = () => {
             {userData.weeklyWeightDelta} {userData.weightUnits} per week is:
           </Text>
           <Text style={styles.text}>
-            <Bold>~{userData.loseOrGain ? shownTdee + userData.dailyCalorieDelta : shownTdee - userData.dailyCalorieDelta} calories</Bold>
+            <Bold>
+              ~
+              {userData.loseOrGain
+                ? shownTdee + userData.dailyCalorieDelta
+                : shownTdee - userData.dailyCalorieDelta}{" "}
+              calories
+            </Bold>
           </Text>
           <Text></Text>
           <Text style={styles.text}>
@@ -113,7 +118,10 @@ const Dashboard = () => {
                   style={{ height: 200, width: screenWidth - 100 }}
                   data={graphData}
                   padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
-                  xDomain={{ min: 0, max: rawGraphData.length > 1 ? rawGraphData.length-1 : 1 }}
+                  xDomain={{
+                    min: 0,
+                    max: rawGraphData.length > 1 ? rawGraphData.length - 1 : 1,
+                  }}
                   yDomain={{
                     min: minValue,
                     max: maxValue,
@@ -130,7 +138,9 @@ const Dashboard = () => {
                       },
                     }}
                     tickValues={range(
-                      maxValue - minValue > 0 ? (maxValue - minValue) / 5 + 1: 1,
+                      maxValue - minValue > 0
+                        ? (maxValue - minValue) / 5 + 1
+                        : 1,
                       minValue,
                       5
                     )}
@@ -146,9 +156,12 @@ const Dashboard = () => {
                           dy: -16,
                         },
                         formatter: (v) => {
-                          const dateId = graphData.length === 1? graphData[0].meta : graphData.filter(
-                            (log) => {return log.x === Math.floor(v)}
-                          )[0]?.meta;
+                          const dateId =
+                            graphData.length === 1
+                              ? graphData[0].meta
+                              : graphData.filter((log) => {
+                                  return log.x === Math.floor(v);
+                                })[0]?.meta;
                           return (
                             dateId &&
                             `${dateId.slice(4, 6)}/${dateId.slice(6, 8)}`
@@ -159,11 +172,21 @@ const Dashboard = () => {
                     tickCount={7 > graphData.length ? graphData.length : 7}
                     includeOriginTick={true}
                   />
-                  {graphData.length === 1 ? <Line  theme={{scatter: {default:{
-                    width: 5,
-                    height: 5
-                  }}}}/> : <Line />}
 
+                  {graphData && graphData.length === 1 ? (
+                    <Line
+                      theme={{
+                        scatter: {
+                          default: {
+                            width: 5,
+                            height: 5,
+                          },
+                        },
+                      }}
+                    />
+                  ) : (
+                    <Line />
+                  )}
                 </Chart>
               )}
               {console.log(

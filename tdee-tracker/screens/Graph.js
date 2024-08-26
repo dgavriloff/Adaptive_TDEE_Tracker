@@ -50,9 +50,9 @@ const Graph = () => {
     getRangedData(ranges[selectedRange])
   );
   const minValue =
-    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10;
+    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10 - 5;
   const maxValue =
-    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10;
+    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10 + 5;
 
   const range = (size, start, interval) => {
     return [...Array(size).keys()].map((i) => i * interval + start);

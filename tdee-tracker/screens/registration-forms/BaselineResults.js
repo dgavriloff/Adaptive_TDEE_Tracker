@@ -40,14 +40,10 @@ const BaselineResults = ({ navigation }) => {
           5;
     const calculatedTdee = Math.floor(calculatedBmr * userData.activityLevel);
 
-    const weightDelta = Math.abs(userData.startWeight - userData.goalWeight);
-    const daysUntilGoal =
-      userData.weightUnits === "lbs"
-        ? (weightDelta * 3500) / userData.dailyCalorieDelta
-        : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
     const calculateGoalDate = (userData) => {
-      const weightDelta =
-        userData.startWeight + userData.weightDelta - userData.goalWeight;
+      const weightDelta = Math.abs(
+        userData.startWeight - userData.goalWeight
+      );
       const daysUntilGoal =
         userData.weightUnits === "lbs"
           ? (weightDelta * 3500) / userData.dailyCalorieDelta
@@ -65,16 +61,16 @@ const BaselineResults = ({ navigation }) => {
   const handleNext = () => {
     const date = new Date();
     const dateId = getDateIdFormat(date);
-
-    updateUserData({
-      registrationComplete: true,
-      calculatedTDEE: tdee,
-    });
     addUserLog({
       weight: userData.startWeight,
       calories: "",
       weekId: getWeekIdFromDateId(dateId),
       dateId: dateId,
+    }).then(() => {
+      updateUserData({
+        registrationComplete: true,
+        calculatedTDEE: tdee,
+      });
     });
   };
   const handleBack = () => {

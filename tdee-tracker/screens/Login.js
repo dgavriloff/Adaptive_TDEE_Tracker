@@ -26,7 +26,7 @@ const Login = () => {
     onAppleButtonPress,
     onGoogleButtonPress,
     onFacebookButtonPress,
-    forgotPassword
+    forgotPassword,
   } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,8 +58,14 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <DismissKeyboard style={{ width: "100%", alignItems: "center" }}>
-        <Segment label={"Login or Register"}>
+      <DismissKeyboard
+        style={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Segment label={"Login or Register"} style={{ marginTop: 0 }}>
           {error ? (
             <Text
               style={{ color: "red", fontSize: 16, justifyContent: "center" }}
@@ -80,7 +86,7 @@ const Login = () => {
             value={password}
             onChangeText={setPassword}
             secureTextEntry={true}
-            type={'password'}
+            type={"password"}
             keyboardType={"text"}
           />
           <BubbleButton
@@ -119,7 +125,10 @@ const Login = () => {
             }}
             onPress={() => onAppleButtonPress()}
           />
-          <GoogleButton buttonStyle={{ marginTop: 18 }} onPress={() => onGoogleButtonPress()}/>
+          <GoogleButton
+            buttonStyle={{ marginTop: 18 }}
+            onPress={() => onGoogleButtonPress()}
+          />
         </Segment>
       </DismissKeyboard>
       {isLoading && <ActivityIndicator style={{ marginTop: 20 }} />}
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
   divider: {
     marginTop: 20,
     marginBottom: 5,
-    width: '45%'
+    width: "45%",
   },
   authButton: {
     backgroundColor: "#f0f0f0",
@@ -153,14 +162,14 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   dividerParent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   dividerText: {
-    top: 5
+    top: 5,
   },
 });
 
