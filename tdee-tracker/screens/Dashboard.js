@@ -189,16 +189,7 @@ const Dashboard = () => {
                   )}
                 </Chart>
               )}
-              {console.log(
-                graphData,
-                range(
-                  maxValue - minValue > 0 ? (maxValue - minValue) / 5 : 1,
-                  minValue,
-                  5
-                ),
-                maxValue,
-                minValue
-              )}
+
             </View>
           </TouchableOpacity>
         </Segment>

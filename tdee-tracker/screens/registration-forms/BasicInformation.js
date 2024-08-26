@@ -24,7 +24,7 @@ const BasicInformation = ({ navigation }) => {
   const [missingFields, setMissingFields] = useState(false);
 
   const handleNext = () => {
-    if (isInputValid(age, 10, 150, 'Age') && isInputValid(startWeight, 20, 1000, 'Start weight') && isInputValid(height, 20, 250, 'Height') ) {
+    if (isInputValid(age, 10, 150, 'Age') &&  isInputValid(height, 20, 250, 'Height') && isInputValid(startWeight, 20, 1000, 'Start weight')) {
       updateUserData({
         age: parseFloat(age),
         startWeight: parseFloat(startWeight),

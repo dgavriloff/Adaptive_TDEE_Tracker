@@ -62,10 +62,9 @@ const Login = () => {
         style={{
           width: "100%",
           alignItems: "center",
-          justifyContent: "center",
         }}
       >
-        <Segment label={"Login or Register"} style={{ marginTop: 0 }}>
+        <Segment label={"Login or Register"} >
           {error ? (
             <Text
               style={{ color: "red", fontSize: 16, justifyContent: "center" }}

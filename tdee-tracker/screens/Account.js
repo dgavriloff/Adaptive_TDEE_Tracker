@@ -83,10 +83,10 @@ const Account = () => {
             onPress={() => navigation.navigate("Change Goals")}
             text={"Change Goals"}
           />
-          <BubbleButton
+          {false && <BubbleButton
             onPress={() => navigation.navigate("Upload Data")}
             text={"Upload MyFitnessPal Data"}
-          />
+          />}
           <BubbleButton onPress={() => logout()} text={"Logout"} style={{}} />
         </ScrollView>
         <NavigationBar />

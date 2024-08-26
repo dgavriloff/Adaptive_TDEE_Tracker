@@ -89,23 +89,24 @@ const UserDataProvider = ({ children }) => {
   };
 
   const isNumberWithinRange = (num, min, max, name) => {
-    if (num < max && num > min)
-      return true
-    else{
+    if (num <= max && num >= min) return true;
+    else {
       showMessage({
         message: `${name} has to be a number between ${min} and ${max}.`,
-        type: 'danger',
-      })
+        type: "danger",
+      });
     }
-  }
+  };
 
-  const isInputValid = (value, min, max, name) => {
-    return isNumberWithinRange(parseFloat(value), min, max, name) && value
-  }
-
+  const isInputValid = (value, min, max, name, nullOkay) => {
+    if (nullOkay && !value) return true;
+    return isNumberWithinRange(parseFloat(value), min, max, name) && value;
+  };
 
   return (
-    <UserDataContext.Provider value={{ userData, isLoading, updateUserData, isInputValid }}>
+    <UserDataContext.Provider
+      value={{ userData, isLoading, updateUserData, isInputValid }}
+    >
       {children}
     </UserDataContext.Provider>
   );

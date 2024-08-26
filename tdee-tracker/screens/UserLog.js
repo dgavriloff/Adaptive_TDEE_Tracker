@@ -27,7 +27,7 @@ const UserLog = () => {
     getDateIdFormat,
     getDateFromDateId,
   } = useContext(UserLogContext);
-  const { userData } = useContext(UserDataContext);
+  const { userData, isInputValid } = useContext(UserDataContext);
 
   const [date, setDate] = useState(new Date());
   const [today] = useState(getDateIdFormat(date));
@@ -62,22 +62,26 @@ const UserLog = () => {
 
   const handleSave = () => {
     const weekId = getWeekIdFromDateId(dateId);
-    if (!currentLog) {
-      addUserLog({
-        weight: parseFloat(weight),
-        calories: parseFloat(calories),
-        dateId: dateId,
-        weekId: weekId,
-      });
-    } else {
-      updateUserLog(
-        {
+    if (
+      isInputValid(parseFloat(weight), 20, 1000, "Weight", true) &&
+      isInputValid(parseFloat(calories), 0, 10000, 'Calories', true)
+    )
+      if (!currentLog) {
+        addUserLog({
           weight: parseFloat(weight),
           calories: parseFloat(calories),
-        },
-        dateId
-      );
-    }
+          dateId: dateId,
+          weekId: weekId,
+        });
+      } else {
+        updateUserLog(
+          {
+            weight: parseFloat(weight),
+            calories: parseFloat(calories),
+          },
+          dateId
+        );
+      }
   };
 
   return (
