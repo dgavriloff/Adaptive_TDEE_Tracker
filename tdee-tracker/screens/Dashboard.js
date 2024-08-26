@@ -189,7 +189,6 @@ const Dashboard = () => {
                   )}
                 </Chart>
               )}
-
             </View>
           </TouchableOpacity>
         </Segment>
@@ -226,3 +225,5 @@ const styles = StyleSheet.create({
 });
 
 export default Dashboard;
+
+/*                  */
