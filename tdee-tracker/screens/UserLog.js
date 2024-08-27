@@ -17,6 +17,7 @@ import NavigationBar from "../components/NavigationBar";
 import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import Segment from "../components/Segment";
+import { showMessage } from "react-native-flash-message";
 
 const UserLog = () => {
   const {
@@ -39,10 +40,18 @@ const UserLog = () => {
     currentLog ? currentLog.calories : ""
   );
 
+  const [saved, setSaved] = useState(
+    currentLog ? currentLog.weight || currentLog.calories : false
+  );
+
   const dateId = getDateIdFormat(date);
 
   useEffect(() => {
-    setCurrentLog(userLogs.find((log) => log.dateId == getDateIdFormat(date)));
+    const currentLog = userLogs.find(
+      (log) => log.dateId == getDateIdFormat(date)
+    );
+    setCurrentLog(currentLog);
+    setSaved(currentLog != undefined);
   }, [date, userLogs]);
 
   useEffect(() => {
@@ -64,8 +73,8 @@ const UserLog = () => {
     const weekId = getWeekIdFromDateId(dateId);
     if (
       isInputValid(parseFloat(weight), 20, 1000, "Weight", true) &&
-      isInputValid(parseFloat(calories), 0, 10000, 'Calories', true)
-    )
+      isInputValid(parseFloat(calories), 0, 10000, "Calories", true)
+    ) {
       if (!currentLog) {
         addUserLog({
           weight: parseFloat(weight),
@@ -82,6 +91,8 @@ const UserLog = () => {
           dateId
         );
       }
+      setSaved(true);
+    }
   };
 
   return (
@@ -107,23 +118,33 @@ const UserLog = () => {
           <LabeledInput
             placeholder={`Enter weight`}
             keyboardType="numeric"
-            value={weight ? weight.toString() : ""}
-            onChangeText={setWeight}
+            value={!isNaN(weight) && `${weight}`}
+            onChangeText={(value) => {
+              setWeight(value);
+              value != currentLog?.weight ? setSaved(false) : setSaved(true)
+            }}
             units={userData.weightUnits}
           />
 
           <LabeledInput
             placeholder="Enter calories"
             keyboardType="numeric"
-            value={calories ? calories.toString() : ""}
-            onChangeText={setCalories}
+            value={!isNaN(calories) && `${calories}`}
+            onChangeText={(value) => {
+              setCalories(value);
+              value != currentLog?.calories ? setSaved(false) : setSaved(true);
+            }}
             units={"kCal"}
           />
         </Segment>
-        {(currentLog ? currentLog.weight != weight : true) ||
-        (currentLog ? currentLog.calories != calories : true) ? (
+        {!saved ? (
           <TouchableOpacity
-            onPress={weight || calories ? handleSave : () => {}}
+            onPress={weight || calories ? handleSave : () => { showMessage({
+              message: 'Both fields cannot be blank',
+              type:'warning',
+              titleStyle:{textAlign: 'center', fontSize: 18},
+              duration: 2000
+            }) }}
             style={styles.button}
           >
             <Text style={styles.unsavedButtonText}>Save</Text>

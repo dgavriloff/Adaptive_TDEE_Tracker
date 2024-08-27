@@ -94,6 +94,8 @@ const UserDataProvider = ({ children }) => {
       showMessage({
         message: `${name} has to be a number between ${min} and ${max}.`,
         type: "danger",
+        titleStyle:{textAlign: 'center', fontSize: 18},
+        duration: 2000
       });
     }
   };

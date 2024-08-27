@@ -64,7 +64,7 @@ const Dashboard = () => {
 
   // Get dimensions of the screen
   const screenWidth = Dimensions.get("window").width; // Considering the width of the segment
-
+//if(false)
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
