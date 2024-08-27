@@ -29,7 +29,10 @@ const UserLogProvider = ({ children }) => {
         console.log("user logs loaded for", user.uid);
         setUserLogs(logs);
         setGraphData(fillMissingData(cleanGraphData(logs)));
-        logs[0] && updateUserData({ currentWeight: userLogs[0]? userLogs[0].weight : logs[0].weight });
+        logs[0] &&
+          updateUserData({
+            currentWeight: userLogs[0] ? userLogs[0].weight : logs[0].weight,
+          });
         setIsLoading(false);
       });
       return unsubscribe;
@@ -114,7 +117,6 @@ const UserLogProvider = ({ children }) => {
           `log ${dateId} updated for ${user.uid} with ${JSON.stringify(
             changes
           )}`
-          
         );
 
         setIsLoading(false);
@@ -182,16 +184,14 @@ const UserLogProvider = ({ children }) => {
   const getWeekFromWeekId = (weekId) => {
     const sunday = new Date(weekId * 604800000 - 259200000);
     const monday = new Date(weekId * 604800000 - 259200000 - 518400000);
-    return `${monday.getFullYear()}${String(monday.getMonth() + 1).padStart(
-      2,
-      0
-    )}${String(monday.getDate()).padStart(
-      2,
-      0
-    )} - ${sunday.getFullYear()}${String(sunday.getMonth() + 1).padStart(
-      2,
-      0
-    )}${String(sunday.getDate()).padStart(2, 0)}`;
+    return `${String(monday.getMonth() + 1).padStart(2, 0)}/${String(
+      monday.getDate()
+    ).padStart(2, 0)}/${monday.getFullYear().toString().slice(2)} to ${String(
+      sunday.getMonth() + 1
+    ).padStart(2, 0)}/${String(sunday.getDate()).padStart(2, 0)}/${sunday
+      .getFullYear()
+      .toString()
+      .slice(2)}`;
   };
 
   const isValidNumber = (num) => {
@@ -352,6 +352,18 @@ const UserLogProvider = ({ children }) => {
     return result;
   }
 
+  getAverageCalories = () => {
+    const avg = Math.floor(
+      weeklyLogs.reduce((sum, log) => {
+        return sum + log.data[0].avgCalories;
+      }, 0) / weeklyLogs.length)
+    return isNaN(avg) ? 0 : avg
+  }
+
+  posOrNeg = (value) => {
+    return value < 1 ? value : "+" + value
+  }
+
   return (
     <UserLogContext.Provider
       value={{
@@ -367,6 +379,8 @@ const UserLogProvider = ({ children }) => {
         getDateFromDateId,
         getRangedData,
         graphData,
+        getAverageCalories,
+        posOrNeg
       }}
     >
       {children}

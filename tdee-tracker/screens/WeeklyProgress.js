@@ -1,12 +1,14 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, SectionList, StyleSheet } from 'react-native';
-import { UserDataContext } from '../components/UserDataProvider';
-import { UserLogContext } from '../components/UserLogProvider';
+import React, { useContext, useEffect } from "react";
+import { View, Text, SectionList, StyleSheet } from "react-native";
+import { UserDataContext } from "../components/UserDataProvider";
+import { UserLogContext } from "../components/UserLogProvider";
+
+import Segment from "../components/Segment";
 
 const WeeklyProgress = () => {
   const { userData } = useContext(UserDataContext);
-  const { weeklyLogs} = useContext(UserLogContext);
-
+  const { weeklyLogs, getAverageCalories, posOrNeg } =
+    useContext(UserLogContext);
 
   const renderSectionHeader = ({ section }) => (
     <View style={styles.header}>
@@ -17,42 +19,94 @@ const WeeklyProgress = () => {
   const renderItem = ({ item }) => (
     <View style={styles.section}>
       <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>Avg Weight:</Text>
-        <Text style={styles.inlineText}>Weight &#916;:</Text>
-        <Text style={styles.inlineText}>Avg Calories:</Text>
-        <Text style={styles.inlineText}>TDEE:</Text>
-      </View>
-      <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>{item.avgWeight} {userData.weightUnits}</Text>
-        <Text style={styles.inlineText}>{item.weightDelta < 1 ? item.weightDelta : "+" + item.weightDelta} {userData.weightUnits}</Text>
+        <Text style={styles.inlineText}>
+          {item.avgWeight} {userData.weightUnits}
+        </Text>
+        <Text style={styles.inlineText}>
+          {posOrNeg(item.weightDelta)} {userData.weightUnits}
+        </Text>
         <Text style={styles.inlineText}>{item.avgCalories}</Text>
         <Text style={styles.inlineText}>{item.tdee}</Text>
       </View>
     </View>
   );
 
+  const EmptyListNotice = () => {
+    return (
+      <Segment label={"Not Enough Data"} style={{ ...styles.segmentStyle }}>
+        <Text style={{ marginTop: 10, textAlign: "center" }}>
+          {" "}
+          Add at least one week of data to see weekly progress
+        </Text>
+      </Segment>
+    );
+  };
+
   return (
     <View style={styles.container}>
-          <View style={styles.section}>
-      <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>Weight &#916;:</Text>
-        <Text style={styles.inlineText}>Avg Calories:</Text>
-        <Text style={styles.inlineText}>Avg TDEE:</Text>
-      </View>
-      <View style={styles.inlineContainer}>
-        <Text style={styles.inlineText}>{userData.weightDelta < 1 ? userData.weightDelta : '+' + userData.weightDelta} {userData.weightUnits}</Text>
-        <Text style={styles.inlineText}>{Math.floor(weeklyLogs.reduce((sum, log) => { return (sum + log.data[0].avgCalories) }, 0) / weeklyLogs.length)}</Text>
-        <Text style={styles.inlineText}>~{userData.currentTDEE}</Text>
-      </View>
+      {weeklyLogs.length > 0 && (
+        <Segment
+          style={{
+            ...styles.segmentStyle,
+            marginTop: -10,
+            paddingLeft: 5,
+            paddingRight: 5,
+          }}
+        >
+          <View style={{ ...styles.inlineContainer, marginTop: 10 }}>
+            <Text style={{ ...styles.inlineText, fontWeight: "bold" }}>
+              Avg Weight
+            </Text>
+            <Text style={{ ...styles.inlineText, fontWeight: "bold" }}>
+              Weight &#916;
+            </Text>
+            <Text style={{ ...styles.inlineText, fontWeight: "bold" }}>
+              Avg Calories
+            </Text>
+            <Text style={{ ...styles.inlineText, fontWeight: "bold" }}>
+              TDEE
+            </Text>
+          </View>
+        </Segment>
+      )}
 
-    </View>
       <SectionList
         sections={weeklyLogs.toReversed()}
         keyExtractor={(item) => item.weekId}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
         stickySectionHeadersEnabled={false}
+        ListEmptyComponent={EmptyListNotice}
       />
+      <Segment
+        style={{ ...styles.segmentStyle, marginTop: 0, shadowOpacity: 0.1 }}
+      >
+        <View style={{ ...styles.inlineContainer, marginBottom: 10 }}>
+          <View style={styles.textColumn}>
+            <Text style={styles.screenHeaderText}>Weight &#916;:</Text>
+            <Text style={styles.screenHeaderSubText}>
+              {userData.weightDelta < 1
+                ? userData.weightDelta
+                : "+" + userData.weightDelta}{" "}
+              {userData.weightUnits}
+            </Text>
+          </View>
+          <View style={styles.textColumn}>
+            <Text style={styles.screenHeaderText}>Avg Calories:</Text>
+            <Text style={styles.screenHeaderSubText}>
+              {getAverageCalories()}
+            </Text>
+          </View>
+          <View style={styles.textColumn}>
+            <Text style={styles.screenHeaderText}>Avg TDEE:</Text>
+
+            <Text style={styles.screenHeaderSubText}>
+              ~{userData.currentTDEE}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.inlineContainer}></View>
+      </Segment>
     </View>
   );
 };
@@ -60,35 +114,55 @@ const WeeklyProgress = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f0f0f0",
   },
   header: {
-    backgroundColor: '#e8e8e8',
+    backgroundColor: "#e8e8e8",
     padding: 10,
     borderRadius: 8,
     marginTop: 10,
   },
   headerText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   section: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: "#f8f8f8",
     padding: 15,
     marginBottom: 10,
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowOpacity: 0,
+    shadowRadius: 0,
     elevation: 2,
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   inlineContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    
   },
   inlineText: {
     fontSize: 15,
     marginHorizontal: 10,
+  },
+  textColumn: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  screenHeaderText: {
+    fontSize: 15,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  screenHeaderSubText: {
+    fontSize: 15,
+    textAlign: "center",
+  },
+  segmentStyle: {
+    width: "100%",
   },
 });
 
