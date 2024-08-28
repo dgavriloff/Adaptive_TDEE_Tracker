@@ -26,11 +26,13 @@ import Bold from "../components/Bold";
 
 const Dashboard = () => {
   const navigation = useNavigation();
-  const { userData } = useContext(UserDataContext);
+  const { userData, calculateGoalDate } = useContext(UserDataContext);
   const {
     userLogs,
     getRangedData,
     graphData: rawGraphData,
+    createRange,
+    getInterval
   } = useContext(UserLogContext);
   const [graphData, setGraphData] = useState(
     getRangedData(rawGraphData.length)
@@ -44,27 +46,9 @@ const Dashboard = () => {
     ? userData.calculatedTDEE
     : userData.currentTDEE;
 
-  const calculateGoalDate = (userData) => {
-    const weightDelta = Math.abs(userData.currentWeight - userData.goalWeight);
-    const daysUntilGoal =
-      userData.weightUnits === "lbs"
-        ? (weightDelta * 3500) / userData.dailyCalorieDelta
-        : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
-    return new Date(new Date().getTime() + 86400000 * daysUntilGoal)
-      .toDateString()
-      .slice(3);
-  };
-  const minValue =
-    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10 - 5;
-  const maxValue =
-    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10 + 5;
-  const range = (size, start, interval) => {
-    return [...Array(size).keys()].map((i) => i * interval + start);
-  };
+  const screenWidth = Dimensions.get("window").width;
 
-  // Get dimensions of the screen
-  const screenWidth = Dimensions.get("window").width; // Considering the width of the segment
-//if(false)
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -116,15 +100,15 @@ const Dashboard = () => {
               {graphData && (
                 <Chart
                   style={{ height: 200, width: screenWidth - 100 }}
-                  data={graphData}
+                  data={graphData.data}
                   padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
                   xDomain={{
                     min: 0,
                     max: rawGraphData.length > 1 ? rawGraphData.length - 1 : 1,
                   }}
                   yDomain={{
-                    min: minValue,
-                    max: maxValue,
+                    min: graphData.min,
+                    max: Math.max(graphData.max, graphData.yTicks.slice(-1)[0])
                   }}
                   disableGestures={true}
                 >
@@ -137,13 +121,7 @@ const Dashboard = () => {
                         },
                       },
                     }}
-                    tickValues={range(
-                      maxValue - minValue > 0
-                        ? (maxValue - minValue) / 5 + 1
-                        : 1,
-                      minValue,
-                      5
-                    )}
+                    tickValues={graphData.yTicks}
                     includeOriginTick={true}
                   />
 
@@ -157,9 +135,9 @@ const Dashboard = () => {
                         },
                         formatter: (v) => {
                           const dateId =
-                            graphData.length === 1
-                              ? graphData[0].meta
-                              : graphData.filter((log) => {
+                            graphData.data.length === 1
+                              ? graphData.data[0].meta
+                              : graphData.data.filter((log) => {
                                   return log.x === Math.floor(v);
                                 })[0]?.meta;
                           return (
@@ -169,11 +147,13 @@ const Dashboard = () => {
                         },
                       },
                     }}
-                    tickCount={7 > graphData.length ? graphData.length : 7}
+                    tickCount={
+                      graphData.defaultXTicks
+                    }
                     includeOriginTick={true}
                   />
 
-                  {graphData && graphData.length === 1 ? (
+                  {graphData && graphData.data.length === 1 ? (
                     <Line
                       theme={{
                         scatter: {

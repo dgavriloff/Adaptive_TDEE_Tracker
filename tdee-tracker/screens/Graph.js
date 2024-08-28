@@ -22,61 +22,83 @@ import { UserDataContext } from "../components/UserDataProvider";
 import { UserLogContext } from "../components/UserLogProvider";
 import Segment from "../components/Segment";
 import BubbleButton from "../components/BubbleButton";
+import ToggleButton from "../components/ToggleButton";
+import MultipleToggleButtons from "../components/MultipleToggleButtons";
 
 const screenWidth = Dimensions.get("window").width;
 
 const Graph = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedRange, setSelectedRange] = useState("all");
+
   const { userData } = useContext(UserDataContext);
   const {
     userLogs,
     getRangedData,
     graphData: rawGraphData,
+    createRange,
   } = useContext(UserLogContext);
 
   const ranges = {
-    week: { name: "Week", value: 7, ticks: 7 },
-    oneMonth: { name: "One Month", value: 28, ticks: 4 },
-    twoMonths: { name: "Two Months", value: 56, ticks: 8 },
+    week: { name: "Week", value: 7, ticks: 7, short: "Wk" },
+    oneMonth: { name: "One Month", value: 28, ticks: 4, short: "1m" },
+    twoMonths: { name: "Two Months", value: 56, ticks: 8, short: "2m" },
+    sixMonths: { name: "Six Months", value: 168, ticks: 8, short: "6m" },
     all: {
       name: "All Time",
       value: rawGraphData.length,
       ticks: Math.min(rawGraphData.length, 6),
+      short: "All",
     },
   };
 
   const [graphData, setGraphData] = useState(
     getRangedData(ranges[selectedRange])
   );
-  const minValue =
-    Math.floor(Math.min(...graphData.map((log) => log.y)) / 10) * 10 - 5;
-  const maxValue =
-    Math.ceil(Math.max(...graphData.map((log) => log.y)) / 10) * 10 + 5;
 
-  const range = (size, start, interval) => {
-    return [...Array(size).keys()].map((i) => i * interval + start);
+  useEffect(() => {
+    setGraphData(getRangedData(ranges[selectedRange].value));
+  },[selectedRange])
+
+
+  const getRangeNameArray = () => {
+    let arr = [];
+    for (const [key, value] of Object.entries(ranges)) {
+      {console.log(value.value > rawGraphData.length)}
+      if(value.value > rawGraphData.length)
+        arr.push({ value: value, key: key, pressable: false });
+      else
+        arr.push({ value: value, key: key, pressable: true });
+    }
+    return arr;
   };
 
-  const weightChange = graphData[graphData.length - 1].y - graphData[0].y;
+  const weightChange = graphData.data.slice(-1)[0].y - graphData.data[0].y;
+
   if (userLogs[0])
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Segment label={"Graph Range"} style={{ justifyContent: "center" }}>
-            <View style={{ alignItems: "center" }}>
-              <BubbleButton
-                style={styles.pickerButton}
-                onPress={() => setModalVisible(true)}
-                text={ranges[selectedRange].name}
-              />
-            </View>
+          <Segment
+            label={"Graph Range"}
+            style={{
+              justifyContent: "center",
+              flexDirection: "column",
+
+            }}
+          >
+            <MultipleToggleButtons
+              containerStyle={styles.buttonContainer}
+              values={getRangeNameArray()}
+              action={setSelectedRange}
+              defaultValue={ranges[selectedRange]}
+            />
           </Segment>
-          <Segment>
+          <Segment label={ranges[selectedRange].name}>
             {graphData && (
               <Chart
                 style={{ height: 200, width: screenWidth - 100 }}
-                data={graphData}
+                data={graphData.data}
                 padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
                 xDomain={{
                   min: 0,
@@ -86,8 +108,8 @@ const Graph = () => {
                       : 1,
                 }}
                 yDomain={{
-                  min: minValue,
-                  max: maxValue,
+                  min: graphData.min,
+                  max: Math.max(graphData.max, graphData.yTicks.slice(-1)[0]),
                 }}
                 disableGestures={true}
               >
@@ -99,11 +121,7 @@ const Graph = () => {
                       },
                     },
                   }}
-                  tickValues={range(
-                    maxValue - minValue > 0 ? (maxValue - minValue) / 5 + 1 : 1,
-                    minValue,
-                    5
-                  )}
+                  tickValues={graphData.yTicks}
                   includeOriginTick={true} //
                 />
                 <HorizontalAxis
@@ -116,9 +134,9 @@ const Graph = () => {
                       },
                       formatter: (v) => {
                         const dateId =
-                          graphData.length === 1
+                          graphData.data.length === 1
                             ? graphData[0].meta
-                            : graphData.filter((log) => {
+                            : graphData.data.filter((log) => {
                                 return log.x === Math.floor(v);
                               })[0]?.meta;
                         return (
@@ -129,13 +147,13 @@ const Graph = () => {
                     },
                   }}
                   tickCount={
-                    ranges[selectedRange].ticks < graphData.length
+                    ranges[selectedRange].ticks < graphData.data.length
                       ? ranges[selectedRange].ticks
-                      : graphData.length
+                      : graphData.data.length
                   }
                   includeOriginTick={true}
                 />
-                {graphData.length === 1 ? (
+                {graphData.data.length === 1 ? (
                   <Line
                     theme={{
                       scatter: {
@@ -162,46 +180,6 @@ const Graph = () => {
               {userData.weightUnits}
             </Text>
           </Segment>
-          <Modal
-            transparent={true}
-            visible={isModalVisible}
-            animationType="slide"
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                <View
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                  }}
-                ></View>
-              </TouchableWithoutFeedback>
-              <View style={styles.modalContent}>
-                <Picker
-                  selectedValue={selectedRange}
-                  style={styles.picker}
-                  onValueChange={(itemValue) => {
-                    if (ranges[itemValue].value > ranges["all"].value) {
-                      setGraphData(getRangedData(ranges["all"].value));
-                      setSelectedRange("all");
-                    } else {
-                      setGraphData(getRangedData(ranges[itemValue].value));
-                      setSelectedRange(itemValue);
-                    }
-
-                    console.log();
-                  }}
-                >
-                  <Picker.Item label="Week" value={"week"} />
-                  <Picker.Item label="One Month" value={"oneMonth"} />
-                  <Picker.Item label="Two Months" value={"twoMonths"} />
-                  <Picker.Item label="All" value={"all"} />
-                </Picker>
-              </View>
-            </View>
-          </Modal>
         </ScrollView>
         <NavigationBar />
       </View>
@@ -217,39 +195,19 @@ const styles = StyleSheet.create({
     paddingBottom: 125,
     alignItems: "center",
   },
-  pickerButton: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 5,
-    width: "75%",
-    marginTop: 5,
-  },
-  pickerText: {
-    fontSize: 18,
-    textAlign: "center",
-  },
   text: {
     fontSize: 18,
     marginVertical: 10,
     textAlign: "center",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  picker: {
+  buttonContainer: {
     width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    padding: 0,
+    marginTop: 10
   },
-  chart: {},
 });
 
 export default Graph;

@@ -7,7 +7,7 @@ import BubbleButton from "../../components/BubbleButton";
 import Segment from "../../components/Segment";
 
 const BaselineResults = ({ navigation }) => {
-  const { userData, updateUserData } = useContext(UserDataContext);
+  const { userData, updateUserData, calculateGoalDate } = useContext(UserDataContext);
   const { getWeekIdFromDateId, getDateIdFormat, addUserLog } =
     useContext(UserLogContext);
 
@@ -40,20 +40,7 @@ const BaselineResults = ({ navigation }) => {
           5;
     const calculatedTdee = Math.floor(calculatedBmr * userData.activityLevel);
 
-    const calculateGoalDate = (userData) => {
-      const weightDelta = Math.abs(
-        userData.startWeight - userData.goalWeight
-      );
-      const daysUntilGoal =
-        userData.weightUnits === "lbs"
-          ? (weightDelta * 3500) / userData.dailyCalorieDelta
-          : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
-      return new Date(new Date().getTime() + 86400000 * daysUntilGoal)
-        .toDateString()
-        .slice(3);
-    };
-
-    setGoalDate(calculateGoalDate(userData));
+    setGoalDate(calculateGoalDate());
     setBmr(calculatedBmr);
     setTdee(Math.round(calculatedTdee / 50) * 50);
   }, [userData]);
@@ -68,8 +55,8 @@ const BaselineResults = ({ navigation }) => {
       dateId: dateId,
     }).then(() => {
       updateUserData({
-        registrationComplete: true,
         calculatedTDEE: tdee,
+        registrationComplete: true
       });
     });
   };

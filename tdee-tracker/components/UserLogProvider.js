@@ -252,9 +252,44 @@ const UserLogProvider = ({ children }) => {
   };
 
   const getRangedData = (rangeInDays) => {
-    return graphData
+    const rangedData = graphData
       .slice(-rangeInDays)
       .map((log, index) => ({ y: log.y, x: index, meta: log.meta }));
+    const minValue = Math.max(
+      Math.floor(Math.min(...rangedData.map((log) => log.y)) / 10) * 10,
+      0
+    )
+    const maxValue = Math.ceil(Math.max(...rangedData.map((log) => log.y)) / 10) * 10
+    const minMaxDifference = maxValue - minValue > 0 ? maxValue - minValue : () => {throw new Error({'Data Error' : 'minMaxDifference is 0'})};
+    const interval = getInterval(minMaxDifference);
+
+    return {
+      data: rangedData,
+      min: minValue,
+      max: maxValue,
+      yTicks : createRange(minMaxDifference, minValue, interval),
+      defaultXTicks : 7 > rangedData.length ? rangedData.length : 7,
+      defaultInterval: interval,
+    };
+  };
+
+  const createRange = (size, start, interval) => {
+    if (size === 0) return [];
+    return [...Array(Math.round(size/interval)+1).keys()].map((i) => i * interval + start);
+  };
+
+  const getInterval = (rawSize) => {
+    const desiredSize = 6;
+    const baseInterval = 5;
+    let interval = baseInterval;
+    let size = rawSize;
+
+    while (size >= desiredSize) {
+      size = rawSize;
+      Math.floor((size /= interval));
+      interval += 2.5;
+    }
+    return interval;
   };
 
   //returns array of data with first index being the oldest entry and with no NaN weights
@@ -356,12 +391,17 @@ const UserLogProvider = ({ children }) => {
     const avg = Math.floor(
       weeklyLogs.reduce((sum, log) => {
         return sum + log.data[0].avgCalories;
-      }, 0) / weeklyLogs.length)
-    return isNaN(avg) ? 0 : avg
-  }
+      }, 0) / weeklyLogs.length
+    );
+    return isNaN(avg) ? 0 : avg;
+  };
 
   posOrNeg = (value) => {
-    return value < 1 ? value : "+" + value
+    return value < 1 ? value : "+" + value;
+  };
+
+  const getEdgeCaseMax = (max) => {
+    //if(max )
   }
 
   return (
@@ -380,7 +420,8 @@ const UserLogProvider = ({ children }) => {
         getRangedData,
         graphData,
         getAverageCalories,
-        posOrNeg
+        posOrNeg,
+        createRange,
       }}
     >
       {children}

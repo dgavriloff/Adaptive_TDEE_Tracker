@@ -30,6 +30,7 @@ const BasicInformation = ({ navigation }) => {
         startWeight: parseFloat(startWeight),
         gender: gender,
         height: parseFloat(height),
+        currentWeight: parseFloat(startWeight)
       });
       setMissingFields(false);
       navigation.navigate("Activity Level")
