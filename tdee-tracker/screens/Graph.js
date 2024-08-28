@@ -4,16 +4,12 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  Modal,
-  TouchableWithoutFeedback,
   ScrollView,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import NavigationBar from "../components/NavigationBar";
 import {
   Chart,
   Line,
-  Area,
   HorizontalAxis,
   VerticalAxis,
 } from "react-native-responsive-linechart";
@@ -21,14 +17,11 @@ import {
 import { UserDataContext } from "../components/UserDataProvider";
 import { UserLogContext } from "../components/UserLogProvider";
 import Segment from "../components/Segment";
-import BubbleButton from "../components/BubbleButton";
-import ToggleButton from "../components/ToggleButton";
 import MultipleToggleButtons from "../components/MultipleToggleButtons";
 
 const screenWidth = Dimensions.get("window").width;
 
 const Graph = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
   const [selectedRange, setSelectedRange] = useState("all");
 
   const { userData } = useContext(UserDataContext);
@@ -36,7 +29,6 @@ const Graph = () => {
     userLogs,
     getRangedData,
     graphData: rawGraphData,
-    createRange,
   } = useContext(UserLogContext);
 
   const ranges = {
@@ -64,7 +56,6 @@ const Graph = () => {
   const getRangeNameArray = () => {
     let arr = [];
     for (const [key, value] of Object.entries(ranges)) {
-      {console.log(value.value > rawGraphData.length)}
       if(value.value > rawGraphData.length)
         arr.push({ value: value, key: key, pressable: false });
       else

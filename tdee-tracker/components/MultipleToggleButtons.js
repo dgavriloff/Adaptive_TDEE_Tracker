@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ToggleButton from "./ToggleButton";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
 export default MultipleToggleButtons = ({
   values,
