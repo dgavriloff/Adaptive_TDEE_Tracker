@@ -43,6 +43,16 @@ export default RegisterWithEmail = () => {
             textAlign: "center",
           },
         });
+      else if (err.code == "auth/email-already-in-use")
+        showMessage({
+          message: `${email} has already been registered. Go back to login.`,
+          type: "warning",
+          duration: 2500,
+          titleStyle: {
+            fontSize: 16,
+            textAlign: "center",
+          },
+        });
       else if (err.code == "auth/weak-password")
         showMessage({
           message: err.message.slice(err.message.search("]") + 2),

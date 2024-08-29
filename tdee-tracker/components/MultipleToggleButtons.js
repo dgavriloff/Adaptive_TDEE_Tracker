@@ -7,22 +7,24 @@ export default MultipleToggleButtons = ({
   action,
   containerStyle,
   defaultValue,
+  buttonStyle
 }) => {
   const [selectedButton, setSelectedButton] = useState(defaultValue.short);
-
   return (
-    <View style={{ ...containerStyle }}>
+    <View style={{ ...containerStyle,}}>
       {values.map((log, index) => {
         return (
           <ToggleButton
             text={log.value.short}
             key={index}
             selected={selectedButton}
+            id={log.key}
             onPress={() => {
-              setSelectedButton(log.value.short);
+              setSelectedButton(log.key);
               action(log.key);
             }}
             pressable={log.pressable}
+            style={buttonStyle}
           />
         );
       })}

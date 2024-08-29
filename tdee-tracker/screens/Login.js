@@ -51,15 +51,6 @@ const Login = ({ navigation }) => {
         }}
       >
         <Segment label={"Login to Calorie Coach"}>
-          {error ? (
-            <Text
-              style={{ color: "red", fontSize: 16, justifyContent: "center" }}
-            >
-              {error}
-            </Text>
-          ) : (
-            <Text></Text>
-          )}
           <AppleButton
             buttonStyle={AppleButton.Style.BLACK}
             buttonType={AppleButton.Type.SIGN_IN}
@@ -78,7 +69,7 @@ const Login = ({ navigation }) => {
           <BubbleButton
             style={{ ...styles.button, marginTop: 18 }}
             text={"Register with Email"}
-            onPress={() => navigation.navigate('RegisterWithEmail')}
+            onPress={() => navigation.navigate("RegisterWithEmail")}
             fontColor={"#000"}
           />
 
@@ -87,6 +78,15 @@ const Login = ({ navigation }) => {
             <Text style={styles.dividerText}>or</Text>
             <Divider style={styles.divider}></Divider>
           </View>
+          {error ? (
+            <Text
+              style={{ color: "red", fontSize: 16, justifyContent: "center" }}
+            >
+              {error}
+            </Text>
+          ) : (
+            <Text></Text>
+          )}
 
           <LabeledInput
             placeholder={"Email"}
@@ -113,7 +113,7 @@ const Login = ({ navigation }) => {
             style={{ width: "50%", marginTop: 5, padding: 0 }}
             fontSize={15}
             text={"Forgot password?"}
-            onPress={() => navigation.navigate('ForgotPassword')}
+            onPress={() => navigation.navigate("ForgotPassword")}
           />
         </Segment>
       </DismissKeyboard>
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
   dividerText: {
     top: 5,
   },
-
 });
 
 export default Login;

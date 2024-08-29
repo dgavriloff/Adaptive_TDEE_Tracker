@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Text} from "react-native";
 import BubbleButton from "../../components/BubbleButton";
-import { Picker } from "@react-native-picker/picker";
 import { UserDataContext } from "../../components/UserDataProvider";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import LabeledInput from "../../components/LabeledInput";
@@ -81,17 +80,20 @@ const BasicInformation = ({ navigation }) => {
             />
           </Segment>
         </DismissKeyboard>
-        <Segment label={"Gender"}>
-          <Picker
-            style={{
-              width: "100%",
-            }}
-            selectedValue={gender ? gender : "male"}
-            onValueChange={(value) => setGender(value)}
-          >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-          </Picker>
+        <Segment label={"Select Gender"}>
+          <View style={styles.weightContainer}>
+            <Text style={styles.labelText}>Select your gender: </Text>
+            <MultipleToggleButtons
+              values={[
+                { value: { short: "Male" }, key: "male", pressable: true },
+                { value: { short: "Female" }, key: "female", pressable: true },
+              ]}
+              defaultValue={{ short: gender }}
+              action={setGender}
+              containerStyle={styles.weightButtons}
+              buttonStyle={{ marginLeft: 10 }}
+            />
+          </View>
         </Segment>
 
         <View style={styles.buttonContainer}>
@@ -126,6 +128,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "85%",
     bottom: 0,
+  },
+  weightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  weightButtons: {
+    flexDirection: "row",
+  },
+  labelText: {
+    fontSize: 16,
+    textAlign: "center",
   },
 });
 

@@ -72,17 +72,20 @@ const BasicInformation = ({ navigation }) => {
             />
           </Segment>
         </DismissKeyboard>
-        <Segment label={"Gender"}>
-          <Picker
-            style={{
-              width: "100%",
-            }}
-            selectedValue={gender ? gender : "male"}
-            onValueChange={(value) => setGender(value)}
-          >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-          </Picker>
+        <Segment label={"Select Gender"}>
+          <View style={styles.weightContainer}>
+            <Text style={styles.labelText}>Select your gender: </Text>
+            <MultipleToggleButtons
+              values={[
+                { value: { short: "Male" }, key: "male", pressable: true },
+                { value: { short: "Female" }, key: "female", pressable: true },
+              ]}
+              defaultValue={{ short: gender }}
+              action={setGender}
+              containerStyle={styles.weightButtons}
+              buttonStyle={{ marginLeft: 10 }}
+            />
+          </View>
         </Segment>
 
         <BubbleButton
@@ -103,6 +106,21 @@ const styles = StyleSheet.create({
   scrollContainer: {
     alignItems: "center",
     paddingBottom: 25,
+  },
+  weightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  weightButtons: {
+    flexDirection: "row",
+  },
+  labelText: {
+    fontSize: 16,
+    textAlign: "center",
   },
 });
 

@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 import { Text, Pressable, View, StyleSheet } from "react-native";
 
-export default ToggleButton = ({ selected, onPress, text, pressable }) => {
+export default ToggleButton = ({
+  selected,
+  onPress,
+  text,
+  pressable,
+  style,
+  id,
+}) => {
   const [highlighted, setHighlighted] = useState(selected);
 
   useEffect(() => {
-    if (selected == text) setHighlighted(true);
+    if (selected === id) setHighlighted(true);
     else setHighlighted(false);
   }, [selected]);
 
   const styles = StyleSheet.create({
     container: {
       margin: 0,
+      ...style,
     },
     button: {
       backgroundColor: highlighted ? "#007AFF" : "#f0f0f0",

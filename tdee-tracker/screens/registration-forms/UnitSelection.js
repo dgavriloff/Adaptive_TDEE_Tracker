@@ -5,6 +5,8 @@ import BubbleButton from "../../components/BubbleButton";
 import { UserDataContext } from "../../components/UserDataProvider";
 import Segment from "../../components/Segment";
 
+import MultipleToggleButtons from "../../components/MultipleToggleButtons";
+
 const UnitSelection = ({ navigation }) => {
   const { updateUserData, userData } = useContext(UserDataContext);
   const [weightUnit, setWeightUnit] = useState(
@@ -26,34 +28,45 @@ const UnitSelection = ({ navigation }) => {
     navigation.navigate("Basic Information");
   };
 
+  const weightUnits = {
+    pounds: { name: "Pounds", short: "lbs" },
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Segment label={"Weight in"}>
-          <Picker
-            style={{
-              width: "100%",
-            }}
-            selectedValue={weightUnit}
-            onValueChange={(itemValue) => setWeightUnit(itemValue)}
-          >
-            <Picker.Item label="Pounds" value="lbs" />
-            <Picker.Item label="Kilograms" value="kgs" />
-          </Picker>
+        <Segment label={"Select Weight Units"}>
+          <View style={styles.weightContainer}>
+            <Text style={styles.labelText}>Select weight {"\n"} units: </Text>
+            <MultipleToggleButtons
+              values={[
+                { value: { short: "Pounds" }, key: "lbs", pressable: true },
+                { value: { short: "Kilograms" }, key: "kgs", pressable: true },
+              ]}
+              defaultValue={{ short: weightUnit }}
+              action={setWeightUnit}
+              containerStyle={styles.weightButtons}
+              buttonStyle={{ marginLeft: 10 }}
+            />
+          </View>
+        </Segment>
+        <Segment label={"Select Height Units"}>
+        <View style={styles.weightContainer}>
+            <Text style={styles.labelText}>Select height {"\n"} units: </Text>
+            <MultipleToggleButtons
+              values={[
+                { value: { short: "Inches" }, key: "in", pressable: true },
+                { value: { short: "Centimeters" }, key: "cm", pressable: true },
+              ]}
+              defaultValue={{ short: heightUnit }}
+              action={setHeightUnit}
+              containerStyle={styles.weightButtons}
+              buttonStyle={{ marginLeft: 10 }}
+            />
+          </View>
         </Segment>
 
-        <Segment label={"Height in"}>
-          <Picker
-            style={{
-              width: "100%",
-            }}
-            selectedValue={heightUnit}
-            onValueChange={(itemValue) => setHeightUnit(itemValue)}
-          >
-            <Picker.Item label="Inches" value="in" />
-            <Picker.Item label="Centimeters" value="cm" />
-          </Picker>
-        </Segment>
+
         <BubbleButton text={"Next"} onPress={handleNext} />
       </ScrollView>
     </View>
@@ -69,6 +82,21 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     paddingBottom: 25,
+  },
+  weightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  weightButtons: {
+    flexDirection: "row",
+  },
+  labelText: {
+    fontSize: 16,
+    textAlign: "center",
   },
 });
 
