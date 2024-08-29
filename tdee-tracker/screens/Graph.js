@@ -33,9 +33,9 @@ const Graph = () => {
 
   const ranges = {
     week: { name: "Week", value: 7, ticks: 7, short: "Wk" },
-    oneMonth: { name: "One Month", value: 28, ticks: 4, short: "1m" },
-    twoMonths: { name: "Two Months", value: 56, ticks: 8, short: "2m" },
-    sixMonths: { name: "Six Months", value: 168, ticks: 8, short: "6m" },
+    oneMonth: { name: "One Month", value: 30, ticks: 4, short: "1m" },
+    twoMonths: { name: "Two Months", value: 60, ticks: 8, short: "2m" },
+    sixMonths: { name: "Six Months", value: 180, ticks: 8, short: "6m" },
     all: {
       name: "All Time",
       value: rawGraphData.length,

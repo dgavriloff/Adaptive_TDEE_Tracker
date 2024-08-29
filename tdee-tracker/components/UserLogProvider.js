@@ -280,7 +280,7 @@ const UserLogProvider = ({ children }) => {
 
   const getInterval = (rawSize) => {
     const desiredSize = 6;
-    const baseInterval = 5;
+    const baseInterval = 2.5;
     let interval = baseInterval;
     let size = rawSize;
 
