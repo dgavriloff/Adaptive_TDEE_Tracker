@@ -32,8 +32,9 @@ import Loading from "../screens/Loading.js";
 //contexts and providers
 import { AuthContext } from "./AuthProvider.js";
 import { UserDataContext } from "./UserDataProvider.js";
-import { NavigationContext } from "@react-navigation/native";
 import { UserLogContext } from "./UserLogProvider.js";
+import RegisterWithEmail from "../screens/RegisterWithEmail.js";
+import ForgotPassword from "../screens/ForgotPassword.js";
 
 const Stack = createStackNavigator();
 
@@ -41,8 +42,6 @@ const Navigation = () => {
   const { user, isLoading: authLoading } = useContext(AuthContext);
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
   const { userLogs, weeklyLogs } = useContext(UserLogContext);
-
-  
 
   return (
     <NavigationContainer>
@@ -102,11 +101,23 @@ const Navigation = () => {
             )}
           </>
         ) : (
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ title:"Calorie Coach" }}
-          />
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ title: "Calorie Coach" }}
+            />
+            <Stack.Screen
+              name="RegisterWithEmail"
+              component={RegisterWithEmail}
+              options={{ title: "" }}
+            />
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
+              options={{ title: "" }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

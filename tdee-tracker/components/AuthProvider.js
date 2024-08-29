@@ -112,16 +112,22 @@ const AuthProvider = ({ children }) => {
   };
 
   const forgotPassword = (email) => {
-    auth()
+    return auth()
       .sendPasswordResetEmail(email)
       .then(() => {
         showMessage({
-          message: `If ${email} has already been registered, an email with a password reset link has been sent to the inbox`,
+          message: `A link has been sent to ${email}!`,
           type: "success",
+          duration: 2500,
+          titleStyle: {
+            fontSize: 16,
+            textAlign: "center",
+          },
         });
       })
       .catch((err) => {
         console.log("error sending password reset email to ", email, err);
+        throw err;
       });
   };
 
