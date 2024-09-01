@@ -58,6 +58,7 @@ const Login = ({ navigation }) => {
               padding: 10,
               width: "100%",
               height: 45,
+              marginTop: 10
             }}
             onPress={() => onAppleButtonPress()}
           />

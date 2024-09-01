@@ -50,8 +50,8 @@ const Account = () => {
   const handlePicturePress = async () => {
     return launchImageLibrary({
       mediaType: "photo",
-      maxWidth: 125,
-      maxHeight: 125,
+      maxWidth: 500,
+      maxHeight: 500,
       selectionLimit: 1,
     }).then((result) => {
       setProfileImage(result.assets[0].uri);

@@ -64,7 +64,7 @@ const BasicInformation = ({ navigation }) => {
             />
 
             <LabeledInput
-              units={userData.heightUnits}
+              units={userData.heightUnits === 'in' ? 'inches' : userData.heightUnits}
               placeholder={"Enter height"}
               value={height}
               onChangeText={setHeight}

@@ -28,6 +28,8 @@ export default ToggleButton = ({
     },
     text: {
       color: pressable ? (highlighted ? "#fff" : "#007AFF") : "#fff",
+      textAlign: 'center',
+      fontWeight: '600'
     },
   });
 

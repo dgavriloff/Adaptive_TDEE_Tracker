@@ -28,16 +28,11 @@ const UnitSelection = ({ navigation }) => {
     navigation.navigate("Basic Information");
   };
 
-  const weightUnits = {
-    pounds: { name: "Pounds", short: "lbs" },
-  };
-
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Segment label={"Select Weight Units"}>
           <View style={styles.weightContainer}>
-            <Text style={styles.labelText}>Select weight {"\n"} units: </Text>
             <MultipleToggleButtons
               values={[
                 { value: { short: "Pounds" }, key: "lbs", pressable: true },
@@ -46,13 +41,12 @@ const UnitSelection = ({ navigation }) => {
               defaultValue={{ short: weightUnit }}
               action={setWeightUnit}
               containerStyle={styles.weightButtons}
-              buttonStyle={{ marginLeft: 10 }}
+              buttonStyle={{ marginLeft: 10, width: '45%' }}
             />
           </View>
         </Segment>
         <Segment label={"Select Height Units"}>
         <View style={styles.weightContainer}>
-            <Text style={styles.labelText}>Select height {"\n"} units: </Text>
             <MultipleToggleButtons
               values={[
                 { value: { short: "Inches" }, key: "in", pressable: true },
@@ -61,7 +55,7 @@ const UnitSelection = ({ navigation }) => {
               defaultValue={{ short: heightUnit }}
               action={setHeightUnit}
               containerStyle={styles.weightButtons}
-              buttonStyle={{ marginLeft: 10 }}
+              buttonStyle={{ marginLeft: 10, width: '45%'  }}
             />
           </View>
         </Segment>

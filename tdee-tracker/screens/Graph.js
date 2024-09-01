@@ -82,7 +82,7 @@ const Graph = () => {
               containerStyle={styles.buttonContainer}
               values={getRangeNameArray()}
               action={setSelectedRange}
-              defaultValue={ranges[selectedRange]}
+              defaultValue={{short: 'all'}}
             />
           </Segment>
           <Segment label={ranges[selectedRange].name}>

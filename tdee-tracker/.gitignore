@@ -38,3 +38,6 @@ yarn-error.*
 
 #config
 ./config
+
+#eas
+./eas.json
