@@ -99,7 +99,7 @@ const Dashboard = () => {
             <View style={styles.graphPlaceholder}>
               {graphData && (
                 <Chart
-                  style={{ height: 200, width: screenWidth - 100 }}
+                  style={{ height: 200, width: screenWidth * 0.75 }}
                   data={graphData.data}
                   padding={{ left: 45, bottom: 30, top: 20, right: 20 }}
                   xDomain={{

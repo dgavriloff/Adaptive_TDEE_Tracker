@@ -31,7 +31,7 @@ const UnitSelection = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Segment label={"Select Weight Units"}>
+        <Segment label={"Select Weight Units"} >
           <View style={styles.weightContainer}>
             <MultipleToggleButtons
               values={[
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
   },
   weightContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     width: "100%",
     justifyContent: "space-between",
