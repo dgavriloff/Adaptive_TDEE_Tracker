@@ -4,9 +4,7 @@
     "slug": "tdee-tracker",
     "version": "1.0.0",
     "platforms": [
-      "ios",
-      "android",
-      "web"
+      "ios"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",

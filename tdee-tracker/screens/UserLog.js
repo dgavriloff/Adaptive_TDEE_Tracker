@@ -106,6 +106,7 @@ const UserLog = () => {
             onChange={(res) => setDate(new Date(res.nativeEvent.timestamp))}
             maximumDate={getDateFromDateId(today)}
             dateFormat="dayofweek day month"
+            style={{ paddingLeft: 5, right: 2.5}}
           />
           {today !== dateId ? (
             <Button title="Next >" onPress={gotoNextLog} />

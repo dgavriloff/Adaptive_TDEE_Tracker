@@ -30,4 +30,4 @@ project.xcworkspace
 /Pods/
 
 #google config
-./GoogleService-Info.plist
+
