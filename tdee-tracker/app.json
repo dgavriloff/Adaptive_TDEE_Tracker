@@ -16,7 +16,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.caloriecoach.tdeetracker"
+      "bundleIdentifier": "com.caloriecoach.tdeetracker",
+      "buildNumber": "1.0.1"
     },
     "android": {
       "adaptiveIcon": {

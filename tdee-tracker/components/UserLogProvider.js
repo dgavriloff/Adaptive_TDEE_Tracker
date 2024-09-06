@@ -258,24 +258,32 @@ const UserLogProvider = ({ children }) => {
     const minValue = Math.max(
       Math.floor(Math.min(...rangedData.map((log) => log.y)) / 10) * 10,
       0
-    )
-    const maxValue = Math.ceil(Math.max(...rangedData.map((log) => log.y)) / 10) * 10
-    const minMaxDifference = maxValue - minValue > 0 ? maxValue - minValue : () => {throw new Error({'Data Error' : 'minMaxDifference is 0'})};
+    );
+    const maxValue =
+      Math.ceil(Math.max(...rangedData.map((log) => log.y)) / 10) * 10;
+    const minMaxDifference =
+      maxValue - minValue > 0
+        ? maxValue - minValue
+        : () => {
+            throw new Error({ "Data Error": "minMaxDifference is 0" });
+          };
     const interval = getInterval(minMaxDifference);
 
     return {
       data: rangedData,
       min: minValue,
       max: maxValue,
-      yTicks : createRange(minMaxDifference, minValue, interval),
-      defaultXTicks : 7 > rangedData.length ? rangedData.length : 7,
+      yTicks: createRange(minMaxDifference, minValue, interval),
+      defaultXTicks: 7 > rangedData.length ? rangedData.length : 7,
       defaultInterval: interval,
     };
   };
 
   const createRange = (size, start, interval) => {
     if (size === 0) return [];
-    return [...Array(Math.round(size/interval)+1).keys()].map((i) => i * interval + start);
+    return [...Array(Math.round(size / interval) + 1).keys()].map(
+      (i) => i * interval + start
+    );
   };
 
   const getInterval = (rawSize) => {
@@ -363,7 +371,6 @@ const UserLogProvider = ({ children }) => {
           y: logs[i].weight,
           meta: formatDate(logs[i].dateId),
         });
-        //console.log(lastWeight, logs[i], result[result.length-1], currentDateId)
         i++; //
       } else {
         // Use the last known weight for missing dates
@@ -372,18 +379,16 @@ const UserLogProvider = ({ children }) => {
           y: lastWeight,
           meta: formatDate(currentDateId),
         });
-        //console.log(lastWeight, logs[i], result[result.length-1], currentDateId)
       }
       // Move to the next date and increment index
       currentDateId = getNextDay(currentDateId);
       index++;
-      //console.log(result);
       // Break the loop if we pass the endDateId to prevent infinite loop
       if (currentDateId > endDateId) {
         break;
       }
     }
-    //console.log(result)
+    console.log(logs.map((l) => `${l.dateId} ${l.weight}`));
     return result;
   }
 
@@ -402,7 +407,7 @@ const UserLogProvider = ({ children }) => {
 
   const getEdgeCaseMax = (max) => {
     //if(max )
-  }
+  };
 
   return (
     <UserLogContext.Provider

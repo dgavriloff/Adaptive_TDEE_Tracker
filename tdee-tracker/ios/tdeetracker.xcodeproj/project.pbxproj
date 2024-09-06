@@ -30,6 +30,7 @@
 		4DCC147571DAF4672FC6CE02 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = tdeetracker/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		569CC32CA14A446E9C89DC80 /* tdeetracker-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "tdeetracker-Bridging-Header.h"; path = "tdeetracker/tdeetracker-Bridging-Header.h"; sourceTree = "<group>"; };
 		5746C35A2C879AE2006BDE90 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5746C35D2C87E13D006BDE90 /* tdeetrackerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tdeetrackerRelease.entitlements; path = tdeetracker/tdeetrackerRelease.entitlements; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-tdeetracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tdeetracker.debug.xcconfig"; path = "Target Support Files/Pods-tdeetracker/Pods-tdeetracker.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-tdeetracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tdeetracker.release.xcconfig"; path = "Target Support Files/Pods-tdeetracker/Pods-tdeetracker.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = tdeetracker/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +55,7 @@
 		13B07FAE1A68108700A75B9A /* tdeetracker */ = {
 			isa = PBXGroup;
 			children = (
+				5746C35D2C87E13D006BDE90 /* tdeetrackerRelease.entitlements */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -482,7 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = tdeetracker/tdeetracker.entitlements;
+				CODE_SIGN_ENTITLEMENTS = tdeetracker/tdeetrackerRelease.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XL785TV7H6;
 				INFOPLIST_FILE = tdeetracker/Info.plist;
