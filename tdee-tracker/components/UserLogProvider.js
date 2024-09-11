@@ -277,10 +277,10 @@ const UserLogProvider = ({ children }) => {
       defaultXTicks: 7 > rangedData.length ? rangedData.length : 7,
       defaultInterval: interval,
     };
-  };
+  };//
 
   const createRange = (size, start, interval) => {
-    if (size === 0) return [];
+    if (size <= 0) return [];
     return [...Array(Math.round(size / interval) + 1).keys()].map(
       (i) => i * interval + start
     );

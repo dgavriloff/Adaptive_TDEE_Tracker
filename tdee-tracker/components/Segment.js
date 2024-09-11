@@ -9,7 +9,7 @@ export default ({ children, label, style }) => {
       backgroundColor: "#fff",
       padding: 20,
       borderRadius: 10,
-      marginTop: '7.5%',
+      marginTop: '5%',
       ...style,
     },
     label: {

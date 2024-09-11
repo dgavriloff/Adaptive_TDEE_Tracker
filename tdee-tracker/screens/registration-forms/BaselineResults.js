@@ -56,7 +56,7 @@ const BaselineResults = ({ navigation }) => {
     }).then(() => {
       updateUserData({
         calculatedTDEE: tdee,
-        registrationComplete: true
+        registrationComplete: true,
       });
     });
   };

@@ -18,11 +18,13 @@ import { StorageContext } from "../components/StorageProvider";
 import BubbleButton from "../components/BubbleButton";
 import NavigationBar from "../components/NavigationBar";
 import Segment from "../components/Segment";
+import { NotificationContext } from "../components/NotificationProvider";
 
 const Account = () => {
   const { userData } = useContext(UserDataContext);
   const { logout, user } = useContext(AuthContext);
   const { setProfileImage } = useContext(StorageContext);
+  const { cancelNotificationByUid } = useContext(NotificationContext);
 
   const [tempPicUri, setTempPicUri] = useState(null);
   const [picExists, setPicExists] = useState(false);
@@ -83,11 +85,15 @@ const Account = () => {
             onPress={() => navigation.navigate("Change Goals")}
             text={"Change Goals"}
           />
+          <BubbleButton
+            onPress={() => navigation.navigate("Notification Settings")}
+            text={"Notification Settings"}
+          />
           {false && <BubbleButton
             onPress={() => navigation.navigate("Upload Data")}
             text={"Upload MyFitnessPal Data"}
           />}
-          <BubbleButton onPress={() => logout()} text={"Logout"} style={{}} />
+          <BubbleButton onPress={() => {cancelNotificationByUid(user.uid).then(() => logout())}} text={"Logout"} style={{}} />
         </ScrollView>
         <NavigationBar />
       </View>

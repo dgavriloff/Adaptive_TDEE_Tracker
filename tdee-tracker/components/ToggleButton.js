@@ -12,6 +12,7 @@ export default ToggleButton = ({
   const [highlighted, setHighlighted] = useState(selected);
 
   useEffect(() => {
+
     if (selected === id) setHighlighted(true);
     else setHighlighted(false);
   }, [selected]);
@@ -28,8 +29,8 @@ export default ToggleButton = ({
     },
     text: {
       color: pressable ? (highlighted ? "#fff" : "#007AFF") : "#fff",
-      textAlign: 'center',
-      fontWeight: '600'
+      textAlign: "center",
+      fontWeight: "600",
     },
   });
 

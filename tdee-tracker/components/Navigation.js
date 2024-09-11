@@ -19,6 +19,7 @@ import UploadData from "../screens/UploadData.js";
 import WeeklyProgress from "../screens/WeeklyProgress.js";
 import ChangeBasicInformation from "../screens/ChangeBasicInformation.js";
 import ChangeGoals from "../screens/ChangeGoals.js";
+import NotificationSettings from "../screens/NotificationSettings.js";
 
 //registration screens
 import UnitSelection from "../screens/registration-forms/UnitSelection.js";
@@ -72,6 +73,7 @@ const Navigation = () => {
                       component={ChangeBasicInformation}
                     />
                     <Stack.Screen name="Change Goals" component={ChangeGoals} />
+                    <Stack.Screen name="Notification Settings" component={NotificationSettings} />
                   </>
                 ) : (
                   <>

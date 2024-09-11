@@ -13,7 +13,7 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, f
             borderRadius: 10,
             alignItems: "center",
             justifyContent: "space-between",
-            marginTop: 20,
+            marginTop: '5%',
             width: "85%",
             ...style,
           }}

@@ -22,6 +22,8 @@ export default MultipleToggleButtons = ({
             onPress={() => {
               setSelectedButton(log.key);
               action(log.key);
+              if(log.custom)
+                log.custom();
             }}
             pressable={log.pressable}
             style={buttonStyle}
