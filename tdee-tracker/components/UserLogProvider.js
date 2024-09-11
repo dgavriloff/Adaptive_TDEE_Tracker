@@ -261,29 +261,37 @@ const UserLogProvider = ({ children }) => {
     );
     const maxValue =
       Math.ceil(Math.max(...rangedData.map((log) => log.y)) / 10) * 10;
-    const minMaxDifference =
-      maxValue - minValue > 0
-        ? maxValue - minValue
-        : () => {
-            throw new Error({ "Data Error": "minMaxDifference is 0" });
-          };
+    const minMaxDifference = maxValue - minValue;
     const interval = getInterval(minMaxDifference);
+
+    if (minMaxDifference <= 0)
+      return {
+        data: rangedData,
+        min: minValue - 5,
+        max: maxValue + 5,
+        yTicks: createRange(10, minValue - 5, interval),
+        defaultXTicks: Math.min(7, rangedData.length),
+        defaultInterval: interval,
+      };
 
     return {
       data: rangedData,
       min: minValue,
       max: maxValue,
       yTicks: createRange(minMaxDifference, minValue, interval),
-      defaultXTicks: 7 > rangedData.length ? rangedData.length : 7,
+      defaultXTicks: Math.min(7, rangedData.length),
       defaultInterval: interval,
     };
-  };//
+  }; //
 
   const createRange = (size, start, interval) => {
-    if (size <= 0) return [];
-    return [...Array(Math.round(size / interval) + 1).keys()].map(
-      (i) => i * interval + start
-    );
+    try {
+      return [...Array(Math.round(size / interval) + 1).keys()].map(
+        (i) => i * interval + start
+      );
+    } catch (err) {
+      console.log("create range error", size, start, interval, err);
+    }
   };
 
   const getInterval = (rawSize) => {
@@ -388,7 +396,7 @@ const UserLogProvider = ({ children }) => {
         break;
       }
     }
-    console.log(logs.map((l) => `${l.dateId} ${l.weight}`));
+    //console.log(logs.map((l) => `${l.dateId} ${l.weight}`)); //
     return result;
   }
 

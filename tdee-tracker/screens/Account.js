@@ -62,7 +62,7 @@ const Account = () => {
     });
   };
 
-  if (user)
+  if (user && userData)
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>

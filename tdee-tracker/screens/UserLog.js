@@ -71,10 +71,12 @@ const UserLog = () => {
 
   const handleSave = () => {
     const weekId = getWeekIdFromDateId(dateId);
+    console.log(parseFloat(calories))
     if (
       isInputValid(parseFloat(weight), 20, 1000, "Weight", true) &&
       isInputValid(parseFloat(calories), 0, 10000, "Calories", true)
     ) {
+      console.log('valid')
       if (!currentLog) {
         addUserLog({
           weight: parseFloat(weight),
@@ -121,19 +123,20 @@ const UserLog = () => {
             keyboardType="numeric"
             value={!isNaN(weight) && `${weight}`}
             onChangeText={(value) => {
+
               setWeight(value);
-              value != currentLog?.weight ? setSaved(false) : setSaved(true)
+              parseFloat(value) !== currentLog?.weight ? setSaved(false) : setSaved(true)
             }}
             units={userData.weightUnits}
           />
-
+          {console.log(calories)}
           <LabeledInput
             placeholder="Enter calories"
             keyboardType="numeric"
             value={!isNaN(calories) && `${calories}`}
             onChangeText={(value) => {
               setCalories(value);
-              value != currentLog?.calories ? setSaved(false) : setSaved(true);
+              parseFloat(value) !== currentLog?.calories ? setSaved(false) : setSaved(true);
             }}
             units={"kCal"}
           />

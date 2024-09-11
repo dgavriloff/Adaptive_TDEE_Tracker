@@ -97,7 +97,8 @@ const Dashboard = () => {
             onPress={() => navigation.navigate("Graph")}
           >
             <View style={styles.graphPlaceholder}>
-              {graphData && (
+              {graphData && rawGraphData && (
+
                 <Chart
                   style={{ height: 200, width: screenWidth * 0.75 }}
                   data={graphData.data}

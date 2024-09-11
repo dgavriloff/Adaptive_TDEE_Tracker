@@ -101,8 +101,8 @@ const UserDataProvider = ({ children }) => {
   };
 
   const isInputValid = (value, min, max, name, nullOkay) => {
-    if (nullOkay && !value) return true;
-    return isNumberWithinRange(parseFloat(value), min, max, name) && value;
+    if (nullOkay && !value && value != 0) return true;
+    return isNumberWithinRange(parseFloat(value), min, max, name);//
   };
 
   const calculateGoalDate = () => {

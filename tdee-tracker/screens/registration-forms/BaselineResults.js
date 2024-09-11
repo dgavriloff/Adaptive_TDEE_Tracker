@@ -78,7 +78,7 @@ const BaselineResults = ({ navigation }) => {
         <Segment>
           <Text style={styles.result}>
             Daily Calorie Target to {userData.loseOrGain ? "Gain" : "Lose"}{" "}
-            {userData.weeklyWeightDelta} {userData.weightUnits} per week:{" "}
+            {userData.weeklyWeightDelta} {userData.weightUnits} Per Week:{" "}
           </Text>
           <Text style={styles.result}>
             <Bold>
@@ -91,7 +91,7 @@ const BaselineResults = ({ navigation }) => {
           </Text>
         </Segment>
         <Segment>
-          <Text style={styles.result}>Goal weight will be reached by:</Text>
+          <Text style={styles.result}>Goal Weight Will Be Reached by:</Text>
           <Text style={styles.result}>
             <Bold>{goalDate}</Bold>
           </Text>
