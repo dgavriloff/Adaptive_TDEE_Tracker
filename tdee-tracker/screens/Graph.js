@@ -25,7 +25,7 @@ const screenWidth = Dimensions.get("window").width;
 const Graph = () => {
   const [selectedRange, setSelectedRange] = useState("all");
 
-  const { currentTheme, darkMode } = useContext(ThemeContext);
+  const { currentTheme, hexToRgb } = useContext(ThemeContext);
 
   const { userData } = useContext(UserDataContext);
   const {
@@ -135,11 +135,27 @@ const Graph = () => {
               >
                 <VerticalAxis
                     theme={{
+                      grid: {
+                        stroke: {
+                          color: hexToRgb(currentTheme.fontColor, 0.45),
+                        },
+                      },
                       labels: {
                         visible: true,
                         label: {
                           dx: -5,
-                          color: currentTheme.fontColor
+                          color: currentTheme.fontColor,
+                        },
+
+                        axis: {
+                          stroke: {
+                            width: 2,
+                          },
+                        },
+                      },
+                      ticks: {
+                        stroke: {
+                          color: currentTheme.fontColor,
                         },
                       },
                     }}
@@ -148,18 +164,23 @@ const Graph = () => {
                 />
                 <HorizontalAxis
                   theme={{
-                    grid: { visible: false },
-                    ticks: {
-                      stroke: {
-                        color: currentTheme.fontColor
-                      }
-                    },
-                    labels: {
-                      visible: true,
-                      label: {
-                        dy: -16,
-                        color: currentTheme.fontColor
+                      grid: { visible: false },
+                      ticks: {
+                        stroke: {
+                          color: currentTheme.fontColor,
+                        },
                       },
+                      axis: {
+                        stroke: {
+                          width: 2,
+                        },
+                      },
+                      labels: {
+                        visible: true,
+                        label: {
+                          dy: -16,
+                          color: currentTheme.fontColor,
+                        },
                       formatter: (v) => {
                         const dateId =
                           graphData.data.length === 1
@@ -188,6 +209,7 @@ const Graph = () => {
                           default: {
                             width: 5,
                             height: 5,
+                            color: currentTheme.fontColor,
                           },
                           stroke: {
                             color: currentTheme.fontColor,

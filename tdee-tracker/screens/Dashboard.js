@@ -35,7 +35,7 @@ const Dashboard = () => {
     createRange,
     getInterval,
   } = useContext(UserLogContext);
-  const { currentTheme, darkMode } = useContext(ThemeContext);
+  const { currentTheme, hexToRgb } = useContext(ThemeContext);
 
   const [graphData, setGraphData] = useState(
     getRangedData(rawGraphData.length)
@@ -145,11 +145,27 @@ const Dashboard = () => {
                 >
                   <VerticalAxis
                     theme={{
+                      grid: {
+                        stroke: {
+                          color: hexToRgb(currentTheme.fontColor, 0.45),
+                        },
+                      },
                       labels: {
                         visible: true,
                         label: {
                           dx: -5,
-                          color: currentTheme.fontColor
+                          color: currentTheme.fontColor,
+                        },
+
+                        axis: {
+                          stroke: {
+                            width: 2,
+                          },
+                        },
+                      },
+                      ticks: {
+                        stroke: {
+                          color: currentTheme.fontColor,
                         },
                       },
                     }}
@@ -162,16 +178,21 @@ const Dashboard = () => {
                       grid: { visible: false },
                       ticks: {
                         stroke: {
-                          color: currentTheme.fontColor
-                        }
+                          color: currentTheme.fontColor,
+                        },
+                      },
+                      axis: {
+                        stroke: {
+                          width: 2,
+                        },
                       },
                       labels: {
                         visible: true,
                         label: {
                           dy: -16,
-                          color: currentTheme.fontColor
+                          color: currentTheme.fontColor,
                         },
-                      
+
                         formatter: (v) => {
                           const dateId =
                             graphData.data.length === 1
@@ -197,6 +218,7 @@ const Dashboard = () => {
                           default: {
                             width: 5,
                             height: 5,
+                            color: currentTheme.fontColor,
                           },
                           stroke: {
                             color: currentTheme.fontColor,

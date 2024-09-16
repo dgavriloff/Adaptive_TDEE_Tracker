@@ -5,6 +5,7 @@ import BubbleButton from "../components/BubbleButton";
 import MultipleToggleButtons from "../components/MultipleToggleButtons";
 import { ThemeContext } from "../components/ThemeProvider";
 import { useNavigation } from "@react-navigation/native";
+import { withBadge } from "@rneui/base";
 
 
 
@@ -30,6 +31,7 @@ export default ChangeTheme = () => {
                 values={[{value: {short: 'Light'}, key: false, pressable: true},{value: {short: 'Dark'}, key: true, pressable: true}]}
                 action={cSetDarkMode}
                 containerStyle={{flexDirection: 'row', justifyContent: 'space-between'}}
+                buttonStyle={{width: '45%'}}
                 />
             </Segment>
             <BubbleButton text={'Save and Go Back'} onPress={() => navigation.goBack()}/>
