@@ -20,6 +20,7 @@ import WeeklyProgress from "../screens/WeeklyProgress.js";
 import ChangeBasicInformation from "../screens/ChangeBasicInformation.js";
 import ChangeGoals from "../screens/ChangeGoals.js";
 import NotificationSettings from "../screens/NotificationSettings.js";
+import ChangeTheme from "../screens/ChangeTheme.js";
 
 //registration screens
 import UnitSelection from "../screens/registration-forms/UnitSelection.js";
@@ -36,6 +37,7 @@ import { UserDataContext } from "./UserDataProvider.js";
 import { UserLogContext } from "./UserLogProvider.js";
 import RegisterWithEmail from "../screens/RegisterWithEmail.js";
 import ForgotPassword from "../screens/ForgotPassword.js";
+import { ThemeContext } from "./ThemeProvider.js";
 
 const Stack = createStackNavigator();
 
@@ -43,12 +45,22 @@ const Navigation = () => {
   const { user, isLoading: authLoading } = useContext(AuthContext);
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
   const { userLogs, weeklyLogs } = useContext(UserLogContext);
+  const { currentTheme } = useContext(ThemeContext);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           ...ModalSlideFromBottomIOS,
+          headerStyle: {
+            backgroundColor: currentTheme.foregroundColor,
+            shadowColor: 'transparent',
+            borderBottomWidth: 0
+          },
+          headerTintColor: currentTheme.fontColor,
+          headerBackTitleStyle: {
+            color: currentTheme.buttonTextColor
+          },
         }}
       >
         {user ? (
@@ -74,6 +86,7 @@ const Navigation = () => {
                     />
                     <Stack.Screen name="Change Goals" component={ChangeGoals} />
                     <Stack.Screen name="Notification Settings" component={NotificationSettings} />
+                    <Stack.Screen name="Change Theme" component={ChangeTheme} />
                   </>
                 ) : (
                   <>

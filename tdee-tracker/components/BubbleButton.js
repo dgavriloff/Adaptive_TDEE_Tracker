@@ -1,7 +1,13 @@
 import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 
+import { ThemeContext } from "./ThemeProvider";
+import { useContext } from "react";
+
 const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, fontColor }) => {
+  const { currentTheme } = useContext(ThemeContext);
+  
+  
   return (
     <>
       {!unTouchable ? (
@@ -9,7 +15,7 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, f
           onPress={onPress}
           style={{
             padding: 20,
-            backgroundColor: "#fff",
+            backgroundColor: currentTheme.foregroundColor,
             borderRadius: 10,
             alignItems: "center",
             justifyContent: "space-between",
@@ -22,7 +28,7 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, f
             style={{
               fontSize: fontSize ? fontSize : 18,
               fontWeight: "bold",
-              color: fontColor ? fontColor : "#007bff", // Blue color for buttons
+              color: fontColor ? fontColor : currentTheme.buttonTextColor, // Blue color for buttons
               textAlign: "center",
             }}
           >

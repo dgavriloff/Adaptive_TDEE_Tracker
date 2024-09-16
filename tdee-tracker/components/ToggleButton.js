@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Text, Pressable, View, StyleSheet } from "react-native";
+import { ThemeContext } from "./ThemeProvider";
 
 export default ToggleButton = ({
   selected,
@@ -10,6 +11,7 @@ export default ToggleButton = ({
   id,
 }) => {
   const [highlighted, setHighlighted] = useState(selected);
+  const {currentTheme} = useContext(ThemeContext);
 
   useEffect(() => {
 
@@ -23,12 +25,12 @@ export default ToggleButton = ({
       ...style,
     },
     button: {
-      backgroundColor: highlighted ? "#007AFF" : "#f0f0f0",
+      backgroundColor: highlighted ? currentTheme.buttonTextColor : currentTheme.backgroundColor,
       padding: 10,
       borderRadius: 5,
     },
     text: {
-      color: pressable ? (highlighted ? "#fff" : "#007AFF") : "#fff",
+      color: pressable ? (highlighted ? currentTheme.foregroundColor : currentTheme.buttonTextColor) : currentTheme.foregroundColor,
       textAlign: "center",
       fontWeight: "600",
     },

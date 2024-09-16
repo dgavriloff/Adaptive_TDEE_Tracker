@@ -1,11 +1,12 @@
 import React from "react";
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 
 import { AuthProvider } from "./components/AuthProvider";
 import { UserDataProvider } from "./components/UserDataProvider";
 import { UserLogProvider } from "./components/UserLogProvider";
 import { StorageProvider } from "./components/StorageProvider";
 import { NotificationProvider } from "./components/NotificationProvider";
+import { ThemeProvider } from "./components/ThemeProvider";
 import Navigation from "./components/Navigation";
 
 import { AuthContext } from "./components/AuthProvider";
@@ -29,8 +30,10 @@ export default function App() {
         <UserLogProvider>
           <StorageProvider>
             <NotificationProvider>
-              <Navigation />
-              <FlashMessage position={"top"} />
+              <ThemeProvider>
+                <Navigation />
+                <FlashMessage position={"top"} />
+              </ThemeProvider>
             </NotificationProvider>
           </StorageProvider>
         </UserLogProvider>

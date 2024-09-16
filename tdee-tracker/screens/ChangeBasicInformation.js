@@ -7,6 +7,7 @@ import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import RegistrationFooter from "../components/RegistrationFooter";
 import Segment from "../components/Segment";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const BasicInformation = ({ navigation }) => {
   const { updateUserData, userData, isInputValid } =
@@ -22,6 +23,8 @@ const BasicInformation = ({ navigation }) => {
     userData.gender ? userData.gender : "male"
   );
   const [missingFields, setMissingFields] = useState(false);
+
+  const {currentTheme} = useContext(ThemeContext)
 
   const handleSaveAndBack = () => {
     if (
@@ -41,7 +44,33 @@ const BasicInformation = ({ navigation }) => {
       setMissingFields(true);
     }
   };
-
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentTheme.backgroundColor,
+    },
+    scrollContainer: {
+      alignItems: "center",
+      paddingBottom: 25,
+    },
+    weightContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      width: "100%",
+      justifyContent: "space-between",
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    weightButtons: {
+      flexDirection: "row",
+    },
+    labelText: {
+      fontSize: 16,
+      color: currentTheme.fontColor,
+      textAlign: "center",
+    },
+  });
+  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -98,30 +127,5 @@ const BasicInformation = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f0f0f0",
-  },
-  scrollContainer: {
-    alignItems: "center",
-    paddingBottom: 25,
-  },
-  weightContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "space-between",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  weightButtons: {
-    flexDirection: "row",
-  },
-  labelText: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-});
 
 export default BasicInformation;

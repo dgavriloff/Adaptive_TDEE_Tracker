@@ -10,22 +10,9 @@ import BubbleButton from "../components/BubbleButton";
 import MultipleToggleButtons from "../components/MultipleToggleButtons";
 import { AuthContext } from "../components/AuthProvider";
 import { useNavigation } from "@react-navigation/native";
+import { ThemeContext } from "../components/ThemeProvider";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  button: {
-    width: "45%",
-  },
-});
+
 
 export default NotificationSettings = () => {
   const { userData } = useContext(UserDataContext);
@@ -43,6 +30,8 @@ export default NotificationSettings = () => {
   const [reminderDate, setReminderDate] = useState(
     createDateFromNotification(notification)
   );
+
+  const {currentTheme, darkMode} = useContext(ThemeContext)
 
   const [notifOn, setNotifOn] = useState(!!notification);
 
@@ -66,6 +55,23 @@ export default NotificationSettings = () => {
       })
       .catch((err) => console.log("error setting reminder", err));
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: "column",
+      alignItems: "center",
+      backgroundColor: currentTheme.backgroundColor,
+    },
+    buttons: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+    button: {
+      width: "45%",
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -97,12 +103,12 @@ export default NotificationSettings = () => {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 onChange={(event, date) => setReminderDate(date)}
+                themeVariant={darkMode ? 'dark' : 'light'}
               />
             </View>
           </Segment>
           <BubbleButton
             text={"Save and Go Back"}
-            style={{}}
             onPress={handleSave}
           />
         </View>

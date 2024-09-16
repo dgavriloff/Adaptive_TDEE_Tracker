@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Button,
   StyleSheet,
-  Keyboard,
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -18,6 +16,7 @@ import DismissKeyboard from "../components/DismissKeyboard";
 import LabeledInput from "../components/LabeledInput";
 import Segment from "../components/Segment";
 import { showMessage } from "react-native-flash-message";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const UserLog = () => {
   const {
@@ -29,6 +28,7 @@ const UserLog = () => {
     getDateFromDateId,
   } = useContext(UserLogContext);
   const { userData, isInputValid } = useContext(UserDataContext);
+  const { currentTheme, darkMode } = useContext(ThemeContext);
 
   const [date, setDate] = useState(new Date());
   const [today] = useState(getDateIdFormat(date));
@@ -70,13 +70,11 @@ const UserLog = () => {
   };
 
   const handleSave = () => {
-    const weekId = getWeekIdFromDateId(dateId);
-    console.log(parseFloat(calories))
+    const weekId = getWeekIdFromDateId(dateId)
     if (
       isInputValid(parseFloat(weight), 20, 1000, "Weight", true) &&
       isInputValid(parseFloat(calories), 0, 10000, "Calories", true)
     ) {
-      console.log('valid')
       if (!currentLog) {
         addUserLog({
           weight: parseFloat(weight),
@@ -97,11 +95,52 @@ const UserLog = () => {
     }
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: 20,
+      backgroundColor: currentTheme.backgroundColor,
+      alignItems: "center",
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "85%",
+      backgroundColor: currentTheme.foregroundColor,
+      padding: 20,
+      borderRadius: 10,
+    },
+    date: {
+      fontSize: currentTheme.fontSize,
+      fontWeight: "bold",
+    },
+    button: {
+      position: "absolute",
+      bottom: 125,
+      width: "85%",
+      backgroundColor: currentTheme.foregroundColor,
+      padding: 15,
+      borderRadius: 10,
+      alignItems: "center",
+    },
+    unsavedButtonText: {
+      fontSize: currentTheme.fontSize,
+      fontWeight: "bold",
+      color: currentTheme.buttonTextColor,
+    },
+    savedButtonText: {
+      fontSize: currentTheme.fontSize,
+      fontWeight: "bold",
+      color: currentTheme.fontColor,
+    },
+  });
+
   return (
     <DismissKeyboard>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Button title="< Prev" onPress={gotoPreviousLog} />
+          <Button title="< Prev" onPress={gotoPreviousLog} color={currentTheme.buttonTextColor}/>
           <DateTimePicker
             mode="date"
             value={date}
@@ -109,9 +148,10 @@ const UserLog = () => {
             maximumDate={getDateFromDateId(today)}
             dateFormat="dayofweek day month"
             style={{ paddingLeft: 5, right: 2.5}}
+            themeVariant={darkMode ? 'dark' : 'light'}
           />
           {today !== dateId ? (
-            <Button title="Next >" onPress={gotoNextLog} />
+            <Button title="Next >" onPress={gotoNextLog} color={currentTheme.buttonTextColor}/>
           ) : (
             <View style={{ width: 75 }} />
           )}
@@ -129,7 +169,6 @@ const UserLog = () => {
             }}
             units={userData.weightUnits}
           />
-          {console.log(calories)}
           <LabeledInput
             placeholder="Enter calories"
             keyboardType="numeric"
@@ -165,45 +204,6 @@ const UserLog = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: "#f0f0f0",
-    alignItems: "center",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "85%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-  },
-  date: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  button: {
-    position: "absolute",
-    bottom: 125,
-    width: "85%",
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  unsavedButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#007bff",
-  },
-  savedButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-  },
-});
+
 
 export default UserLog;

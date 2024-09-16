@@ -18,11 +18,14 @@ import { UserDataContext } from "../components/UserDataProvider";
 import { UserLogContext } from "../components/UserLogProvider";
 import Segment from "../components/Segment";
 import MultipleToggleButtons from "../components/MultipleToggleButtons";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const screenWidth = Dimensions.get("window").width;
 
 const Graph = () => {
   const [selectedRange, setSelectedRange] = useState("all");
+
+  const { currentTheme, darkMode } = useContext(ThemeContext);
 
   const { userData } = useContext(UserDataContext);
   const {
@@ -66,6 +69,32 @@ const Graph = () => {
 
   const weightChange = graphData.data.slice(-1)[0].y - graphData.data[0].y;
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentTheme.backgroundColor,
+    },
+    scrollContainer: {
+      paddingBottom: 125,
+      alignItems: "center",
+    },
+    text: {
+      fontSize: currentTheme.fontSize,
+      marginVertical: 10,
+      textAlign: "center",
+      color: currentTheme.fontColor
+    },
+    buttonContainer: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: "center",
+      padding: 0,
+      marginTop: 10
+    },
+  });
+  
+
   if (userLogs[0])
     return (
       <View style={styles.container}>
@@ -105,23 +134,31 @@ const Graph = () => {
                 disableGestures={true}
               >
                 <VerticalAxis
-                  theme={{
-                    labels: {
-                      label: {
-                        dx: -5,
+                    theme={{
+                      labels: {
+                        visible: true,
+                        label: {
+                          dx: -5,
+                          color: currentTheme.fontColor
+                        },
                       },
-                    },
-                  }}
+                    }}
                   tickValues={graphData.yTicks}
                   includeOriginTick={true} //
                 />
                 <HorizontalAxis
                   theme={{
                     grid: { visible: false },
+                    ticks: {
+                      stroke: {
+                        color: currentTheme.fontColor
+                      }
+                    },
                     labels: {
                       visible: true,
                       label: {
                         dy: -16,
+                        color: currentTheme.fontColor
                       },
                       formatter: (v) => {
                         const dateId =
@@ -144,21 +181,30 @@ const Graph = () => {
                   }
                   includeOriginTick={true}
                 />
-                {graphData.data.length === 1 ? (
-                  <Line
-                    theme={{
-                      scatter: {
-                        default: {
-                          width: 5,
-                          height: 5,
+                  {graphData && graphData.data.length === 1 ? (
+                    <Line
+                      theme={{
+                        scatter: {
+                          default: {
+                            width: 5,
+                            height: 5,
+                          },
+                          stroke: {
+                            color: currentTheme.fontColor,
+                          },
                         },
-                      },
-                    }}
-                  />
-                ) : (
-                  <Line />
-                )}
-              </Chart>
+                      }}
+                    />
+                  ) : (
+                    <Line
+                      theme={{
+                        stroke: {
+                          color: currentTheme.fontColor,
+                        },
+                      }}
+                    />
+                  )}
+                </Chart>
             )}
           </Segment>
 
@@ -177,28 +223,5 @@ const Graph = () => {
     );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f0f0f0",
-  },
-  scrollContainer: {
-    paddingBottom: 125,
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 18,
-    marginVertical: 10,
-    textAlign: "center",
-  },
-  buttonContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    padding: 0,
-    marginTop: 10
-  },
-});
 
 export default Graph;

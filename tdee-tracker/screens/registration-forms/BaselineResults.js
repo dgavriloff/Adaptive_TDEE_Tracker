@@ -13,7 +13,6 @@ const BaselineResults = ({ navigation }) => {
 
   const [bmr, setBmr] = useState(null);
   const [tdee, setTdee] = useState(null);
-  const [goalDate, setGoalDate] = useState(null);
 
   useEffect(() => {
     const calculatedBmr =
@@ -40,10 +39,11 @@ const BaselineResults = ({ navigation }) => {
           5;
     const calculatedTdee = Math.floor(calculatedBmr * userData.activityLevel);
 
-    setGoalDate(calculateGoalDate());
     setBmr(calculatedBmr);
     setTdee(Math.round(calculatedTdee / 50) * 50);
   }, [userData]);
+
+  const goalDate = calculateGoalDate();
 
   const handleNext = () => {
     const date = new Date();
@@ -91,10 +91,14 @@ const BaselineResults = ({ navigation }) => {
           </Text>
         </Segment>
         <Segment>
-          <Text style={styles.result}>Goal Weight Will Be Reached by:</Text>
-          <Text style={styles.result}>
-            <Bold>{goalDate}</Bold>
-          </Text>
+        {goalDate ? (
+            <Text style={styles.result}>
+              You will reach your goal weight of {userData.goalWeight}{" "}
+              {userData.weightUnits} on: {"\n"} <Bold>{goalDate}</Bold>
+            </Text>
+          ) : (
+            <Text style={styles.result}>You are maintaining your weight</Text>
+          )}
         </Segment>
 
         <View style={styles.buttonContainer}>

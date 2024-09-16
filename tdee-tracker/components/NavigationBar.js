@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { ThemeContext } from "./ThemeProvider";
 
 const NavigationBar = () => {
   const navigation = useNavigation();
   const routeIndex = useNavigationState((state) => state.index);
   const routes = useNavigationState((state) => state.routes);
+
+  const { currentTheme, darkMode } = useContext(ThemeContext)
+
+  const styles = StyleSheet.create({
+    navBar: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+      backgroundColor: currentTheme.foregroundColor, // Light gray background
+      height: 100,
+      width: "100%",
+      position: "absolute",
+      bottom: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 15,
+    },
+    navButton: {
+      padding: 15,
+    },
+    activeButton: {
+      backgroundColor: currentTheme.backgroundColor, // Slightly lighter gray
+      borderRadius: 5,
+    },
+    navText: {
+      fontSize: 16,
+      color: "#007bff", // Blue color for the text
+    },
+    icons: {
+      height: 40,
+      width: 40,
+    },
+  });
+  
 
   return (
     <View style={styles.navBar}>
@@ -18,7 +53,7 @@ const NavigationBar = () => {
         onPress={() => navigation.navigate("Dashboard")}
       >
         <Image
-          source={require("../public/home-icon.png")}
+          source={darkMode ? require("../public/inverted-home-icon.png") : require("../public/home-icon.png")}
           style={styles.icons}
         />
       </TouchableOpacity>
@@ -31,7 +66,7 @@ const NavigationBar = () => {
         onPress={() => navigation.navigate("User Log")}
       >
         <Image
-          source={require("../public/list-icon.png")}
+          source={darkMode ? require("../public/inverted-list-icon.png") : require("../public/list-icon.png")}
           style={styles.icons}
         />
       </TouchableOpacity>
@@ -44,7 +79,7 @@ const NavigationBar = () => {
         onPress={() => navigation.navigate("Graph")}
       >
         <Image
-          source={require("../public/graph-icon.png")}
+          source={darkMode ? require("../public/inverted-graph-icon.png") : require("../public/graph-icon.png")}
           style={styles.icons}
         />
       </TouchableOpacity>
@@ -57,7 +92,7 @@ const NavigationBar = () => {
         onPress={() => navigation.navigate("Account")}
       >
         <Image
-          source={require("../public/account-icon.png")}
+          source={darkMode ? require("../public/inverted-account-icon.png") : require("../public/account-icon.png")}
           style={styles.icons}
         />
       </TouchableOpacity>
@@ -65,35 +100,5 @@ const NavigationBar = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  navBar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#fff", // Light gray background
-    height: 100,
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 15,
-  },
-  navButton: {
-    padding: 15,
-  },
-  activeButton: {
-    backgroundColor: "#f0f0f0", // Slightly lighter gray
-    borderRadius: 5,
-  },
-  navText: {
-    fontSize: 16,
-    color: "#007bff", // Blue color for the text
-  },
-  icons: {
-    height: 40,
-    width: 40,
-  },
-});
 
 export default NavigationBar;

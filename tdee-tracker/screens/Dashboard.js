@@ -23,6 +23,7 @@ import NavigationBar from "../components/NavigationBar"; // Make sure the path i
 import Segment from "../components/Segment";
 import BubbleButton from "../components/BubbleButton";
 import Bold from "../components/Bold";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -32,8 +33,10 @@ const Dashboard = () => {
     getRangedData,
     graphData: rawGraphData,
     createRange,
-    getInterval
+    getInterval,
   } = useContext(UserLogContext);
+  const { currentTheme, darkMode } = useContext(ThemeContext);
+
   const [graphData, setGraphData] = useState(
     getRangedData(rawGraphData.length)
   );
@@ -48,21 +51,48 @@ const Dashboard = () => {
 
   const screenWidth = Dimensions.get("window").width;
 
+  const goalDate = calculateGoalDate(userData);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 0,
+      backgroundColor: currentTheme.backgroundColor,
+    },
+    scrollContainer: {
+      width: "100%",
+      alignItems: "center",
+      padding: 0,
+      paddingBottom: 125,
+    },
+    text: {
+      fontSize: 16,
+      color: currentTheme.fontColor,
+      textAlign: "center",
+    },
+    graphPlaceholder: {
+      width: "100%",
+      height: 200,
+      backgroundColor: currentTheme.foregroundColor,
+      marginTop: 10,
+      borderRadius: 10,
+    },
+  });
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Segment label={"Summary"}>
-          <Text style={styles.text}>Your TDEE is currently:</Text>
           <Text style={styles.text}>
+            Your TDEE is currently:
+            {"\n"}
             <Bold>~{shownTdee} calories</Bold>
+            {"\n"}
           </Text>
-          <Text></Text>
           <Text style={styles.text}>
             Daily calorie goal to {userData.loseOrGain ? "gain" : "lose"}{" "}
             {userData.weeklyWeightDelta} {userData.weightUnits} per week is:
-          </Text>
-          <Text style={styles.text}>
+            {"\n"}
             <Bold>
               ~
               {userData.loseOrGain
@@ -70,15 +100,16 @@ const Dashboard = () => {
                 : shownTdee - userData.dailyCalorieDelta}{" "}
               calories
             </Bold>
+            {"\n"}
           </Text>
-          <Text></Text>
-          <Text style={styles.text}>
-            You will reach your goal weight of {userData.goalWeight}{" "}
-            {userData.weightUnits} on:
-          </Text>
-          <Text style={styles.text}>
-            <Bold>{calculateGoalDate(userData)}</Bold>
-          </Text>
+          {goalDate ? (
+            <Text style={styles.text}>
+              You will reach your goal weight of {userData.goalWeight}{" "}
+              {userData.weightUnits} on: {"\n"} <Bold>{goalDate}</Bold>
+            </Text>
+          ) : (
+            <Text style={styles.text}>You are maintaining your weight</Text>
+          )}
         </Segment>
 
         <BubbleButton
@@ -98,7 +129,6 @@ const Dashboard = () => {
           >
             <View style={styles.graphPlaceholder}>
               {graphData && rawGraphData && (
-
                 <Chart
                   style={{ height: 200, width: screenWidth * 0.75 }}
                   data={graphData.data}
@@ -109,7 +139,7 @@ const Dashboard = () => {
                   }}
                   yDomain={{
                     min: graphData.min,
-                    max: Math.max(graphData.max, graphData.yTicks.slice(-1)[0])
+                    max: Math.max(graphData.max, graphData.yTicks.slice(-1)[0]),
                   }}
                   disableGestures={true}
                 >
@@ -119,6 +149,7 @@ const Dashboard = () => {
                         visible: true,
                         label: {
                           dx: -5,
+                          color: currentTheme.fontColor
                         },
                       },
                     }}
@@ -129,11 +160,18 @@ const Dashboard = () => {
                   <HorizontalAxis
                     theme={{
                       grid: { visible: false },
+                      ticks: {
+                        stroke: {
+                          color: currentTheme.fontColor
+                        }
+                      },
                       labels: {
                         visible: true,
                         label: {
                           dy: -16,
+                          color: currentTheme.fontColor
                         },
+                      
                         formatter: (v) => {
                           const dateId =
                             graphData.data.length === 1
@@ -148,9 +186,7 @@ const Dashboard = () => {
                         },
                       },
                     }}
-                    tickCount={
-                      graphData.defaultXTicks
-                    }
+                    tickCount={graphData.defaultXTicks}
                     includeOriginTick={true}
                   />
 
@@ -162,11 +198,20 @@ const Dashboard = () => {
                             width: 5,
                             height: 5,
                           },
+                          stroke: {
+                            color: currentTheme.fontColor,
+                          },
                         },
                       }}
                     />
                   ) : (
-                    <Line />
+                    <Line
+                      theme={{
+                        stroke: {
+                          color: currentTheme.fontColor,
+                        },
+                      }}
+                    />
                   )}
                 </Chart>
               )}
@@ -178,32 +223,6 @@ const Dashboard = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 0,
-    backgroundColor: "#f0f0f0", // Light gray background
-  },
-  scrollContainer: {
-    width: "100%",
-    alignItems: "center",
-    padding: 0,
-    paddingBottom: 125,
-  },
-  text: {
-    fontSize: 16,
-    color: "#333",
-    textAlign: "center",
-  },
-  graphPlaceholder: {
-    width: "100%",
-    height: 200,
-    backgroundColor: "#ffffff",
-    marginTop: 10,
-    borderRadius: 10,
-  },
-});
 
 export default Dashboard;
 
