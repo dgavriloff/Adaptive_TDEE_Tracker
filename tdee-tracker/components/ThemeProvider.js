@@ -11,6 +11,8 @@ const styles = {
 const lightTheme = {
   backgroundColor: "#f0f0f0",
   foregroundColor: "#fff",
+  sectionHeaderColor: "#e8e8e8",
+  shadowColor: '#000',
   fontColor: "#000",
   buttonTextColor: "#007bff",
   ...styles,
@@ -19,6 +21,8 @@ const lightTheme = {
 const darkTheme = {
   backgroundColor: "#121212",
   foregroundColor: "#1C1C1E",
+  sectionHeaderColor: '#292929',
+  shadowColor: '#fff',
   fontSize: 18,
   fontColor: "#B0B0B0",
   buttonTextColor: "#675e91",

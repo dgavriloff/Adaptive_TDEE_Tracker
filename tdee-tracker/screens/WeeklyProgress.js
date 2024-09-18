@@ -4,11 +4,14 @@ import { UserDataContext } from "../components/UserDataProvider";
 import { UserLogContext } from "../components/UserLogProvider";
 
 import Segment from "../components/Segment";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const WeeklyProgress = () => {
   const { userData } = useContext(UserDataContext);
   const { weeklyLogs, getAverageCalories, posOrNeg } =
     useContext(UserLogContext);
+
+    const {currentTheme} = useContext(ThemeContext)
 
   const renderSectionHeader = ({ section }) => (
     <View style={styles.header}>
@@ -41,6 +44,65 @@ const WeeklyProgress = () => {
       </Segment>
     );
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentTheme.backgroundColor,
+    },
+    header: {
+      backgroundColor: currentTheme.sectionHeaderColor,
+      padding: 10,
+      borderRadius: 8,
+      marginTop: 10,
+    },
+    headerText: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: currentTheme.fontColor
+    },
+    section: {
+      backgroundColor: currentTheme.foregroundColor,
+      padding: 15,
+      marginBottom: 10,
+      borderRadius: 8,
+      shadowColor: currentTheme.shadowColor,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 2,
+      paddingLeft: 5,
+      paddingRight: 5,
+    },
+    inlineContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      
+    },
+    inlineText: {
+      fontSize: 15,
+      marginHorizontal: 10,
+      color: currentTheme.fontColor
+    },
+    textColumn: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    screenHeaderText: {
+      fontSize: 15,
+      textAlign: "center",
+      fontWeight: "bold",
+      color: currentTheme.fontColor
+    },
+    screenHeaderSubText: {
+      fontSize: 15,
+      textAlign: "center",
+      color: currentTheme.fontColor
+    },
+    segmentStyle: {
+      width: "100%",
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -111,59 +173,6 @@ const WeeklyProgress = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f0f0f0",
-  },
-  header: {
-    backgroundColor: "#e8e8e8",
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  section: {
-    backgroundColor: "#f8f8f8",
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 2,
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  inlineContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    
-  },
-  inlineText: {
-    fontSize: 15,
-    marginHorizontal: 10,
-  },
-  textColumn: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  screenHeaderText: {
-    fontSize: 15,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  screenHeaderSubText: {
-    fontSize: 15,
-    textAlign: "center",
-  },
-  segmentStyle: {
-    width: "100%",
-  },
-});
+
 
 export default WeeklyProgress;

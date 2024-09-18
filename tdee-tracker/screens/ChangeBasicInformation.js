@@ -81,7 +81,7 @@ const BasicInformation = ({ navigation }) => {
               placeholder={"Enter age"}
               value={age}
               onChangeText={setAge}
-              borderColor={missingFields && !age ? "red" : "black"}
+              borderColor={missingFields && !age ? "red" : currentTheme.fontColor}
             />
 
             <LabeledInput
@@ -89,7 +89,7 @@ const BasicInformation = ({ navigation }) => {
               placeholder={"Enter height"}
               value={height}
               onChangeText={setHeight}
-              borderColor={missingFields && !height ? "red" : "black"}
+              borderColor={missingFields && !height ? "red" : currentTheme.fontColor}
             />
 
             <LabeledInput
@@ -97,7 +97,7 @@ const BasicInformation = ({ navigation }) => {
               placeholder={"Enter starting weight"}
               value={startWeight}
               onChangeText={setStartWeight}
-              borderColor={missingFields && !startWeight ? "red" : "black"}
+              borderColor={missingFields && !startWeight ? "red" : currentTheme.fontColor}
             />
           </Segment>
         </DismissKeyboard>
