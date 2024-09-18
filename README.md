@@ -11,12 +11,12 @@ Allows users to get an estimate of their total daily energy expenditure from the
 
 # Advantages
 Instead of calculating TDEE with body weight and estimations of calories burned, this application will give users their TDEE with 
-two easily trackable and quatifiable values; their daily weight and the amount of calories they consume. Overtime this application
+two easily trackable and quatifiable values; their daily weight and the amount of calories they consume. Over time this application
 will calculate the change in weight loss by week and based on the amount of calories consumed will provide an accurate TDEE customized
 to the user.
 
 # Disadvantages/Points of failure
-Humans are notoriously inaccurate at eyeballing calories, so it is imperitave that users use an app such as MyFitnessPal or another calorie
+Humans are notoriously inaccurate at eyeballing calories, so it is imperative that users use an app such as MyFitnessPal or another calorie
 tracker in conjunction with a food scale in order to input accurate calorie data into the application.
 
 The first week of weight loss is usually mostly water weight, which might skew the results. This requires users to be consistent with their
