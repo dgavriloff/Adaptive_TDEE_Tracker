@@ -114,7 +114,7 @@ const Account = () => {
               )}
             </TouchableOpacity>
             <Text style={styles.email}>
-              {userData.email.substring(0, userData.email.indexOf("@"))}
+              {userData.email?.substring(0, userData.email.indexOf("@"))}
             </Text>
           </Segment>
           <BubbleButton

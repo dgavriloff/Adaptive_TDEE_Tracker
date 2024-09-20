@@ -20,10 +20,27 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
-      setUser(user);
+    const subscriber = auth().onAuthStateChanged(async (currentUser) => {
+      if (currentUser) {
+        try {
+          await currentUser.reload(); // Refresh user data
+          if (!auth().currentUser) {
+            // User was deleted, handle logout
+            setUser(null);
+            // Optionally sign out
+            await auth().signOut();
+          } else {
+            setUser(currentUser);
+          }
+        } catch (error) {
+          console.log("Error reloading user", error);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
     });
-    return subscriber;
+    return subscriber; // Clean up subscription on unmount
   }, []);
 
   const login = (email, password) => {
