@@ -410,7 +410,7 @@ const UserLogProvider = ({ children }) => {
   };
 
   posOrNeg = (value) => {
-    return value < 1 ? value : "+" + value;
+    return value < 0 ? value : "+" + value;
   };
 
   const getEdgeCaseMax = (max) => {
