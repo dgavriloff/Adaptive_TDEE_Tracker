@@ -12,6 +12,7 @@ import Navigation from "./components/Navigation";
 import { AuthContext } from "./components/AuthProvider";
 
 import FlashMessage from "react-native-flash-message";
+import { OnboardingProvider } from "./components/OnboardingProvider";
 
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {
@@ -31,8 +32,10 @@ export default function App() {
           <StorageProvider>
             <NotificationProvider>
               <ThemeProvider>
-                <Navigation />
-                <FlashMessage position={"top"} />
+                <OnboardingProvider>
+                  <Navigation />
+                  <FlashMessage position={"top"} />
+                </OnboardingProvider>
               </ThemeProvider>
             </NotificationProvider>
           </StorageProvider>

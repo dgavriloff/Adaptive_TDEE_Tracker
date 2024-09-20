@@ -38,6 +38,8 @@ import { UserLogContext } from "./UserLogProvider.js";
 import RegisterWithEmail from "../screens/RegisterWithEmail.js";
 import ForgotPassword from "../screens/ForgotPassword.js";
 import { ThemeContext } from "./ThemeProvider.js";
+import { OnboardingContext } from "./OnboardingProvider.js";
+import InitialOnboarding from "../screens/InitialOnboarding.js";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +48,7 @@ const Navigation = () => {
   const { userData, isLoading: dataLoading } = useContext(UserDataContext);
   const { userLogs, weeklyLogs } = useContext(UserLogContext);
   const { currentTheme } = useContext(ThemeContext);
+  const { onboardingComplete } = useContext(OnboardingContext);
 
   return (
     <NavigationContainer>
@@ -63,7 +66,7 @@ const Navigation = () => {
           },
         }}
       >
-        {user ? (
+        {onboardingComplete ? ( user ? (
           <>
             {!userData || !userLogs || !weeklyLogs ? (
               <Stack.Screen name="Loading" component={Loading} />
@@ -133,7 +136,11 @@ const Navigation = () => {
               options={{ title: "" }}
             />
           </>
-        )}
+        )) : (
+          <>
+          <Stack.Screen name="InitialOnboarding" component={InitialOnboarding} options={{title: '', headerShown: false}} />
+          </>
+        ) }
       </Stack.Navigator>
     </NavigationContainer>
   );
