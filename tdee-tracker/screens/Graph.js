@@ -55,6 +55,11 @@ const Graph = () => {
     setGraphData(getRangedData(ranges[selectedRange].value));
   },[selectedRange])
 
+  const handleRangeChange = (range) => {
+    setGraphData(getRangedData(ranges[range].value));
+    setSelectedRange(range);
+  }
+
 
   const getRangeNameArray = () => {
     let arr = [];
@@ -110,7 +115,7 @@ const Graph = () => {
             <MultipleToggleButtons
               containerStyle={styles.buttonContainer}
               values={getRangeNameArray()}
-              action={setSelectedRange}
+              action={handleRangeChange}
               defaultValue={{short: 'all'}}
             />
           </Segment>
