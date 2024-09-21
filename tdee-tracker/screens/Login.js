@@ -16,6 +16,7 @@ import { Divider } from "@rneui/base";
 
 import { AppleButton } from "@invertase/react-native-apple-authentication";
 import GoogleButton from "../components/GoogleButton";
+import { ThemeContext } from "../components/ThemeProvider";
 
 const Login = ({ navigation }) => {
   const {
@@ -25,6 +26,7 @@ const Login = ({ navigation }) => {
     onGoogleButtonPress,
     forgotPassword,
   } = useContext(AuthContext);
+  const {currentTheme, darkMode} = useContext(ThemeContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -42,6 +44,45 @@ const Login = ({ navigation }) => {
     });
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentTheme.backgroundColor
+    },
+    inputContainer: {
+      alignItems: "center",
+      flexDirection: "column",
+    },
+    button: {
+      backgroundColor: currentTheme.backgroundColor,
+      padding: 10,
+      width: "100%",
+      marginTop: 10,
+    },
+    divider: {
+      marginTop: 20,
+      marginBottom: 5,
+      width: "45%",
+    },
+    authButton: {
+      backgroundColor: "#f0f0f0",
+      padding: 10,
+      width: "100%",
+      marginTop: 18,
+    },
+    dividerParent: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 10,
+      marginTop: 10,
+    },
+    dividerText: {
+      top: 5,
+    },
+  });
+  
+
   return (
     <View style={styles.container}>
       <DismissKeyboard
@@ -52,7 +93,7 @@ const Login = ({ navigation }) => {
       >
         <Segment label={"Login to Calorie Coach"}>
           <AppleButton
-            buttonStyle={AppleButton.Style.BLACK}
+            buttonStyle={darkMode ? AppleButton.Style.BLACK : AppleButton.Style.BLACK }
             buttonType={AppleButton.Type.SIGN_IN}
             style={{
               padding: 10,
@@ -71,7 +112,7 @@ const Login = ({ navigation }) => {
             style={{ ...styles.button, marginTop: 18 }}
             text={"Register with Email"}
             onPress={() => navigation.navigate("RegisterWithEmail")}
-            fontColor={"#000"}
+            fontColor={currentTheme.fontColor}
           />
 
           <View style={styles.dividerParent}>
@@ -107,7 +148,7 @@ const Login = ({ navigation }) => {
             style={styles.button}
             text={"Login"}
             onPress={handleLogin}
-            fontColor={"#000"}
+            fontColor={currentTheme.fontColor}
           />
 
           <BubbleButton
@@ -123,41 +164,5 @@ const Login = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inputContainer: {
-    alignItems: "center",
-    flexDirection: "column",
-  },
-  button: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    width: "100%",
-    marginTop: 10,
-  },
-  divider: {
-    marginTop: 20,
-    marginBottom: 5,
-    width: "45%",
-  },
-  authButton: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    width: "100%",
-    marginTop: 18,
-  },
-  dividerParent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  dividerText: {
-    top: 5,
-  },
-});
 
 export default Login;

@@ -15,6 +15,9 @@ const lightTheme = {
   shadowColor: '#000',
   fontColor: "#000",
   buttonTextColor: "#007bff",
+  googleFill: '#FFFFFF',
+  googleText: '#1F1F1F',
+  googleStroke: '#747775',
   ...styles,
 };
 
@@ -26,6 +29,9 @@ const darkTheme = {
   fontSize: 18,
   fontColor: "#B0B0B0",
   buttonTextColor: "#675e91",
+  googleFill: '#131314',
+  googleText: '#E3E3E3',
+  googleStroke: '#8E918F',
   ...styles,
 };
 
@@ -80,10 +86,10 @@ const ThemeProvider = ({ children }) => {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Default opacity is 1
   };
 
-  const value = { darkMode, setDarkMode, currentTheme, hexToRgb };
+  const value = { darkMode, setDarkMode, currentTheme, hexToRgb, lightTheme, darkTheme  };
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 
-export { ThemeProvider, ThemeContext };
+export { ThemeProvider, ThemeContext, };

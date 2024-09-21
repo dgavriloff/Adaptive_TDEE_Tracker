@@ -40,6 +40,7 @@ import ForgotPassword from "../screens/ForgotPassword.js";
 import { ThemeContext } from "./ThemeProvider.js";
 import { OnboardingContext } from "./OnboardingProvider.js";
 import InitialOnboarding from "../screens/InitialOnboarding.js";
+import SourcesFAQ from "../screens/SourcesFAQ.js";
 
 const Stack = createStackNavigator();
 
@@ -90,6 +91,7 @@ const Navigation = () => {
                     <Stack.Screen name="Change Goals" component={ChangeGoals} />
                     <Stack.Screen name="Notification Settings" component={NotificationSettings} />
                     <Stack.Screen name="Change Theme" component={ChangeTheme} />
+                    <Stack.Screen name="SourcesFAQ" component={SourcesFAQ} options={{title: 'Frequently Asked Questions'}}/>
                   </>
                 ) : (
                   <>

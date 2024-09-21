@@ -56,13 +56,13 @@ export default ({
         <View
           style={{
             position: "absolute",
-            right: 0,
-            paddingTop: 15,
+            right: 5,
+            paddingTop: 24,
             zIndex: 1,
             height: "20",
           }}
         >
-          <Button
+          <TouchableOpacity
             onPress={() => {
               setShown(!shown);
             }}
@@ -71,11 +71,12 @@ export default ({
             <Text
               style={{
                 textAlign: "center",
+                color: currentTheme.buttonTextColor,
               }}
             >
               {shown ? "hide" : "show"}
             </Text>
-          </Button>
+          </TouchableOpacity>
         </View>
       )}
     </View>

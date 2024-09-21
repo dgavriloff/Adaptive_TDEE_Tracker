@@ -118,6 +118,10 @@ const Account = () => {
             </Text>
           </Segment>
           <BubbleButton
+            onPress={() => navigation.navigate("SourcesFAQ")}
+            text={"Frequently Asked Questions"}
+          />
+          <BubbleButton
             onPress={() => navigation.navigate("Change Personal Details")}
             text={"Change Personal Details"}
           />
@@ -141,7 +145,10 @@ const Account = () => {
           )}
           <BubbleButton
             onPress={() => {
-              cancelNotificationByUid(user.uid).then(() => {setDarkMode(false); logout()});
+              cancelNotificationByUid(user.uid).then(() => {
+                setDarkMode(false);
+                logout();
+              });
             }}
             text={"Logout"}
           />
