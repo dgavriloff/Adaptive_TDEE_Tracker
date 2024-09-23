@@ -15,7 +15,7 @@ export default ({
   secureTextEntry,
 }) => {
   const [shown, setShown] = useState(false); //shown password is true, hidden is false
-  const { currentTheme, hexToRgb } = useContext(ThemeContext);
+  const { currentTheme, hexToRgb, darkMode } = useContext(ThemeContext);
 
   return (
     <View>
@@ -45,6 +45,7 @@ export default ({
           zIndex: -1,
           color: currentTheme.fontColor,
         }}
+        keyboardAppearance={darkMode ? 'dark' : 'light'}
         placeholderTextColor={hexToRgb(currentTheme.fontColor, 0.4)}
         placeholder={placeholder}
         keyboardType={keyboardType ? keyboardType : "numeric"}
