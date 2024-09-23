@@ -76,6 +76,7 @@ export default DeleteAccount = () => {
           placeholder={"Enter 'confirm'"}
           onChangeText={setConfirm}
           value={confirm}
+          keyboardType={"default"}
         />
       </Segment>
       {confirmed && (
