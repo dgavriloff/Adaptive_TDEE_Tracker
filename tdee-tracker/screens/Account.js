@@ -152,6 +152,11 @@ const Account = () => {
             }}
             text={"Logout"}
           />
+           <BubbleButton
+            onPress={() => navigation.navigate("DeleteAccount")}
+            text={"Delete Account"}
+            fontColor={'red'}
+          />
         </ScrollView>
         <NavigationBar />
       </View>

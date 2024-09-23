@@ -148,6 +148,14 @@ const AuthProvider = ({ children }) => {
       });
   };
 
+  const deleteCurrentAuthRecord = () => {
+    setUser(null);
+    return auth()
+      .currentUser.delete()
+      .then(() => console.log("deleted successfully"))
+      .catch((err) => console.log("error deleting auth record", err));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -160,6 +168,8 @@ const AuthProvider = ({ children }) => {
         onGoogleButtonPress,
         onFacebookButtonPress,
         forgotPassword,
+        deleteCurrentAuthRecord,
+        setUser
       }}
     >
       {children}

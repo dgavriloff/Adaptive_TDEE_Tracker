@@ -71,8 +71,23 @@ const StorageProvider = ({ children }) => {
         });
   };
 
+  const deleteProfilePicture = (uid) => {
+    return storage()
+      .ref(`images/profile-pictures/${uid}`)
+      .delete()
+      .then(() => {
+        console.log("profile picture deleted");
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("error deleting profile picture", err);
+        setLoading(false);
+      });
+  };
+  
+
   return (
-    <StorageContext.Provider value={{ setProfileImage, loading }}>
+    <StorageContext.Provider value={{ setProfileImage, loading, deleteProfilePicture }}>
       {children}
     </StorageContext.Provider>
   );

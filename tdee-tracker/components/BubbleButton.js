@@ -40,7 +40,7 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, f
           onPress={onPress}
           style={{
             padding: 20,
-            backgroundColor: "#fff",
+            backgroundColor: currentTheme.foregroundColor,
             borderRadius: 10,
             flexDirection: "row",
             justifyContent: "center",
@@ -53,7 +53,7 @@ const BubbleButton = ({ onPress, text, style, unTouchable, xOnPress, fontSize, f
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              color: "#000", // Blue color for buttons
+              color: currentTheme.fontColor, // Blue color for buttons
               textAlign: "center",
             }}
           >

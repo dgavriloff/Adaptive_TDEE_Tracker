@@ -106,9 +106,7 @@ const UserDataProvider = ({ children }) => {
   };
 
   const calculateGoalDate = () => {
-
-    if(userData.dailyCalorieDelta === 0)
-      return null;
+    if (userData.dailyCalorieDelta === 0) return null;
     const weightDelta = Math.abs(userData.currentWeight - userData.goalWeight);
 
     const daysUntilGoal =
@@ -116,10 +114,19 @@ const UserDataProvider = ({ children }) => {
         ? (weightDelta * 3500) / userData.dailyCalorieDelta
         : (weightDelta * 2.20462 * 3500) / userData.dailyCalorieDelta;
 
-      console.log(daysUntilGoal)
+    console.log(daysUntilGoal);
     return new Date(new Date().getTime() + 86400000 * daysUntilGoal)
       .toDateString()
       .slice(3);
+  };
+
+  const deleteUserDoc = (uid) => {
+    setUserData({});
+    const userDocRef = firestore().collection("users").doc(uid);
+    return userDocRef
+      .delete()
+      .then(() => console.log("user doc deleted"))
+      .catch((err) => console.log("error deleting user doc", err));
   };
 
   return (
@@ -130,6 +137,7 @@ const UserDataProvider = ({ children }) => {
         updateUserData,
         isInputValid,
         calculateGoalDate,
+        deleteUserDoc
       }}
     >
       {children}
