@@ -60,7 +60,6 @@ export default ({
             right: 5,
             paddingTop: 24,
             zIndex: 1,
-            height: "20",
           }}
         >
           <TouchableOpacity

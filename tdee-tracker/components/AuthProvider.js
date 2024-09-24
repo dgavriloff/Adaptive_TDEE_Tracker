@@ -50,7 +50,17 @@ const AuthProvider = ({ children }) => {
         console.log(`${email} has signed in`);
       })
       .catch((err) => {
-        console.error("login error", err.code);
+        if (err.code === "auth/network-request-failed") {
+          showMessage({
+            type: "danger",
+            message: "Network Error",
+            description: "Please check your internet connection and try again.",
+            titleStyle: { textAlign: "center", fontSize: 18 },
+            duration: 2000,
+          });
+        } else {
+          console.error("Login error:", err.code);
+        }
         throw err;
       });
   };
@@ -74,7 +84,17 @@ const AuthProvider = ({ children }) => {
         );
       })
       .catch((err) => {
-        console.log("register error", err);
+        if (err.code === "auth/network-request-failed") {
+          showMessage({
+            type: "danger",
+            message: "Network Error",
+            description: "Please check your internet connection and try again.",
+            titleStyle: { textAlign: "center", fontSize: 18 },
+            duration: 2000,
+          });
+        } else {
+          console.error("Register error:", err.code);
+        }
         throw err;
       });
   };
@@ -169,7 +189,7 @@ const AuthProvider = ({ children }) => {
         onFacebookButtonPress,
         forgotPassword,
         deleteCurrentAuthRecord,
-        setUser
+        setUser,
       }}
     >
       {children}
