@@ -23,7 +23,7 @@ const InitialGoals = ({ navigation }) => {
         dailyCalorieDelta: Math.floor(
           userData.weightUnits === "lbs"
             ? weeklyWeightDelta * 500
-            : weeklyWeightDelta * 2.20462 * 500
+            : Math.floor((weeklyWeightDelta * 2.20462 * 500) / 10) * 10
         ),
         loseOrGain: goalWeight > userData.startWeight ? true : false,
       });

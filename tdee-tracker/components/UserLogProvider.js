@@ -171,8 +171,8 @@ const UserLogProvider = ({ children }) => {
           ...data[0],
           tdee:
             userData.weightUnits === "lbs"
-              ? data[0].weightDelta * -1 * 500 + data[0].avgCalories
-              : data[0].weightDelta * -2.20462 * 500 + data[0].avgCalories,
+              ? (data[0].weightDelta * -1 * 500 + data[0].avgCalories).toFixed(2)
+              : (data[0].weightDelta * -2.20462 * 500 + data[0].avgCalories).toFixed(2),
         },
       ],
     }));
@@ -400,7 +400,7 @@ const UserLogProvider = ({ children }) => {
     return result;
   }
 
-  getAverageCalories = () => {
+  const getAverageCalories = () => {
     const avg = Math.floor(
       weeklyLogs.reduce((sum, log) => {
         return sum + log.data[0].avgCalories;
@@ -409,37 +409,33 @@ const UserLogProvider = ({ children }) => {
     return isNaN(avg) ? 0 : avg;
   };
 
-  posOrNeg = (value) => {
+  const posOrNeg = (value) => {
     return value < 0 ? value : "+" + value;
-  };
-
-  const getEdgeCaseMax = (max) => {
-    //if(max )
   };
 
   const deleteUserLogs = (uid) => {
     setUserLogs([]);
     firestore()
-    .collection("user-logs")
-    .where("userId", "==", uid)
-    .orderBy("dateId", "desc")
-    .get()
-    .then((logsQuery) => {
-      const batch = firestore().batch(); // Use a batch write for efficiency
+      .collection("user-logs")
+      .where("userId", "==", uid)
+      .orderBy("dateId", "desc")
+      .get()
+      .then((logsQuery) => {
+        const batch = firestore().batch(); // Use a batch write for efficiency
 
-      logsQuery.docs.forEach((doc) => {
-        batch.delete(doc.ref); // Add delete operation to batch
+        logsQuery.docs.forEach((doc) => {
+          batch.delete(doc.ref); // Add delete operation to batch
+        });
+
+        return batch.commit(); // Commit the batch
+      })
+      .then(() => {
+        console.log("All logs deleted successfully.");
+      })
+      .catch((error) => {
+        console.error("Error deleting logs:", error);
       });
-
-      return batch.commit(); // Commit the batch
-    })
-    .then(() => {
-      console.log('All logs deleted successfully.');
-    })
-    .catch((error) => {
-      console.error('Error deleting logs:', error);
-    });
-  }
+  };
 
   return (
     <UserLogContext.Provider
@@ -459,7 +455,7 @@ const UserLogProvider = ({ children }) => {
         getAverageCalories,
         posOrNeg,
         createRange,
-        deleteUserLogs
+        deleteUserLogs,
       }}
     >
       {children}
