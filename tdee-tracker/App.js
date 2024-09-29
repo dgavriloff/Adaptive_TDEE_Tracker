@@ -1,46 +1,19 @@
-import React from "react";
-import * as Notifications from "expo-notifications";
-
-import { AuthProvider } from "./components/AuthProvider";
-import { UserDataProvider } from "./components/UserDataProvider";
-import { UserLogProvider } from "./components/UserLogProvider";
-import { StorageProvider } from "./components/StorageProvider";
-import { NotificationProvider } from "./components/NotificationProvider";
-import { ThemeProvider } from "./components/ThemeProvider";
-import Navigation from "./components/Navigation";
-
-import { AuthContext } from "./components/AuthProvider";
-
+import React, { useEffect } from "react";
+import Providers from "./components/Providers";
 import FlashMessage from "react-native-flash-message";
-import { OnboardingProvider } from "./components/OnboardingProvider";
-
-Notifications.setNotificationHandler({
-  handleNotification: async (notification) => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    };
-  },
-});
+import Navigation from "./components/Navigation";
+import { FLASH_MESSAGE_POSITION } from "./lib/constants";
+import setupNotificationHandler from "./lib/utils/notificationHandler";
 
 export default function App() {
+  useEffect(() => {
+    setupNotificationHandler();
+  }, []);
+
   return (
-    <AuthProvider>
-      <UserDataProvider>
-        <UserLogProvider>
-          <StorageProvider>
-            <NotificationProvider>
-              <ThemeProvider>
-                <OnboardingProvider>
-                  <Navigation />
-                  <FlashMessage position={"top"} />
-                </OnboardingProvider>
-              </ThemeProvider>
-            </NotificationProvider>
-          </StorageProvider>
-        </UserLogProvider>
-      </UserDataProvider>
-    </AuthProvider>
+    <Providers>
+      <Navigation />
+      <FlashMessage position={FLASH_MESSAGE_POSITION} />
+    </Providers>
   );
 }
